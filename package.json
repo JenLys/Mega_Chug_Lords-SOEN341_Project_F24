@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "dev": "concurrently \"cd ./server && node --env-file=.env server\" \"cd ./client && npm run dev\"",
+    "install:all": "npm i && cd ./client && npm i && cd ../server && npm i"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
