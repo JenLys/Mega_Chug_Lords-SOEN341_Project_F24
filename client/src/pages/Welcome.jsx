@@ -1,11 +1,11 @@
 import React from 'react';
-import './styles.css';
+import 'client/src/pages/styles.css';
 
 const Welcome = () => {
   return (
     <div className="page">
       <video autoplay loop muted playsInline className="vid">
-        <source src="/pages/video.mp4" type="video/mp4" />
+        <source src="client\src\pages\video.mp4" type="video/mp4" />
       </video>
 
       <nav>
