@@ -1,12 +1,16 @@
 import './App.css'
+import Welcome from './Welcome/Welcome'
+import Navbar from './Navbar/Navbar'
+import About from './Navbar/About'
+import HowToUse from './Navbar/HowToUse'
 
 function App() {
 
   return (
-    <>
-      This is the app
-    </>
+   
+    <Welcome/>
   )
 }
+
 
 export default App

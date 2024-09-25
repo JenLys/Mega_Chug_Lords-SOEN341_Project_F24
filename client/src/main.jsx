@@ -4,12 +4,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import HelloWorld from "./components/HelloWorld";
+import Welcome from "./Welcome/Welcome";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{ path: "/", element: <HelloWorld /> }],
+    children: [{ path: "/", element: <Welcome /> }],
   },
 
   // Example pathing:
