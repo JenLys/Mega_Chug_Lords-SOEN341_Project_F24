@@ -1,12 +1,16 @@
 import React from 'react';
 import './styles.css';
+import video from './video.mp4';
 
 function Welcome() {
   return (
     <div className="page">
-      <video autoPlay loop muted playsInline className="vid">
-        <source src="./video.gif" type="image/gif"/>
-      </video>
+      
+      <div className="vid">
+      <video src={video} type="video/mp4" atl="background video" autoPlay loop muted/>
+      </div>
+      
+      
 
       <div className="content">
         <h1>ReviewMate</h1>
