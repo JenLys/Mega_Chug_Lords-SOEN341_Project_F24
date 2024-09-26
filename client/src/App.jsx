@@ -1,12 +1,19 @@
-import './App.css'
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import StudentRegistration from "./registration/studentregistration";
+import TeacherRegistration from "./components/TeacherRegistration";
 
 function App() {
-
   return (
-    <>
-      This is the app
-    </>
-  )
+    <div>
+      <Routes>
+        <Route path="/" element={<div>This is the app</div>} />
+        <Route path="/studentreg" element={<StudentRegistration />} />
+        <Route path="/teacherreg" element={<TeacherRegistration />} />
+        <Route path="*" element={<div>404 Not Found</div>} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
