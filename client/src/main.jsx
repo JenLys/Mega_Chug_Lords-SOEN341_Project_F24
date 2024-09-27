@@ -9,40 +9,17 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{ path: "/", element: <HelloWorld /> }],
+    children: [
+      {
+        path: "/studentreg",
+        element: <App />,
+      },
+      {
+        path: "/teacherreg",
+        element: <App />,
+      },
+    ],
   },
-
-  // Example pathing:
-  // {
-  //   path: "/",
-  //   element: <App />,
-  //   children: [
-  //     {
-  //       path: "/",
-  //       element: <RecordList />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/edit/:id",
-  //   element: <App />,
-  //   children: [
-  //     {
-  //       path: "/edit/:id",
-  //       element: <Record />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/create",
-  //   element: <App />,
-  //   children: [
-  //     {
-  //       path: "/create",
-  //       element: <Record />,
-  //     },
-  //   ],
-  // },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
