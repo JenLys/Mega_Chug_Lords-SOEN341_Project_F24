@@ -22,7 +22,7 @@ const router = createBrowserRouter([
       },
     ],  
   },
-  // Example pathing:
+  // Example pathing: 
   // {
   //   path: "/",
   //   element: <App />,
