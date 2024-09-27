@@ -4,19 +4,24 @@ import React from "react";
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const data = {
-    username: document.getElementById("username").value,
-    password: document.getElementById("password").value,
-  };
+  // const data = {
+  //   e.target.
+  //   username: document.getElementById("username").value,
+  //   password: document.getElementById("password").value,
+  // };
 
-  const response = await fetch("/teacherreg", {
-    // Change to "/teacherreg"
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  if (e.target != null) {
+    if (e.target.username != null && e.target.password != null) {
+      const response = await fetch("/teacherreg", {
+        // Change to "/teacherreg"
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    }
+  }
 
   const result = await response.json();
   console.log(result);
