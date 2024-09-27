@@ -138,13 +138,13 @@ SOURCE FREE IMAGE AND VIDEOS BANK*/
 }
 
 .link{
-    color: #0264cc;
+    color: #00ffff;
     text-decoration:underline;
     font-size: 16px;
     transition: color 0.3s ease;
 }
 .link:hover{
-    background-color:#add2eb
+    color:#7b00ff
 }
 
 .navbar {
@@ -185,5 +185,5 @@ SOURCE FREE IMAGE AND VIDEOS BANK*/
 }
 
 .navbar ul li a:hover {
-    color: #00d5ff;
+    color: rgb(26, 82, 96);
 }
