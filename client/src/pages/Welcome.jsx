@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import video from './video.mp4';
+import video from '../assets/video.mp4'
 
 function Welcome() {
   return (
