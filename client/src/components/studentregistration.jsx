@@ -1,5 +1,6 @@
 // src/components/StudentRegistration.js
 import React from "react";
+import "./reg.css";
 
 const handleSubmit = async (e) => {
   e.preventDefault();
