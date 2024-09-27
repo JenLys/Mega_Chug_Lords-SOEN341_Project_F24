@@ -3,16 +3,25 @@ import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App";
-import HelloWorld from "./components/HelloWorld";
-import Welcome from "./Welcome/Welcome";
+import Welcome from "./pages/Welcome";
+import About from "./pages/About";
+import HowToUse from "./pages/HowToUse";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{ path: "/", element: <Welcome /> }],
+    children: [{ path: "/", element: <Welcome /> },
+      {
+        path: "/about",
+        element: <About />
+      },
+      {
+        path: "/how-to-use",
+        element: <HowToUse />
+      },
+    ],  
   },
-
   // Example pathing:
   // {
   //   path: "/",
