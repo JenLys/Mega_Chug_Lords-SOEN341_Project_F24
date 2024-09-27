@@ -1,13 +1,13 @@
 import React from 'react';
 import './styles.css';
-import video from '../assets/video.mp4'
+import video from '../assets/video.webm'
 
 function Welcome() {
   return (
     <div className="page">
       
       <div className="vid">
-      <video src={video} type="video/mp4" atl="background video" autoPlay loop muted/>
+      <video src={video} type="video/webm" atl="background video" autoPlay loop muted/>
       </div>
       
       
