@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "dev": "nodemon --env-file=./.env",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,8 +14,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "mongodb": "^6.9.0",
     "mongoose": "^8.6.4",
+    "nodemon": "^3.1.7",
     "server": "file:"
   }
 }

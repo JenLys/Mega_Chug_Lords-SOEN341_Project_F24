@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "concurrently \"cd ./server && node --env-file=.env server\" \"cd ./client && npm run dev\"",
+    "dev": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run dev\"",
     "install:all": "npm i && cd ./client && npm i && cd ../server && npm i"
   },
   "devDependencies": {
