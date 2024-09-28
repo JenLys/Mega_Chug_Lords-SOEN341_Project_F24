@@ -16,7 +16,7 @@ class Db {
     let dbOptions = {
       dbName: "" + dbName,
     }
-    mongoose.connection(uri, dbOptions)
+    mongoose.connect(uri, dbOptions)
   }
 
   disconnectDb() {
