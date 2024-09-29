@@ -1,6 +1,5 @@
 import express, { urlencoded } from "express";
 // import db from "../db/connection.js"
-import { ObjectId } from "mongodb";
 
 const router = express.Router();
 router.use(express.json());

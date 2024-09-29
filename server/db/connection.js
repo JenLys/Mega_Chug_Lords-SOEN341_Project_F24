@@ -1,26 +1,27 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import mongoose from "mongoose"
 
 const uri = process.env.ATLAS_URI || "";
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+const dbName = process.env.DB_NAME || "reviewmate"
 
-try {
-  // Connect the client to the server
-  await client.connect();
-  // Send a ping to confirm a successful connection
-  await client.db("admin").command({ ping: 1 });
-  console.log(
-    "Pinged your deployment. You successfully connected to MongoDB!"
-  );
-} catch (err) {
-  console.error(err);
+if (uri.length === 0) {
+  process.exit(-1)
 }
 
-let db = client.db("employees");
+class Db {
+  constructor() {
+    this.connectDb();
+  }
 
-export default db;
+  connectDb() {
+    let dbOptions = {
+      dbName: "" + dbName,
+    }
+    mongoose.connect(uri, dbOptions)
+  }
+
+  disconnectDb() {
+    mongoose.connection.close()
+  }
+}
+
+export default new Db();

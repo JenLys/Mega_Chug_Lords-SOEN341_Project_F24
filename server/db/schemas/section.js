@@ -1,13 +1,12 @@
 import mongoose, { Schema } from "mongoose";
-import Course from "./course-schema";
-import User from "./user-schema";
 
 const sectionSchema = new Schema(
     {
-        students: [User.schema],
-        course: Course.schema,
+        students: [String],
+        course: String,
         name: String
-    }
+    },
+    { collections:"Sections", queryString:true }
 );
 
 const Section = mongoose.model("Section", sectionSchema);
