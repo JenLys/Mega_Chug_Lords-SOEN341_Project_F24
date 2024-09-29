@@ -33,72 +33,72 @@ class Db {
   }
 
   // CRUD Functions
-  async addUser(userFname, userLname, userRole, userId, userPw) {
+  async addUser(fname, lname, role, id, pw) {
     const user = await User.create({
-      fname: userFname,
-      lname: userLname,
-      role: userRole,
-      user_id: userId,
-      pw: userPw,
+      fname: fname,
+      lname: lname,
+      role: role,
+      user_id: id,
+      pw: pw,
     });
     return user;
   }
 
-  async addCourse(courseId, courseNumber, courseDept, courseProfId) {
+  async addCourse(id, number, dept, profId) {
     const course = await Course.create({
-      course_id: courseId,
-      number: courseNumber,
-      dept: courseDept,
-      prof_id: courseProfId,
+      course_id: id,
+      number: number,
+      dept: dept,
+      prof_id: profId,
     });
   }
 
-  async addSection(sectionStudentIds, sectionCourseId, sectionName) {
+  async addSection(studentIds, courseId, name) {
     const section = await Section.create({
-      student_ids: sectionStudentIds,
-      course_id: sectionCourseId,
-      name: sectionName,
+      student_ids: studentIds,
+      course_id: courseId,
+      name: name,
     });
     return section;
   }
 
-  async getUser(userId) {
-    const user = await User.findOne({ user_id: userId });
+  async getUser(id) {
+    const user = await User.findOne({ user_id: id });
     return user;
   }
 
-  async getCourse(courseId) {
-    const course = await Course.findOne({ course_id: courseId });
+  async getCourse(id) {
+    const course = await Course.findOne({ course_id: id });
     return course;
   }
 
-  async getSection(sectionName, courseId) {
+  async getSection(name, id) {
     const section = await Section.findOne({
-      name: sectionName,
-      course_id: courseId,
+      name: name,
+      course_id: id,
     });
     return section;
   }
 
-  async addUserToSection(courseId, sectionName, userId) {
+  async addUserToSection(id, name, courseId) {
     const section = await Section.findOne({
-      name: sectionName,
+      name: name,
       course_id: courseId,
     });
-    section.student_ids.push(userId);
+    section.student_ids.push(id);
     await section.save();
   }
 
-  async removeUser(userId) {
-    await User.deleteOne({ user_id: userId });
+  async removeUser(id) {
+    await User.deleteOne({ user_id: id });
   }
 
-  async removeCourse(courseId) {
-    await Course.deleteOne({ course_id: courseId });
+  async removeCourse(id) {
+    await Course.deleteOne({ course_id: id });
   }
 
-  async removeSection(sectionName) {
-    await Section.deleteOne({ name: sectionName });
+  async removeSection(name) {
+    await Section.deleteOne({ name: name });
   }
 }
 
