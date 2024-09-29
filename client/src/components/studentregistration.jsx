@@ -50,8 +50,6 @@ const StudentRegistration = () => {
     <div className="wrapper">
       <h2>Student Account</h2>
       <form onSubmit={handleSubmit}>
-        {" "}
-        {/* Update form to call handleSubmit */}
         <div className="input-box">
           <label htmlFor="student-id">Student ID:</label>
           <input

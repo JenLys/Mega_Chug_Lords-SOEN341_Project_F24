@@ -45,8 +45,15 @@ const TeacherRegistration = () => {
     <div className="wrapper">
       <h2>Teacher Account</h2>
       <form onSubmit={handleSubmit}>
-        {" "}
-        {/* Update form to call handleSubmit */}
+        <div className="input-box">
+          <label htmlFor="teacher-id">Student ID:</label>
+          <input
+            type="number"
+            id="teacher-id"
+            placeholder="Enter your teacher ID"
+            required
+          />
+        </div>
         <div className="input-box">
           <label htmlFor="firstname">First name:</label>
           <input
