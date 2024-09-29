@@ -1,5 +1,6 @@
 import express, { urlencoded } from "express";
-// import db from "../db/connection.js"
+import db from "../db/connection.js";
+import User from "../schemas/user-schema.js";
 
 const router = express.Router();
 router.use(express.json());

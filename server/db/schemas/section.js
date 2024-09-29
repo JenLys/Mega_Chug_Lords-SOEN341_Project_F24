@@ -2,9 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const sectionSchema = new Schema(
     {
-        students: [String],
-        course: String,
-        name: String
+        student_ids: [String],
+        course_id: String,
+        course_name: String
     },
     { collections:"Sections", queryString:true }
 );
