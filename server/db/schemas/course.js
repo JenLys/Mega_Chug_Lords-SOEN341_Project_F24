@@ -5,7 +5,7 @@ const courseSchema = new Schema(
         course_id: String,
         number: String,
         dept: String,
-        pro_id: String,
+        prof_id: String,
     },
     { collections:"Courses", queryString:true }
 );
