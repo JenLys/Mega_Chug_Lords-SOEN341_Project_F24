@@ -24,7 +24,7 @@ function validatePassword(pw){
            pw.length > 5;
 }
 teacherRouter.post("/teacher", async(req,res) => {
-    if (req.body != null){
+    if (req.body !=null && req.body.fname != null && req.body.lname != null && req.body.user_id != null && req.body.pw != null){
         const newUser = new User({
             fname: req.body.fname,
             lname: req.body.lname,
@@ -32,12 +32,13 @@ teacherRouter.post("/teacher", async(req,res) => {
             user_id: req.body.user_id,
             pw: req.body.pw
         });
-        try {
             const pwValidated = await validatePassword(req.body.pw);
             const idValidated = await validateId(req.body.user_id);
             if  (pwValidated && idValidated) {
-                await newUser.save();
-                res.status(200).send(newUser);
+                await newUser.save()
+                .then(() => res.status(200).send(newUser))
+                .catch((error)=> res.status(500).send("DB upload failed"));
+                    
             } else {
                 if (!idValidated) {
                     res.status(400).send("This user ID is already in use by another account. Please choose a different one or log into your existing account.");
@@ -49,10 +50,6 @@ teacherRouter.post("/teacher", async(req,res) => {
                     res.status(400).send("Invalid user ID or password.")
                 }
             }
-        } catch (error) {
-            console.error('Error saving user:', error);
-            res.status(500).send("DB upload failed");
-        }
     } else {
         res.status(404).send("Registration information not provided.");
     }
