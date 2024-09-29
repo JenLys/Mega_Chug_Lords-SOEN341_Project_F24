@@ -32,6 +32,7 @@ class Db {
     return collection;
   }
 
+  // CRUD Functions
   async addUser(userFname, userLname, userRole, userId, userPw) {
     const user = await User.create({
       fname: userFname,
@@ -59,6 +60,27 @@ class Db {
       name: sectionName,
     });
     return section;
+  }
+
+  async addUserToSection(courseId, sectionName, userId) {
+    const section = await Section.findOne({
+      name: sectionName,
+      course_id: courseId,
+    });
+    section.student_ids.push(userId);
+    await section.save();
+  }
+
+  async removeUser(userId) {
+    await User.deleteOne({ user_id: userId });
+  }
+
+  async removeCourse(courseId) {
+    await Course.deleteOne({ course_id: courseId });
+  }
+
+  async removeSection(sectionName) {
+    await Section.deleteOne({ name: sectionName });
   }
 }
 
