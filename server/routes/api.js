@@ -7,5 +7,4 @@ router.get("/hello", (_, res) => {
   res.json({ hello: "world" });
 });
 
-console.log(await db.getAll(User));
 export default router;
