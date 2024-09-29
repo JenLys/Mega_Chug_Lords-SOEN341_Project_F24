@@ -1,6 +1,7 @@
 import express from "express";
 // import db from "../db/connection.js"
 import { ObjectId } from "mongodb";
+import TempUser from "../models/tempUser.js"; // Assuming you save it as tempUser.js
 const router = express.Router();
 const {
   validateStudentId,
@@ -10,14 +11,14 @@ const {
 } = require("../components/validation.js");
 
 //student registration
-router.post("/studentreg", (req, res) => {
-  const { studentId, firstName, lastName, password } = req.body;
 
+router.post("/studentreg", async (req, res) => {
+  const { studentId, firstname, lastname, password } = req.body;
   // Validate the user data
   const validation = validateUserData({
     studentId,
-    firstName,
-    lastName,
+    firstname,
+    lastname,
     password,
   });
 
@@ -26,18 +27,27 @@ router.post("/studentreg", (req, res) => {
     return res.status(400).json({ message: validation.message });
   }
 
-  // Proceed to save student registration data to the database (pseudo-code)
-  // database.saveStudent({ studentId, firstName, lastName, password })
-  //   .then(() => {
-  //     res.json({ message: "Student registered successfully", data: req.body });
-  //   })
-  //   .catch(err => {
-  //     res.status(500).json({ message: "Error saving data", error: err.message });
-  //   });
+  try {
+    const newUser = new TempUser({
+      fname: firstname,
+      lname: lastname,
+      role: "student",
+      user_id: studentId,
+      pw: password, // Consider hashing
+    });
 
-  // Temporary response until database logic is added
-  res.json({ message: "Student registered successfully", data: req.body });
-  module.exports = router;
+    await newUser.save();
+    res
+      .status(201)
+      .json({ message: "Student registered successfully", data: newUser });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Error saving student to the database",
+        error: error.message,
+      });
+  }
 });
 
 // do a null check for each of the fields you are accessing or requesting, if null do something like //res.status(404).json({message:"Not valid input"});

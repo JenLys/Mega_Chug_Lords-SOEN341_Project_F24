@@ -7,7 +7,8 @@ const handleSubmit = async (e) => {
 
   const data = {
     studentId: document.getElementById("student-id").value,
-    username: document.getElementById("username").value,
+    firstname: document.getElementById("firstname").value,
+    lastname: document.getElementById("lastname").value,
     password: document.getElementById("password").value,
   };
 
@@ -41,11 +42,20 @@ const StudentRegistration = () => {
           />
         </div>
         <div className="input-box">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="firstname">First name:</label>
           <input
             type="text"
             id="username"
-            placeholder="Enter your username"
+            placeholder="Enter your First name"
+            required
+          />
+        </div>
+        <div className="input-box">
+          <label htmlFor="lastname">Last name:</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Enter your last name"
             required
           />
         </div>
