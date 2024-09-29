@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-import express from "express";
-import db from "../db/connection.js"
-=======
 import express, { urlencoded } from "express";
 // import db from "../db/connection.js"
-import { ObjectId } from "mongodb";
->>>>>>> ffc46a4 (Add express route for student login and mongoose schema files)
 
 const router = express.Router();
 router.use(express.json());
