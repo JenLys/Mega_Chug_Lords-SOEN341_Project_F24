@@ -20,8 +20,21 @@ const handleSubmit = async (e) => {
         },
         body: JSON.stringify(data),
       });
+    } else {
+      console.error("One or more fields are empty");
     }
+  } else {
+    console.error("One or more fields are null");
   }
+
+  const response = await fetch("/studentreg", {
+    // Change to "/studentreg"
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
   const result = await response.json();
   console.log(result);
@@ -35,11 +48,20 @@ const TeacherRegistration = () => {
         {" "}
         {/* Update form to call handleSubmit */}
         <div className="input-box">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="firstname">First name:</label>
           <input
             type="text"
-            id="username"
-            placeholder="Enter your username"
+            id="firstname"
+            placeholder="Enter your First name"
+            required
+          />
+        </div>
+        <div className="input-box">
+          <label htmlFor="lastname">Last name:</label>
+          <input
+            type="text"
+            id="lastname"
+            placeholder="Enter your last name"
             required
           />
         </div>

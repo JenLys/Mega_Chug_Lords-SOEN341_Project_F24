@@ -5,12 +5,32 @@ import "./reg.css";
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const data = {
-    studentId: document.getElementById("student-id").value,
-    firstname: document.getElementById("firstname").value,
-    lastname: document.getElementById("lastname").value,
-    password: document.getElementById("password").value,
-  };
+  if (
+    data.studentId != null &&
+    data.firstname != null &&
+    data.lastname != null &&
+    data.password != null
+  ) {
+    // Ensure none of the input fields are empty
+    if (
+      data.studentId.trim() !== "" &&
+      data.firstname.trim() !== "" &&
+      data.lastname.trim() !== "" &&
+      data.password.trim() !== ""
+    ) {
+      const response = await fetch("/studentreg", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } else {
+      console.error("One or more fields are empty");
+    }
+  } else {
+    console.error("One or more fields are null");
+  }
 
   const response = await fetch("/studentreg", {
     // Change to "/studentreg"
@@ -45,7 +65,7 @@ const StudentRegistration = () => {
           <label htmlFor="firstname">First name:</label>
           <input
             type="text"
-            id="username"
+            id="firstname"
             placeholder="Enter your First name"
             required
           />
@@ -54,7 +74,7 @@ const StudentRegistration = () => {
           <label htmlFor="lastname">Last name:</label>
           <input
             type="text"
-            id="username"
+            id="lastname"
             placeholder="Enter your last name"
             required
           />

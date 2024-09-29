@@ -10,10 +10,10 @@ const {
   validateUserData,
 } = require("../components/validation.js");
 
-//student registration
-
+// Student registration
 router.post("/studentreg", async (req, res) => {
   const { studentId, firstname, lastname, password } = req.body;
+
   // Validate the user data
   const validation = validateUserData({
     studentId,
@@ -50,16 +50,8 @@ router.post("/studentreg", async (req, res) => {
   }
 });
 
-// do a null check for each of the fields you are accessing or requesting, if null do something like //res.status(404).json({message:"Not valid input"});
-// once not null, then you want to do validation: for studentid, check if it is positive and 8 digits long
-//username should be changed to first name and lastname
-// They  should be strings and from 2-100 characters
-// For passwords you should check it is at least 10 xters long and alphanumeric
-//better to make a file called validate and then have validate functions for all of these so you can call them and reuse them
-//after everything, upload to the db and also have a error handling thing if the upload doesnt work like for res.status above
-
-// teacher registration
-router.post("/teacherreg", (req, res) => {
+// Teacher registration
+router.post("/teacherreg", async (req, res) => {
   const { username, password } = req.body;
 
   // Validate username (name) and password
@@ -70,12 +62,29 @@ router.post("/teacherreg", (req, res) => {
     return res.status(404).json({ message: "Invalid password" });
   }
 
-  // If validation passes, proceed to save the teacher
-  res.json({ message: "Teacher registered successfully", data: req.body });
+  try {
+    // Save teacher data into the database
+    const newTeacher = new TempUser({
+      fname: "", // You can leave this empty for now if not required
+      lname: "", // Not needed for this particular route
+      role: "teacher",
+      user_id: username, // Assuming username is unique for teacher registration
+      pw: password, // Consider hashing
+    });
+
+    await newTeacher.save();
+    res
+      .status(201)
+      .json({ message: "Teacher registered successfully", data: newTeacher });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Error saving teacher to the database",
+        error: error.message,
+      });
+  }
 });
 
-router.get("/hello", (_, res) => {
-  res.json({ hello: "world" });
-});
-
+// Close the router
 export default router;
