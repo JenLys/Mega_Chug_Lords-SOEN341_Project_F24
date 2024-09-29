@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express";
+import express from "express";
 import db from "../db/connection.js";
 import User from "../schemas/user-schema.js";
 
@@ -7,8 +7,8 @@ router.use(express.json());
 router.use(urlencoded());
 
 router.get("/hello", (_, res) => {
-  res.json({ "hello": "world" })
-})
+  res.json({ hello: "world" });
+});
 
 router.get("/login/student", (req, res) => {
   console.log("Student login page");
