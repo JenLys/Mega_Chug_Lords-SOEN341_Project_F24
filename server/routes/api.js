@@ -12,11 +12,11 @@ const {
 
 // Student registration
 router.post("/studentreg", async (req, res) => {
-  const { studentId, firstname, lastname, password } = req.body;
+  const { studentid, firstname, lastname, password } = req.body;
 
   // Validate the user data
   const validation = validateUserData({
-    studentId,
+    studentid,
     firstname,
     lastname,
     password,
@@ -32,8 +32,8 @@ router.post("/studentreg", async (req, res) => {
       fname: firstname,
       lname: lastname,
       role: "student",
-      user_id: studentId,
-      pw: password, // Consider hashing
+      user_id: studentid,
+      pw: password,
     });
 
     await newUser.save();
@@ -41,35 +41,38 @@ router.post("/studentreg", async (req, res) => {
       .status(201)
       .json({ message: "Student registered successfully", data: newUser });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error saving student to the database",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error saving student to the database",
+      error: error.message,
+    });
   }
 });
 
 // Teacher registration
 router.post("/teacherreg", async (req, res) => {
-  const { username, password } = req.body;
+  const { teacherid, firstname, lastname, password } = req.body;
 
-  // Validate username (name) and password
-  if (!validateName(username)) {
-    return res.status(404).json({ message: "Invalid username" });
-  }
-  if (!validatePassword(password)) {
-    return res.status(404).json({ message: "Invalid password" });
+  // Validate info
+  const validation = validateUserData({
+    teacherid,
+    firstname,
+    lastname,
+    password,
+  });
+
+  // If validation fails, return a 400 status with the error message
+  if (!validation.valid) {
+    return res.status(400).json({ message: validation.message });
   }
 
   try {
     // Save teacher data into the database
     const newTeacher = new TempUser({
-      fname: "", // You can leave this empty for now if not required
-      lname: "", // Not needed for this particular route
+      fname: firstname,
+      lname: lastname,
       role: "teacher",
-      user_id: username, // Assuming username is unique for teacher registration
-      pw: password, // Consider hashing
+      user_id: teacherid,
+      pw: password,
     });
 
     await newTeacher.save();
@@ -77,12 +80,10 @@ router.post("/teacherreg", async (req, res) => {
       .status(201)
       .json({ message: "Teacher registered successfully", data: newTeacher });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error saving teacher to the database",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error saving teacher to the database",
+      error: error.message,
+    });
   }
 });
 
