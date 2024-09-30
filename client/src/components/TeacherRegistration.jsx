@@ -46,11 +46,11 @@ const TeacherRegistration = () => {
       <h2>Teacher Account</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-box">
-          <label htmlFor="teacher-id">Student ID:</label>
+          <label htmlFor="teacher-id">Teacher ID:</label>
           <input
             type="number"
-            id="teacher-id"
-            placeholder="Enter your teacher ID"
+            id="teacherid"
+            placeholder="Enter your Teacher ID"
             required
           />
         </div>
