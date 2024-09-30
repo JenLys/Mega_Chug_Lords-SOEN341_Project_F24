@@ -20,7 +20,7 @@ function validatePassword(pw){
            /[a-z]/       .test(pw) &&
            /[0-9]/       .test(pw) &&
            /[^A-Za-z0-9]/.test(pw) &&
-           pw.length > 11;
+           pw.length >= 10;
 }
 
 teacherRouter.post("/", async(req,res) => {
@@ -32,7 +32,7 @@ teacherRouter.post("/", async(req,res) => {
             user_id: req.body.user_id,
             pw: req.body.pw
         });
-            const pwValidated = await validatePassword(req.body.pw);
+            const pwValidated = validatePassword(req.body.pw);
             const idValidated = await validateId(req.body.user_id);
             if  (pwValidated && idValidated) {
                 await newUser.save()
