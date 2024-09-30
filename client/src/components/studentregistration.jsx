@@ -51,10 +51,10 @@ const StudentRegistration = () => {
       <h2>Student Account</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-box">
-          <label htmlFor="student-id">Student ID:</label>
+          <label htmlFor="studentid">Student ID:</label>
           <input
             type="number"
-            id="student-id"
+            id="studentid"
             placeholder="Enter your Student ID"
             required
           />
