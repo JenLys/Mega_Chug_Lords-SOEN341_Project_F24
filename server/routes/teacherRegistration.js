@@ -1,5 +1,5 @@
 import express, { json } from 'express';
-import User from "../schemas/user-schemas.js";
+import User from "../db/schemas/user.js";
 const teacherRouter = express.Router();
 teacherRouter.use(express.json());
 teacherRouter.use(express.urlencoded({extended: true})); 
