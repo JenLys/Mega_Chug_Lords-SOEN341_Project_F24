@@ -1,4 +1,3 @@
-// src/components/StudentRegistration.js
 import React from "react";
 import "./reg.css";
 
@@ -6,14 +5,14 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (
-    data.studentId != null &&
+    data.studentid != null &&
     data.firstname != null &&
     data.lastname != null &&
     data.password != null
   ) {
     // Ensure none of the input fields are empty
     if (
-      data.studentId.trim() !== "" &&
+      data.studentid.trim() !== "" &&
       data.firstname.trim() !== "" &&
       data.lastname.trim() !== "" &&
       data.password.trim() !== ""
@@ -33,7 +32,6 @@ const handleSubmit = async (e) => {
   }
 
   const response = await fetch("/studentreg", {
-    // Change to "/studentreg"
     method: "POST",
     headers: {
       "Content-Type": "application/json",

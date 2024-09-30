@@ -1,4 +1,3 @@
-// src/components/TeacherRegistration.js
 import React from "react";
 
 const handleSubmit = async (e) => {
@@ -10,8 +9,19 @@ const handleSubmit = async (e) => {
   //   password: document.getElementById("password").value,
   // };
 
-  if (e.target != null) {
-    if (e.target.username != null && e.target.password != null) {
+  if (
+    data.teacherid != null &&
+    data.firstname != null &&
+    data.lastname != null &&
+    data.password != null
+  ) {
+    // Ensure none of the input fields are empty
+    if (
+      data.teacherid.trim() !== "" &&
+      data.firstname.trim() !== "" &&
+      data.lastname.trim() !== "" &&
+      data.password.trim() !== ""
+    ) {
       const response = await fetch("/teacherreg", {
         // Change to "/teacherreg"
         method: "POST",
@@ -27,8 +37,7 @@ const handleSubmit = async (e) => {
     console.error("One or more fields are null");
   }
 
-  const response = await fetch("/studentreg", {
-    // Change to "/studentreg"
+  const response = await fetch("/teacherreg", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -46,7 +55,7 @@ const TeacherRegistration = () => {
       <h2>Teacher Account</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-box">
-          <label htmlFor="teacher-id">Teacher ID:</label>
+          <label htmlFor="teacherid">Teacher ID:</label>
           <input
             type="number"
             id="teacherid"
