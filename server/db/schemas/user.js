@@ -8,9 +8,7 @@ const userSchema = new Schema(
         user_id: String,
         pw: String
     },
-    {
-        collection:"users", strictQuery:true
-    }
+    { collections:"Users", queryString:true }
 );
 
 const User = mongoose.model("User", userSchema);
