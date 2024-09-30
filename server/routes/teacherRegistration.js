@@ -1,5 +1,4 @@
 import express, { json } from 'express';
-import db from "../db/connection.js";
 import User from "../schemas/user-schemas.js";
 const teacherRouter = express.Router();
 teacherRouter.use(express.json());
@@ -23,7 +22,7 @@ function validatePassword(pw){
            /[^A-Za-z0-9]/.test(pw) &&
            pw.length > 11;
 }
-teacherRouter.post("/teacher", async(req,res) => {
+teacherRouter.post("/", async(req,res) => {
     if (req.body !=null && req.body.fname != null && req.body.lname != null && req.body.user_id != null && req.body.pw != null){
         const newUser = new User({
             fname: req.body.fname,
@@ -44,7 +43,7 @@ teacherRouter.post("/teacher", async(req,res) => {
                     res.status(400).send("This user ID is already in use by another account. Please choose a different one or log into your existing account.");
                 }
                 if (!pwValidated){
-                    res.status(400).send("The password must be at least 6 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");                
+                    res.status(400).send("The password must be at least 10 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");                
                 }
                 else{
                     res.status(400).send("Invalid user ID or password.")

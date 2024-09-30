@@ -9,6 +9,6 @@ router.get("/hello", (_, res) => {
 })
 
 //http://localhost:5050/api/register/teacher
-router.use("/register", teacher);
+router.use("/register/teacher", teacher);
 
 export default router;
