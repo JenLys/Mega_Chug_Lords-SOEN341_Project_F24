@@ -22,6 +22,7 @@ function validatePassword(pw){
            /[^A-Za-z0-9]/.test(pw) &&
            pw.length > 11;
 }
+
 teacherRouter.post("/", async(req,res) => {
     if (req.body !=null && req.body.fname != null && req.body.lname != null && req.body.user_id != null && req.body.pw != null){
         const newUser = new User({
