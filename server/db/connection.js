@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import User from "../schemas/user.js";
-import Course from "../schemas/course.js";
-import Section from "../schemas/section.js";
+import User from "../db/schemas/user.js";
+import Course from "../db/schemas/course.js";
+import Section from "../db/schemas/section.js";
 
 const uri = process.env.ATLAS_URI || "";
 const dbName = process.env.DB_NAME || "reviewmate";
