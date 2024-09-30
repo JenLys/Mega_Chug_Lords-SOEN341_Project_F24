@@ -9,20 +9,17 @@ teacherRouter.post("/", async(req,res) => {
     const dbUser = await db.getUser(req.body.user_id);
     if (!dbUser)
     {
-        console.log("User not found.")
-        res.sendStatus(404);
+        res.status(404).send("User not found.");
     } 
     else
     {
       if (req.body.pw !== dbUser.pw)
       {
-        console.log("Incorrect password.")
-        res.sendStatus(401);
+        res.status(401).send("Incorrect password.");
       } 
       else
       {
-        console.log("Login successful.");
-        res.sendStatus(200); 
+        res.status(200).send("Login successful."); 
       }
     }
 });

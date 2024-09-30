@@ -2,7 +2,6 @@ import express from "express";
 import teacherRegistration from "./teacherRegistration.js";
 import teacherLogin from "./teacherLogin.js";
 import { ObjectId } from "mongodb";
-import db from "../db/connection.js"
 import db from "../db/connection.js";
 import User from "../db/schemas/user.js";
 
