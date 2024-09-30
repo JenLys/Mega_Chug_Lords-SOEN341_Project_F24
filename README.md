@@ -2,6 +2,8 @@
 ## Project Description
 The goal of this project is to create a platform for university students to peer review each other on their projects. They will be grading each other four key components: cooperation, conceptual contribution, practical contribution, and work ethic. Instructors will also be able to access the valuable feedback of the teams' dnyamics and each student's individual efforts.
 
+Our solution is to provide a lightweight web app which offers a simplistic UI, enabling students to focus on peer reviewing. Nonetheless, we also enable teachers to manage their sections and courses in a better way, offering insights about the reviews of their students. 
+
 ## Team members and roles
 - Marian Hristov (40284462) : Full stack developer + Team Leader
 - Sasha Klein-Charland (40281076) : Full Stack developer
