@@ -1,5 +1,24 @@
 import React from "react";
 import "./reg.css";
+import React, { useState } from "react";
+
+const StudentRegistration = () => {
+  // State to store form data
+  const [data, setData] = useState({
+    studentid: "",
+    firstname: "",
+    lastname: "",
+    password: "",
+  });
+
+  // Handle input change to update form data
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
 
 const handleSubmit = async (e) => {
   e.preventDefault();

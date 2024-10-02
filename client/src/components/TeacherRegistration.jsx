@@ -1,5 +1,23 @@
 import React from "react";
+import React, { useState } from "react";
 
+const TeacherRegistration = () => {
+  // State to store form data
+  const [data, setData] = useState({
+    teacherid: "",
+    firstname: "",
+    lastname: "",
+    password: "",
+  });
+
+  // Handle input change to update form data
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
 const handleSubmit = async (e) => {
   e.preventDefault();
 
