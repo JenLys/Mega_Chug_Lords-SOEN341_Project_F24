@@ -1,13 +1,13 @@
 import express from "express";
 import db from "../db/connection.js";
 import User from "../db/schemas/user.js";
-import TempUser from "../models/tempUser.js"; // Assuming you save it as tempUser.js
-const {
+import {
   validateStudentId,
   validateName,
   validatePassword,
   validateUserData,
-} = require("../components/validation.js");
+} from "./validation.js";
+import studentLogin from "./studentLogin.js";
 
 const router = express.Router();
 
@@ -29,7 +29,7 @@ router.post("/studentreg", async (req, res) => {
   }
 
   try {
-    const newUser = new TempUser({
+    const newUser = new User({
       fname: firstname,
       lname: lastname,
       role: "student",
@@ -68,7 +68,7 @@ router.post("/teacherreg", async (req, res) => {
 
   try {
     // Save teacher data into the database
-    const newTeacher = new TempUser({
+    const newTeacher = new User({
       fname: firstname,
       lname: lastname,
       role: "teacher",
@@ -91,11 +91,8 @@ router.post("/teacherreg", async (req, res) => {
 // Close the router
 
 
-import studentLogin from "./studentLogin.js"
-
 router.use(express.json());
-router.use(express.urlencoded({extended:true}));
-
+router.use(express.urlencoded({ extended: true }));
 
 router.get("/hello", (_, res) => {
   res.json({ hello: "world" });
@@ -104,7 +101,7 @@ router.get("/hello", (_, res) => {
 router.get("/login/student", (req, res) => {
   console.log("Student login page");
   res.end();
-})
+});
 
 /* router.post("/login/student", async (req, res) => {
   const dbUser = await db.getUser(req.body.user_id);
