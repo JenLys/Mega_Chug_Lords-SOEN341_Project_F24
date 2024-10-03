@@ -1,26 +1,106 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import mongoose from "mongoose";
+import User from "../db/schemas/user.js";
+import Course from "../db/schemas/course.js";
+import Section from "../db/schemas/section.js";
 
 const uri = process.env.ATLAS_URI || "";
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+const dbName = process.env.DB_NAME || "reviewmate";
 
-try {
-  // Connect the client to the server
-  await client.connect();
-  // Send a ping to confirm a successful connection
-  await client.db("admin").command({ ping: 1 });
-  console.log(
-    "Pinged your deployment. You successfully connected to MongoDB!"
-  );
-} catch (err) {
-  console.error(err);
+if (uri.length === 0) {
+  process.exit(-1);
 }
 
-let db = client.db("employees");
+class Db {
+  constructor() {
+    this.connectDb();
+  }
 
-export default db;
+  connectDb() {
+    let dbOptions = {
+      dbName: "" + dbName,
+    };
+    mongoose.connect(uri, dbOptions);
+    console.log("Connected to MongoDB");
+  }
+
+  disconnectDb() {
+    mongoose.connection.close();
+  }
+
+  async getAll(collectionSchema) {
+    const collection = collectionSchema.find();
+    return collection;
+  }
+
+  // CRUD Functions
+  async addUser(fname, lname, role, id, pw) {
+    const user = await User.create({
+      fname: fname,
+      lname: lname,
+      role: role,
+      user_id: id,
+      pw: pw,
+    });
+    return user;
+  }
+
+  async addCourse(id, number, dept, profId) {
+    const course = await Course.create({
+      course_id: id,
+      number: number,
+      dept: dept,
+      prof_id: profId,
+    });
+  }
+
+  async addSection(studentIds, courseId, name) {
+    const section = await Section.create({
+      student_ids: studentIds,
+      course_id: courseId,
+      name: name,
+    });
+    return section;
+  }
+
+  async getUserLogin(user_id, pw) {
+    return await User.findOne({ user_id: user_id, pw: pw });
+  }
+
+  async getUser(id) {
+    return await User.findOne({ user_id: id });
+  }
+
+  async getCourse(id) {
+    return await Course.findOne({ course_id: id });
+  }
+
+  async getSection(name, id) {
+    return await Section.findOne({
+      name: name,
+      course_id: id,
+    });
+  }
+
+  async addUserToSection(id, name, courseId) {
+    const section = await Section.findOne({
+      name: name,
+      course_id: courseId,
+    });
+    section.student_ids.push(id);
+    await section.save();
+  }
+
+  async removeUser(id) {
+    await User.deleteOne({ user_id: id });
+  }
+
+  async removeCourse(id) {
+    await Course.deleteOne({ course_id: id });
+  }
+
+  async removeSection(name) {
+    await Section.deleteOne({ name: name });
+  }
+}
+
+export default new Db();

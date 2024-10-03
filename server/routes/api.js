@@ -1,10 +1,12 @@
 import express from "express";
-// import db from "../db/connection.js"
-import { ObjectId } from "mongodb";
+import studentRouter from "./studentRouter.js";
 
 const router = express.Router();
-router.get("/hello", (_, res) => {
-  res.json({ "hello": "world" })
-})
+
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
+
+router.use("/student", studentRouter)
+router.use("/teacher", studentRouter)
 
 export default router;
