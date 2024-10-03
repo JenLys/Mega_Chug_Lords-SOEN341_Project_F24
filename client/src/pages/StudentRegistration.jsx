@@ -1,21 +1,10 @@
 import "./reg.css";
+import Input from "../components/Input";
 import { Form, useForm } from "react-hook-form"
-
-
-// eslint-disable-next-line react/prop-types
-const Input = ({ id, placeholder, label, register, validationRules, type="text" }) => (
-  <div className="input-box">
-    <label>{label}</label>
-    <input placeholder={placeholder} type={type} {...register(id, validationRules)} />
-  </div>
-);
 
 const StudentRegistration = () => {
   const { register, control, formState: { errors } } = useForm();
 
-  // const onSubmit = (data) => {
-    
-  // }
   return (
     <div className="wrapper">
       <h2>Student Account</h2>
@@ -24,7 +13,6 @@ const StudentRegistration = () => {
         method="post"
         encType={'application/json'}
         control={control}
-        // onSubmit={handleSubmit(onSubmit)}
         >
         <Input 
           id="id" 

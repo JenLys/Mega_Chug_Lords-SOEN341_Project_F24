@@ -1,121 +1,69 @@
-import { useState } from "react";
+import "./reg.css";
+import Input from "../components/Input";
+import { Form, useForm } from "react-hook-form"
 
 const TeacherRegistration = () => {
-
-  // State to store form data
-  const [data, setData] = useState({
-    teacherid: "",
-    firstname: "",
-    lastname: "",
-    password: "",
-  });
-
-  // Handle input change to update form data
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // const data = {
-    //   e.target.
-    //   username: document.getElementById("username").value,
-    //   password: document.getElementById("password").value,
-    // };
-
-    if (
-      data.teacherid != null &&
-      data.firstname != null &&
-      data.lastname != null &&
-      data.password != null
-    ) {
-      // Ensure none of the input fields are empty
-      if (
-        data.teacherid.trim() !== "" &&
-        data.firstname.trim() !== "" &&
-        data.lastname.trim() !== "" &&
-        data.password.trim() !== ""
-      ) {
-        const response = await fetch("/teacherreg", {
-          // Change to "/teacherreg"
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-      } else {
-        console.error("One or more fields are empty");
-      }
-    } else {
-      console.error("One or more fields are null");
-    }
-
-    const response = await fetch("/teacherreg", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    const result = await response.json();
-    console.log(result);
-  }
-
+  const { register, control, formState: { errors } } = useForm();
   return (
     <div className="wrapper">
       <h2>Teacher Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-box">
-          <label htmlFor="teacherid">Teacher ID:</label>
-          <input
-            type="number"
-            id="teacherid"
-            placeholder="Enter your Teacher ID"
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="firstname">First name:</label>
-          <input
-            type="text"
-            id="firstname"
-            placeholder="Enter your First name"
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="lastname">Last name:</label>
-          <input
-            type="text"
-            id="lastname"
-            placeholder="Enter your last name"
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Create password"
-            required
-          />
-        </div>
+      <Form 
+        action="/api/Teacherreg"
+        method="post"
+        encType={'application/json'}
+        control={control}
+        >
+        <Input 
+          id="id" 
+          placeholder="Enter your Teacher ID"
+          label="Teacher ID" 
+          register={register} 
+          validationRules={{ 
+            required : true, 
+            pattern: /^[0-9]{8}$/, 
+            minLength: 8, 
+            maxLength: 8
+          }} 
+        />
+        {errors.id && <p>Teacher ID field is required</p>}
+        <Input 
+          id="fname" 
+          placeholder="Enter your first name"
+          label="First Name" 
+          register={register} 
+          validationRules={{ required : true, }} 
+        />
+        {errors.fname && <p>First Name field is required</p>}
+        <Input 
+          id="lname" 
+          placeholder="Enter your last name" 
+          label="Last Name" 
+          register={register} 
+          validationRules={{ required : true, }} 
+        />
+        {errors.lname && <p>Last Name field is required</p>}
+        <Input 
+          id="pwd" 
+          placeholder="Create password" 
+          label="Password" 
+          register={register} 
+          validationRules={{ required : true, }} 
+        />
+        {errors.pwd && <p>Password field is required</p>}
         <div className="input-box button">
-          <input type="submit" value="Register Now" />
+          <input type="submit" />
         </div>
-        <div className="text">
+      </Form>
+      <div className="text">
           <h3>
-            Already have an account? <a href="#">Login now</a>
+            Creating teacher account? <a href="/teacherreg">Teacher account</a>
           </h3>
-        </div>
-      </form>
+      </div>
+      <div className="text">
+        <h3>
+          Already have an account? <a href="#">Login now</a>
+        </h3>
+      </div>
     </div>
   );
 };
