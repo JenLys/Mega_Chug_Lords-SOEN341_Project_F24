@@ -35,16 +35,16 @@ const StudentLogin = () => {
           placeholder="Enter your password" 
           label="Password" 
           register={register} 
-          validationRules={{ required : true, }} 
+          validationRules={{ required : {value: true, message:"Password cannot be left blank"}, }} 
         />
-        {errors?.pwd?.message && <p>{errors.id.message}</p>}
+        {errors?.pwd?.message && <p>{errors.pwd.message}</p>}
         <div className="input-box button">
           <input type="submit" />
         </div>
       </Form>
       <div className="text">
           <h3>
-            Don't have an account? <a href="/register/student">Create one here.</a>
+            Don't have an account? <a href="/studentreg">Create one here.</a>
           </h3>
       </div>
     </div>

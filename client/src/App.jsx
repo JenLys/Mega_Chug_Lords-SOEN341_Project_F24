@@ -6,6 +6,8 @@ import HowToUse from './pages/HowToUse';
 import Navbar from './components/Navbar'
 import StudentRegistration from "./pages/StudentRegistration";
 import TeacherRegistration from "./pages/TeacherRegistration";
+import StudentLogin from "./pages/StudentLogin";
+import TeacherLogin from "./pages/TeacherLogin";
 import "./App.css";
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
           <Route path="/how-to-use" element={<HowToUse />} />
           <Route path="/studentreg" element={<StudentRegistration />} />
           <Route path="/teacherreg" element={<TeacherRegistration />} />
+          <Route path="/studentlogin" element={<StudentLogin />} />
+          <Route path="/teacherlogin" element={<TeacherLogin />} />
         </Routes>
       </main>
     </div>
