@@ -4,6 +4,7 @@ import { validateId, validateName, validatePassword } from "./validation.js";
 const studentRouter = express.Router({ mergeParams: true })
 
 studentRouter.get("/login", async (req, res) => {
+  console.log(req);
   if (req.query != null && req.query.user_id != null && req.query) {
     await db.getUserLogin(req.query.user_id, req.query.pw)
       .then(data => {
