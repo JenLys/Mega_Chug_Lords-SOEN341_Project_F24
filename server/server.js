@@ -1,10 +1,7 @@
 import express from "express";
 import cors from "cors";
 import api from "./routes/api.js";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
-// const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const PORT = process.env.PORT || 5050;
 const app = express();
