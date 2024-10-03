@@ -4,8 +4,8 @@ import Welcome from './pages/Welcome';
 import About from './pages/About';
 import HowToUse from './pages/HowToUse';
 import Navbar from './components/Navbar'
-import StudentRegistration from "./components/studentregistration";
-import TeacherRegistration from "./components/TeacherRegistration";
+import StudentRegistration from "./pages/StudentRegistration";
+import TeacherRegistration from "./pages/TeacherRegistration";
 import "./App.css";
 
 function App() {

@@ -1,13 +1,10 @@
-import React from "react";
-import "./reg.css";
 import { useState } from "react";
 
+const TeacherRegistration = () => {
 
-const StudentRegistration = () => {
-  
   // State to store form data
   const [data, setData] = useState({
-    studentid: "",
+    teacherid: "",
     firstname: "",
     lastname: "",
     password: "",
@@ -21,24 +18,30 @@ const StudentRegistration = () => {
       [id]: value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // const data = {
+    //   e.target.
+    //   username: document.getElementById("username").value,
+    //   password: document.getElementById("password").value,
+    // };
+
     if (
-      data.studentid != null &&
+      data.teacherid != null &&
       data.firstname != null &&
       data.lastname != null &&
       data.password != null
     ) {
       // Ensure none of the input fields are empty
       if (
-        data.studentid.trim() !== "" &&
+        data.teacherid.trim() !== "" &&
         data.firstname.trim() !== "" &&
         data.lastname.trim() !== "" &&
         data.password.trim() !== ""
       ) {
-        const response = await fetch("/studentreg", {
+        const response = await fetch("/teacherreg", {
+          // Change to "/teacherreg"
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -52,7 +55,7 @@ const StudentRegistration = () => {
       console.error("One or more fields are null");
     }
 
-    const response = await fetch("/studentreg", {
+    const response = await fetch("/teacherreg", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,17 +65,18 @@ const StudentRegistration = () => {
 
     const result = await response.json();
     console.log(result);
-  };
+  }
+
   return (
     <div className="wrapper">
-      <h2>Student Account</h2>
+      <h2>Teacher Account</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-box">
-          <label htmlFor="studentid">Student ID:</label>
+          <label htmlFor="teacherid">Teacher ID:</label>
           <input
             type="number"
-            id="studentid"
-            placeholder="Enter your Student ID"
+            id="teacherid"
+            placeholder="Enter your Teacher ID"
             required
           />
         </div>
@@ -103,10 +107,6 @@ const StudentRegistration = () => {
             required
           />
         </div>
-        <div className="policy">
-          <input type="checkbox" />
-          <h3>I accept all terms & conditions</h3>
-        </div>
         <div className="input-box button">
           <input type="submit" value="Register Now" />
         </div>
@@ -115,14 +115,9 @@ const StudentRegistration = () => {
             Already have an account? <a href="#">Login now</a>
           </h3>
         </div>
-        <div className="text">
-          <h3>
-            Creating teacher account? <a href="/teacherreg">Teacher account</a>
-          </h3>
-        </div>
       </form>
     </div>
   );
 };
 
-export default StudentRegistration;
+export default TeacherRegistration;

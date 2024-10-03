@@ -6,6 +6,8 @@ import App from "./App";
 import Welcome from "./pages/Welcome";
 import About from "./pages/About";
 import HowToUse from "./pages/HowToUse";
+import StudentRegistration from "./pages/StudentRegistration";
+import TeacherRegistration from "./pages/TeacherRegistration";
 
 const router = createBrowserRouter([
   {
@@ -14,11 +16,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/studentreg",
-        element: <App />,
+        element: <StudentRegistration />,
       },
       {
         path: "/teacherreg",
-        element: <App />,
+        element: <TeacherRegistration />,
       },
       { 
         path: "/", 
