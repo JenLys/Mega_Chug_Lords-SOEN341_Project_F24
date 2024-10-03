@@ -1,4 +1,4 @@
-import db from "../db/connection.js";
+import db from "../../db/connection.js";
 
 async function studentLogin(req, res) {
     const dbUser = await db.getUser(req.body.user_id);
@@ -24,5 +24,3 @@ async function studentLogin(req, res) {
     }
     // Redirect to login page with a successful signup popup message
 }
-
-export default studentLogin;

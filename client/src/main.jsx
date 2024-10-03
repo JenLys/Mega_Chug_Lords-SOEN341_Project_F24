@@ -6,12 +6,35 @@ import App from "./App";
 import Welcome from "./pages/Welcome";
 import About from "./pages/About";
 import HowToUse from "./pages/HowToUse";
+import StudentRegistration from "./pages/StudentRegistration";
+import TeacherRegistration from "./pages/TeacherRegistration";
+import StudentLogin from "./pages/StudentLogin";
+import TeacherLogin from "./pages/TeacherLogin";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{ path: "/", element: <Welcome /> },
+    children: [
+      {
+        path: "/studentreg",
+        element: <StudentRegistration />,
+      },
+      {
+        path: "/teacherreg",
+        element: <TeacherRegistration />,
+      },
+      {
+        path: "/studentlogin",
+        element: <StudentLogin />,
+      },
+      {
+        path: "/teacherlogin",
+        element: <TeacherLogin />,
+      },
+      { 
+        path: "/", 
+        element: <Welcome /> },
       {
         path: "/about",
         element: <About />
@@ -19,40 +42,9 @@ const router = createBrowserRouter([
       {
         path: "/how-to-use",
         element: <HowToUse />
-      },
-    ],  
-  },
-  // Example pathing: 
-  // {
-  //   path: "/",
-  //   element: <App />,
-  //   children: [
-  //     {
-  //       path: "/",
-  //       element: <RecordList />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/edit/:id",
-  //   element: <App />,
-  //   children: [
-  //     {
-  //       path: "/edit/:id",
-  //       element: <Record />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/create",
-  //   element: <App />,
-  //   children: [
-  //     {
-  //       path: "/create",
-  //       element: <Record />,
-  //     },
-  //   ],
-  // },
+      }
+    ],
+  },  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
