@@ -7,7 +7,7 @@ const StudentRegistration = () => {
 
   return (
     <div className="wrapper">
-      <h2>Student Account</h2>
+      <h2>Student Registration</h2>
       <Form 
         action="/api/studentreg"
         method="post"
@@ -57,12 +57,12 @@ const StudentRegistration = () => {
       </Form>
       <div className="text">
           <h3>
-            Creating teacher account? <a href="/teacherreg">Teacher account</a>
+            Creating a <a href="/teacherreg">teacher account</a> instead?
           </h3>
       </div>
       <div className="text">
         <h3>
-          Already have an account? <a href="#">Login now</a>
+          Already have an account? <a href="/studentlogin">Login now.</a>
         </h3>
       </div>
     </div>

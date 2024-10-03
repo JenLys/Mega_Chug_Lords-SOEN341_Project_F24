@@ -6,7 +6,7 @@ const TeacherRegistration = () => {
   const { register, control, formState: { errors } } = useForm();
   return (
     <div className="wrapper">
-      <h2>Teacher Account</h2>
+      <h2>Teacher Registration</h2>
       <Form 
         action="/api/Teacherreg"
         method="post"
@@ -56,12 +56,12 @@ const TeacherRegistration = () => {
       </Form>
       <div className="text">
           <h3>
-            Creating teacher account? <a href="/teacherreg">Teacher account</a>
+            Creating a <a href="/studentreg">student account</a> instead?
           </h3>
       </div>
       <div className="text">
         <h3>
-          Already have an account? <a href="#">Login now</a>
+          Already have an account? <a href="/teacherlogin">Login now.   </a>
         </h3>
       </div>
     </div>

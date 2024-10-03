@@ -8,6 +8,8 @@ import About from "./pages/About";
 import HowToUse from "./pages/HowToUse";
 import StudentRegistration from "./pages/StudentRegistration";
 import TeacherRegistration from "./pages/TeacherRegistration";
+import StudentLogin from "./pages/StudentLogin";
+import TeacherLogin from "./pages/TeacherLogin";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
         path: "/teacherreg",
         element: <TeacherRegistration />,
       },
+      {
+        path: "/studentlogin",
+        element: <StudentLogin />,
+      },
+      {
+        path: "/teacherlogin",
+        element: <TeacherLogin />,
+      },
       { 
         path: "/", 
         element: <Welcome /> },
@@ -32,7 +42,7 @@ const router = createBrowserRouter([
       {
         path: "/how-to-use",
         element: <HowToUse />
-      },
+      }
     ],
   },  
 ]);
