@@ -20,6 +20,7 @@ body {
   padding: 34px;
   border-radius: 6px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  top: 55px;
 }
 .wrapper h2 {
   position: relative;
@@ -65,7 +66,7 @@ form .policy {
   display: flex;
   align-items: center;
 }
-form h3 {
+h3 {
   color: #707070;
   font-size: 14px;
   font-weight: 500;
@@ -81,16 +82,16 @@ form h3 {
 .input-box.button input:hover {
   background: #0e4bf1;
 }
-form .text h3 {
+.text h3 {
   color: #333;
   width: 100%;
   text-align: center;
 }
-form .text h3 a {
+.text h3 a {
   color: #4070f4;
   text-decoration: none;
 }
-form .text h3 a:hover {
+.text h3 a:hover {
   text-decoration: underline;
 }
 .input-box {
