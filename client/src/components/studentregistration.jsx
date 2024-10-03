@@ -1,8 +1,10 @@
 import React from "react";
 import "./reg.css";
-import React, { useState } from "react";
+import { useState } from "react";
+
 
 const StudentRegistration = () => {
+  
   // State to store form data
   const [data, setData] = useState({
     studentid: "",
@@ -20,49 +22,47 @@ const StudentRegistration = () => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (
-    data.studentid != null &&
-    data.firstname != null &&
-    data.lastname != null &&
-    data.password != null
-  ) {
-    // Ensure none of the input fields are empty
     if (
-      data.studentid.trim() !== "" &&
-      data.firstname.trim() !== "" &&
-      data.lastname.trim() !== "" &&
-      data.password.trim() !== ""
+      data.studentid != null &&
+      data.firstname != null &&
+      data.lastname != null &&
+      data.password != null
     ) {
-      const response = await fetch("/studentreg", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      // Ensure none of the input fields are empty
+      if (
+        data.studentid.trim() !== "" &&
+        data.firstname.trim() !== "" &&
+        data.lastname.trim() !== "" &&
+        data.password.trim() !== ""
+      ) {
+        const response = await fetch("/studentreg", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+      } else {
+        console.error("One or more fields are empty");
+      }
     } else {
-      console.error("One or more fields are empty");
+      console.error("One or more fields are null");
     }
-  } else {
-    console.error("One or more fields are null");
-  }
 
-  const response = await fetch("/studentreg", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+    const response = await fetch("/studentreg", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-  const result = await response.json();
-  console.log(result);
-};
-
-const StudentRegistration = () => {
+    const result = await response.json();
+    console.log(result);
+  };
   return (
     <div className="wrapper">
       <h2>Student Account</h2>

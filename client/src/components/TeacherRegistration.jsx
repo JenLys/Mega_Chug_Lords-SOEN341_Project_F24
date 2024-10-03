@@ -1,7 +1,8 @@
 import React from "react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const TeacherRegistration = () => {
+
   // State to store form data
   const [data, setData] = useState({
     teacherid: "",
@@ -18,56 +19,55 @@ const TeacherRegistration = () => {
       [id]: value,
     }));
   };
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // const data = {
-  //   e.target.
-  //   username: document.getElementById("username").value,
-  //   password: document.getElementById("password").value,
-  // };
+    // const data = {
+    //   e.target.
+    //   username: document.getElementById("username").value,
+    //   password: document.getElementById("password").value,
+    // };
 
-  if (
-    data.teacherid != null &&
-    data.firstname != null &&
-    data.lastname != null &&
-    data.password != null
-  ) {
-    // Ensure none of the input fields are empty
     if (
-      data.teacherid.trim() !== "" &&
-      data.firstname.trim() !== "" &&
-      data.lastname.trim() !== "" &&
-      data.password.trim() !== ""
+      data.teacherid != null &&
+      data.firstname != null &&
+      data.lastname != null &&
+      data.password != null
     ) {
-      const response = await fetch("/teacherreg", {
-        // Change to "/teacherreg"
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      // Ensure none of the input fields are empty
+      if (
+        data.teacherid.trim() !== "" &&
+        data.firstname.trim() !== "" &&
+        data.lastname.trim() !== "" &&
+        data.password.trim() !== ""
+      ) {
+        const response = await fetch("/teacherreg", {
+          // Change to "/teacherreg"
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+      } else {
+        console.error("One or more fields are empty");
+      }
     } else {
-      console.error("One or more fields are empty");
+      console.error("One or more fields are null");
     }
-  } else {
-    console.error("One or more fields are null");
+
+    const response = await fetch("/teacherreg", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    console.log(result);
   }
 
-  const response = await fetch("/teacherreg", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  const result = await response.json();
-  console.log(result);
-};
-
-const TeacherRegistration = () => {
   return (
     <div className="wrapper">
       <h2>Teacher Account</h2>

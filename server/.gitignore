@@ -14,5 +14,6 @@ explorations
 node_modules/
 playground-temp
 temp
+/.env
 TODOs.md
 .eslintcache

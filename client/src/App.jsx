@@ -1,18 +1,28 @@
-import "./App.css";
 import { Routes, Route } from "react-router-dom";
+// import { BrowserRouter as Routes, Route } from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import About from './pages/About';
+import HowToUse from './pages/HowToUse';
+import Navbar from './components/Navbar'
 import StudentRegistration from "./components/studentregistration";
 import TeacherRegistration from "./components/TeacherRegistration";
+import "./App.css";
 
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<div>This is the app</div>} />
-        <Route path="/studentreg" element={<StudentRegistration />} />
-        <Route path="/teacherreg" element={<TeacherRegistration />} />
-        {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
-      </Routes>
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<Welcome />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/how-to-use" element={<HowToUse />} />
+          <Route path="/studentreg" element={<StudentRegistration />} />
+          <Route path="/teacherreg" element={<TeacherRegistration />} />
+        </Routes>
+      </main>
     </div>
+    
   );
 }
 
