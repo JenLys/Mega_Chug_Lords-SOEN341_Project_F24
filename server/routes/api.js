@@ -1,4 +1,6 @@
 import express from "express";
+import teacherRegistration from "./teacherRegistration.js";
+import teacherLogin from "./teacherLogin.js";
 import db from "../db/connection.js";
 import User from "../db/schemas/user.js";
 
@@ -17,6 +19,12 @@ router.get("/login/student", (req, res) => {
   console.log("Student login page");
   res.end();
 })
+
+//http://localhost:5050/api/register/teacher
+router.use("/register/teacher", teacherRegistration);
+
+//http://localhost:5050/api/login/teacher
+router.use("/login/teacher", teacherLogin);
 
 /* router.post("/login/student", async (req, res) => {
   const dbUser = await db.getUser(req.body.user_id);
