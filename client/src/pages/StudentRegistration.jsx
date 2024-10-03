@@ -1,125 +1,82 @@
 import "./reg.css";
-import { useState } from "react";
+import { Form, useForm } from "react-hook-form"
 
+
+// eslint-disable-next-line react/prop-types
+const Input = ({ id, placeholder, label, register, validationRules, type="text" }) => (
+  <div className="input-box">
+    <label>{label}</label>
+    <input placeholder={placeholder} type={type} {...register(id, validationRules)} />
+  </div>
+);
 
 const StudentRegistration = () => {
-  
-  // State to store form data
-  const [data, setData] = useState({
-    studentid: "",
-    firstname: "",
-    lastname: "",
-    password: "",
-  });
+  const { register, control, formState: { errors } } = useForm();
 
-  // Handle input change to update form data
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      data.studentid != null &&
-      data.firstname != null &&
-      data.lastname != null &&
-      data.password != null
-    ) {
-      // Ensure none of the input fields are empty
-      if (
-        data.studentid.trim() !== "" &&
-        data.firstname.trim() !== "" &&
-        data.lastname.trim() !== "" &&
-        data.password.trim() !== ""
-      ) {
-        const response = await fetch("/studentreg", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-      } else {
-        console.error("One or more fields are empty");
-      }
-    } else {
-      console.error("One or more fields are null");
-    }
-
-    const response = await fetch("/studentreg", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    const result = await response.json();
-    console.log(result);
-  };
+  // const onSubmit = (data) => {
+    
+  // }
   return (
     <div className="wrapper">
       <h2>Student Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-box">
-          <label htmlFor="studentid">Student ID:</label>
-          <input
-            type="number"
-            id="studentid"
-            placeholder="Enter your Student ID"
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="firstname">First name:</label>
-          <input
-            type="text"
-            id="firstname"
-            placeholder="Enter your First name"
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="lastname">Last name:</label>
-          <input
-            type="text"
-            id="lastname"
-            placeholder="Enter your last name"
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Create password"
-            required
-          />
-        </div>
-        <div className="policy">
-          <input type="checkbox" />
-          <h3>I accept all terms & conditions</h3>
-        </div>
+      <Form 
+        action="/api/studentreg"
+        method="post"
+        encType={'application/json'}
+        control={control}
+        // onSubmit={handleSubmit(onSubmit)}
+        >
+        <Input 
+          id="id" 
+          placeholder="Enter your Student ID"
+          label="Student ID" 
+          register={register} 
+          validationRules={{ 
+            required : true, 
+            pattern: /^[0-9]{8}$/, 
+            minLength: 8, 
+            maxLength: 8
+          }} 
+        />
+        {errors.id && <p>Student ID field is required</p>}
+        <Input 
+          id="fname" 
+          placeholder="Enter your first name"
+          label="First Name" 
+          register={register} 
+          validationRules={{ required : true, }} 
+        />
+        {errors.fname && <p>First Name field is required</p>}
+        <Input 
+          id="lname" 
+          placeholder="Enter your last name" 
+          label="Last Name" 
+          register={register} 
+          validationRules={{ required : true, }} 
+        />
+        {errors.lname && <p>Last Name field is required</p>}
+        <Input 
+          id="pwd" 
+          placeholder="Create password" 
+          label="Password" 
+          register={register} 
+          validationRules={{ required : true, }} 
+        />
+        {errors.pwd && <p>Password field is required</p>}
         <div className="input-box button">
-          <input type="submit" value="Register Now" />
+          <input type="submit" />
         </div>
-        <div className="text">
-          <h3>
-            Already have an account? <a href="#">Login now</a>
-          </h3>
-        </div>
-        <div className="text">
+      </Form>
+      <div className="text">
           <h3>
             Creating teacher account? <a href="/teacherreg">Teacher account</a>
           </h3>
-        </div>
-      </form>
+      </div>
+      <div className="text">
+        <h3>
+          Already have an account? <a href="#">Login now</a>
+        </h3>
+      </div>
     </div>
   );
 };
