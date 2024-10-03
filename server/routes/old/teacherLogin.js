@@ -1,6 +1,6 @@
 import express, { json } from 'express';
 const teacherRouter = express.Router();
-import db from "../db/connection.js";
+import db from "../../db/connection.js";
 teacherRouter.use(express.json());
 teacherRouter.use(express.urlencoded({extended: true})); 
 
@@ -23,5 +23,3 @@ teacherRouter.post("/", async(req,res) => {
       }
     }
 });
-
-export default teacherRouter;

@@ -62,22 +62,23 @@ class Db {
     return section;
   }
 
+  async getUserLogin(user_id, pw) {
+    return await User.findOne({ user_id: user_id, pw: pw });
+  }
+
   async getUser(id) {
-    const user = await User.findOne({ user_id: id });
-    return user;
+    return await User.findOne({ user_id: id });
   }
 
   async getCourse(id) {
-    const course = await Course.findOne({ course_id: id });
-    return course;
+    return await Course.findOne({ course_id: id });
   }
 
   async getSection(name, id) {
-    const section = await Section.findOne({
+    return await Section.findOne({
       name: name,
       course_id: id,
     });
-    return section;
   }
 
   async addUserToSection(id, name, courseId) {
