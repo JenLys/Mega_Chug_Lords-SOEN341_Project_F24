@@ -17,7 +17,7 @@ function About() {
       />
 
     <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>About ReviewMate</h1>
-      <p style={{ textAlign: 'center' }}>We are 6 students who created ReviewMate as part of our Soen341 project. <br></br> ReviewMate lets students better grade each other and teachers better organize student groups.</p>
+      <p style={{ textAlign: 'center' }}>We are 6 students who created ReviewMate as part of our Soen341 project. <br></br> ReviewMate lets students better grade each other and helps teachers better organize student groups.</p>
     </div>
   );
 }
