@@ -1,0 +1,30 @@
+.class-box {
+    position: relative;
+    border: 3px solid white;
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  
+  .class-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: -1;
+    border: inherit; /* Inherit the border radius and dimensions */
+    background: radial-gradient(circle at var(--x-pos) var(--y-pos), rgba(0, 123, 255, 0.5), rgba(255, 255, 255, 0.5));
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+  }
+  
+  .class-box:hover::before {
+    visibility: visible;
+  }
+  

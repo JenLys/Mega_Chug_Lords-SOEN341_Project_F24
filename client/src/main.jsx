@@ -47,7 +47,7 @@ const router = createBrowserRouter([
       {
         path: "/teacherview",
         element: <TeacherView />
-      }
+      },
     ],
   },  
 ]);
