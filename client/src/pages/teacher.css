@@ -10,21 +10,19 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     border-radius: inherit;
     pointer-events: none;
-    z-index: -1;
-    border: inherit; /* Inherit the border radius and dimensions */
-    background: radial-gradient(circle at var(--x-pos) var(--y-pos), rgba(0, 123, 255, 0.5), rgba(255, 255, 255, 0.5));
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: destination-out;
+    background: radial-gradient(circle at var(--x) var(--y), rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0) 70%);
+    transition: background 0.1s ease-out;
   }
   
   .class-box:hover::before {
     visibility: visible;
+  }
+  
+  .class-box:hover {
+    border-color: transparent;
   }
   

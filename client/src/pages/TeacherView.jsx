@@ -10,6 +10,21 @@ function TeacherView() {
         {name: "ENGR 232", path: '/class/engr-232'}
     ];
 
+    const handleMouseMove = (e) => {
+        const box = e.currentTarget;
+        const rect = box.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        box.style.setProperty('--x', `${x}px`);
+        box.style.setProperty('--y', `${y}px`);
+      };
+    
+      const handleMouseLeave = (e) => {
+        const box = e.currentTarget;
+        box.style.setProperty('--x', `-9999px`);
+        box.style.setProperty('--y', `-9999px`);
+      }; 
+
 
     return (
         <div>
@@ -32,17 +47,10 @@ function TeacherView() {
                 fontSize: '18px',
                 color: 'white',
                 position: 'relative',
-                overflow: 'hidden',
-                '--x-pos': '0px',
-                '--y-pos': '0px',
-            }}
-            onMouseMove={(e) => {
-                const rect = e.target.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                e.target.style.setProperty('--x-pos', `${x}px`);
-                e.target.style.setProperty('--y-pos', `${y}px`);
               }}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+
             >
                 
               {classItem.name}
