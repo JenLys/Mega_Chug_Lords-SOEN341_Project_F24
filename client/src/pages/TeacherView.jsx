@@ -52,7 +52,6 @@ function TeacherView() {
               onMouseLeave={handleMouseLeave}
 
             >
-                
               {classItem.name}
               {/*fancy dégradé effect*/}
               {/*<div className="highlight-circle"></div> */}
