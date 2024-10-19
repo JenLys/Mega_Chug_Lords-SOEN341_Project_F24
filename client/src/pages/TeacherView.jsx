@@ -23,7 +23,7 @@ function TeacherView() {
         const box = e.currentTarget;
         box.style.setProperty('--x', `-9999px`);
         box.style.setProperty('--y', `-9999px`);
-      }; 
+      };
 
 
     return (
@@ -31,7 +31,7 @@ function TeacherView() {
         <h1 style={{fontSize: '40px', color: 'white', marginBottom: '20px'}}>Welcome Name, here are your courses!</h1>
         <br></br>
         
-        <div style={{ display: 'flex', gap: '20px' }}>
+        <div style={{ display: 'flex', gap: '20px'}}>
         {classes.map((classItem, index) => (
           <Link to={classItem.path} key={index} style={{ textDecoration: 'none' }}>
             <div
@@ -48,13 +48,11 @@ function TeacherView() {
                 color: 'white',
                 position: 'relative',
               }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
             >
-              {classItem.name}
-              {/*fancy dégradé effect*/}
-              {/*<div className="highlight-circle"></div> */}
+              <span>{classItem.name}</span>
+             
             </div>
           </Link>
         ))}

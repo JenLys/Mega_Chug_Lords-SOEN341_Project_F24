@@ -14,8 +14,9 @@
     bottom: 0;
     border-radius: inherit;
     pointer-events: none;
-    background: radial-gradient(circle at var(--x) var(--y), rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0) 70%);
+    background: radial-gradient(circle at var(--x) var(--y), rgba(101, 170, 199, 0.9), rgba(111, 155, 175, 0) 70%);
     transition: background 0.1s ease-out;
+    z-index: 0; /* Ensure it stays behind the text */
   }
   
   .class-box:hover::before {
@@ -24,5 +25,10 @@
   
   .class-box:hover {
     border-color: transparent;
+  }
+  
+  .class-box > * {
+    position: relative;
+    z-index: 2; /* Ensure the text is always on top */
   }
   
