@@ -47,8 +47,7 @@ function TeacherView() {
 
               <div style={{ display: "flex", gap: "10px" }}>
                 {/*Options for that course: see student ratings, etc */}
-                <button className="otherbtn">View ratings</button>
-                <button className="otherbtn">View Students</button>
+                <button className="otherbtn">Create Teams</button>
                 <button className="otherbtn">View Teams</button>
               <Link to={location.pathname}>
                 
