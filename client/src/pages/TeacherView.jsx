@@ -8,12 +8,12 @@ function TeacherView() {
     /*For the rendering on the same page */
     const [selectedCourse, setSelectedCourse] = useState(null);
     const location = useLocation();
-    /*Defining the classes- for now it's hardcoded, will have to connect to the db*/ 
+    /*Defining the classes- for now it's hardcoded, will have to connect to the db (will have to fetch courses by the API and use json)*/ 
     const classes=[
-        {name:"SOEN 341", path:'/class/soen-341'},
-        {name:"ELEC 275", path:'/class/elec-275'},
-        {name:"COMP 123", path: '/class/comp-123'},
-        {name: "ENGR 232", path: '/class/engr-232'}
+        {name:"SOEN 341"},
+        {name:"ELEC 275"},
+        {name:"COMP 123"},
+        {name: "ENGR 232"}
     ];
 
     const handleMouseMove = (e) => {
@@ -41,9 +41,15 @@ function TeacherView() {
         <div>
           {selectedCourse ? (
             <div>
-              <h1 style={{ fontSize: "40px", color: "white", marginBottom: "20px" }}>
+              <h1 style={{ fontSize: "80px", color: "white", marginBottom: "20px",fontWeight: "bold" }}>
                 {selectedCourse} {/*Display the name of the course that got accessed */}
               </h1>
+
+              <div style={{ display: "flex", gap: "10px" }}>
+                {/*Options for that course: see student ratings, etc */}
+                <button className="otherbtn">View ratings</button>
+                <button className="otherbtn">View Students</button>
+                <button className="otherbtn">View Teams</button>
               <Link to={location.pathname}>
                 
                 <button
@@ -51,7 +57,8 @@ function TeacherView() {
                     padding: "10px 20px",
                     fontSize: "16px",
                     borderRadius: "5px",
-                    backgroundColor: "white",
+                    backgroundColor: "rgb(73, 97, 142)",
+                    color: "white",
                     border: "none",
                     cursor: "pointer"
                   }}
@@ -60,6 +67,7 @@ function TeacherView() {
                   Back to Courses {/*offer a way back to the view of all courses--just in case */}
                 </button>
               </Link>
+            </div>
             </div>
           ) :
           /*This is what the user sees when no course is clicked */ (
