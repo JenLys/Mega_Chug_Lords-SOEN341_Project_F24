@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import User from "../db/schemas/user.js";
 import Course from "../db/schemas/course.js";
-import Section from "../db/schemas/section.js";
 
 const uri = process.env.ATLAS_URI || "";
 const dbName = process.env.DB_NAME || "reviewmate";
@@ -44,26 +43,54 @@ class Db {
     return user;
   }
 
-  async addCourse(id, number, dept, profId) {
+  async addCourse(
+    courseId,
+    number,
+    dept,
+    profId,
+    students = None,
+    groups = None
+  ) {
     const course = await Course.create({
-      course_id: id,
+      course_id: courseId,
       number: number,
       dept: dept,
       prof_id: profId,
+      students: students,
+      groups: groups,
     });
+    return course;
   }
 
-  async addSection(studentIds, courseId, name) {
-    const section = await Section.create({
-      student_ids: studentIds,
-      course_id: courseId,
+  async addUserToCourse(userId, name, courseId) {
+    const course = await Course.findOne({
       name: name,
+      course_id: courseId,
     });
-    return section;
+    course.student_ids.push(userId);
+    await course.save();
   }
 
-  async getUserLogin(user_id, pw) {
-    return await User.findOne({ user_id: user_id, pw: pw });
+  async addUserToCourseGroup(userId, courseId, teamateIds) {
+    const course = await getCourse(courseId);
+    group = course.groups.find((group) =>
+      teamateIds.every((id) => group.includes(id))
+    );
+    group.push(userId);
+    await course.save();
+  }
+
+  async addGroupToCourse(courseId, students = None) {
+    if (students == None) {
+      students = [];
+    }
+    const course = await getCourse(courseId);
+    course.groups.push(students);
+    await course.save();
+  }
+
+  async getUserLogin(userId, pw) {
+    return await User.findOne({ user_id: userId, pw: pw });
   }
 
   async getUser(id) {
@@ -74,20 +101,13 @@ class Db {
     return await Course.findOne({ course_id: id });
   }
 
-  async getSection(name, id) {
-    return await Section.findOne({
-      name: name,
-      course_id: id,
-    });
-  }
-
-  async addUserToSection(id, name, courseId) {
-    const section = await Section.findOne({
+  async removeUserFromCourse(userId, name, courseId) {
+    const course = await Course.findOne({
       name: name,
       course_id: courseId,
     });
-    section.student_ids.push(id);
-    await section.save();
+    course.student_ids = course.student_ids.filter((id) => id !== userId);
+    await course.save();
   }
 
   async removeUser(id) {
@@ -96,10 +116,6 @@ class Db {
 
   async removeCourse(id) {
     await Course.deleteOne({ course_id: id });
-  }
-
-  async removeSection(name) {
-    await Section.deleteOne({ name: name });
   }
 }
 
