@@ -1,17 +1,16 @@
 import "./reg.css";
 import Input from "../components/Input";
 import { useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const StudentLogin = () => {
   const {
     register,
-    control,
+    handleSubmit,
     formState: { errors },
   } = useForm();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const onSubmit = async (data) => {
-    data = data.data;
     try {
       // Sending the form data to the backend on a specific port (e.g., port 5000)
       const response = await fetch(
@@ -31,7 +30,6 @@ const StudentLogin = () => {
       }
 
       const result = await response.json();
-      console.log("Login successful:", result);
       setIsLoggedIn(true);
       // Handle successful login (e.g., redirect the user)
     } catch (error) {
@@ -46,12 +44,8 @@ const StudentLogin = () => {
   ) : (
     <div className="wrapper">
       <h2>Student Login</h2>
-      <Form
-        action="localhost:5050/api/student/login"
-        method="get"
-        encType={"application/json"}
-        control={control}
-        onSubmit={onSubmit}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Input
           id="user_id"
@@ -82,7 +76,7 @@ const StudentLogin = () => {
         <div className="input-box button">
           <input type="submit" />
         </div>
-      </Form>
+      </form>
       <div className="text">
         <h3>
           Don't have an account? <a href="/studentreg">Create one here.</a>
