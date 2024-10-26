@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import {useLocation} from "react-router-dom";
@@ -7,14 +7,32 @@ import "./teacher.css"
 function TeacherView() {
     /*For the rendering on the same page */
     const [selectedCourse, setSelectedCourse] = useState(null);
+    const [courses, setCourses] = useState([]);
     const location = useLocation();
     /*Defining the classes- for now it's hardcoded, will have to connect to the db (will have to fetch courses by the API and use json)*/ 
-    const classes=[
+    
+    /*const classes=[
         {name:"SOEN 341"},
         {name:"ELEC 275"},
         {name:"COMP 123"},
         {name: "ENGR 232"}
-    ];
+    ];*/
+
+    //Fetch the courses
+    useEffect(() => {
+        const fetchCourses = async() =>{
+            try{
+                const profId = "PROF ID HERE";
+                const response = await fetch(`/teacher/courses?prof_id=${profId}`);
+                const data = await response.json();
+                setCourses(data);
+            }
+            catch(error){
+                console.error("Error");
+            }
+        };
+        fetchCourses();
+    }, []);
 
     const handleMouseMove = (e) => {
         const box = e.currentTarget;
@@ -72,11 +90,11 @@ function TeacherView() {
           /*This is what the user sees when no course is clicked */ (
             <div>
               <h1 style={{ fontSize: "40px", color: "white", marginBottom: "20px" }}>
-                Welcome Name, here are your courses!
+                Welcome, here are your courses!
               </h1>
               <br />
               <div style={{ display: "flex", gap: "20px" }}>
-                {classes.map((classItem, index) => (
+                {courses.map((course, index) => (
                   <div
                     key={index}
                     className="class-box"
@@ -92,11 +110,11 @@ function TeacherView() {
                       color: "white",
                       position: "relative"
                     }}
-                    onClick={() => handleClick(classItem)}
+                    onClick={() => handleClick(course)}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <span>{classItem.name}</span>
+                    <span>{course.number}</span>
                   </div>
                 ))}
               </div>

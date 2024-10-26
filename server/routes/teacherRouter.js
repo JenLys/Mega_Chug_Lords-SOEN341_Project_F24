@@ -1,5 +1,6 @@
 import express from "express";
 import db from "../db/connection.js"
+import Course from "../db/schemas/course.js"
 import { validateId, validateName, validatePassword } from "./validation.js";
 const teacherRouter = express.Router({ mergeParams: true })
 
@@ -17,6 +18,24 @@ teacherRouter.get("/login", async (req, res) => {
     res.status(400).json({ message: "No user information found" })
   }
 })
+
+teacherRouter.get("/courses", async (req, res) => {
+  try {
+    const profId = req.query.prof_id; // getting the  prof id from the request query
+    if (!profId) {
+      return res.status(400).json({ message: "Prof id required" });
+    }
+
+    // Find courses by prof id
+    const courses = await Course.find({ prof_id: profId });
+    res.json(courses);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 teacherRouter.post("/register", async (req, res) => {
   if (req.query != null && req.query.fname != null && req.query.lname != null && req.query.user_id != null && req.query.pw != null) {
