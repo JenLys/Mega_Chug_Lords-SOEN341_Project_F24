@@ -10,6 +10,7 @@ import StudentRegistration from "./pages/StudentRegistration";
 import TeacherRegistration from "./pages/TeacherRegistration";
 import StudentLogin from "./pages/StudentLogin";
 import TeacherLogin from "./pages/TeacherLogin";
+import CoursePage from "./pages/CoursePage";
 
 const router = createBrowserRouter([
   {
@@ -32,19 +33,24 @@ const router = createBrowserRouter([
         path: "/teacherlogin",
         element: <TeacherLogin />,
       },
-      { 
-        path: "/", 
-        element: <Welcome /> },
+      {
+        path: "/",
+        element: <Welcome />,
+      },
       {
         path: "/about",
-        element: <About />
+        element: <About />,
       },
       {
         path: "/how-to-use",
-        element: <HowToUse />
-      }
+        element: <HowToUse />,
+      },
+      {
+        path: "/coursepage",
+        element: <CoursePage />,
+      },
     ],
-  },  
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
