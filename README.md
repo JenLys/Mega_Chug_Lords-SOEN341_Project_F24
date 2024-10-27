@@ -3,6 +3,8 @@
 The goal of this project is to create a platform for university students to peer review each other on their projects. They will be grading each other four key components: cooperation, conceptual contribution, practical contribution, and work ethic. Instructors will also be able to access the valuable feedback of the teams' dnyamics and each student's individual efforts.
 
 Our solution is to provide a lightweight web app which offers a simplistic UI, enabling students to focus on peer reviewing. Nonetheless, we also enable teachers to manage their sections and courses in a better way, offering insights about the reviews of their students. 
+![image](https://github.com/user-attachments/assets/1fca9f6b-cd19-4d13-b7fa-0b75b038ea71)
+
 
 ## Team members and roles
 - Marian Hristov (40284462) : Full stack developer + Team Leader
@@ -11,7 +13,7 @@ Our solution is to provide a lightweight web app which offers a simplistic UI, e
 - Jeslyn Sorotsky (40277100) : Full Stack developer
 - Kigham Kerry Kinyuy (40207088) : Full Stack developer
 - Srabanti Mazumdar (40263255) : Full Stack developer
-
+*information about the knowledge and experience of each member can be found in the Wiki
 ## Installation
 Make sure you have node version 20 and above: [Node download](https://nodejs.org/en/download/prebuilt-installer)
 
