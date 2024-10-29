@@ -7,7 +7,8 @@ const groupSchema = new Schema(
     review_ids: [String],
     assignment_ids: [String],
   },
-  { collections: "Groups", queryString: true }
+  { collections: "Groups", queryString: true, strict: true }
+
 );
 
 const Group = mongoose.model("Group", groupSchema);
