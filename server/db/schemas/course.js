@@ -8,7 +8,7 @@ const courseSchema = new Schema(
     student_ids: [String],
     group_ids: [String],
   },
-  { collections: "Courses", queryString: true }
+  { collections: "Courses", queryString: true, strict: true }
 );
 
 const Course = mongoose.model("Course", courseSchema);
