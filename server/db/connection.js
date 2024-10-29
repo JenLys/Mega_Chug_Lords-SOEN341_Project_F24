@@ -8,6 +8,7 @@ import Assignment from "../db/schemas/assignment.js";
 const uri = process.env.ATLAS_URI || "";
 const dbName = process.env.DB_NAME || "reviewmate";
 
+// Exit if no URI is provided
 if (uri.length === 0) {
   process.exit(-1);
 }
@@ -17,6 +18,10 @@ class Db {
     this.connectDb();
   }
 
+  /**
+   * Connect to the MongoDB database
+   * Reads ATLAS_URI and DB_NAME environment variable
+   */
   connectDb() {
     let dbOptions = {
       dbName: "" + dbName,
@@ -29,6 +34,11 @@ class Db {
     mongoose.connection.close();
   }
 
+  /**
+   *  Generic method that returns all items in a collection given the schema
+   * @param {*} Schema
+   * @returns Collection of a Schema
+   */
   async getAll(collectionSchema) {
     const collection = collectionSchema.find();
     return collection;
