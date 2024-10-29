@@ -2,9 +2,12 @@ import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import "./reg.css";
 
-
-
 function CreateCourse() {
+    const [className, setClassName] = useState("");
+    const [courseCode, setCourseCode] = useState("");
+    const [maxParticipants, setMaxParticipants] = useState("");
+    const [selectedSemester, setSelectedSemester] = useState("fall");
+
     const handleSubmit = (event) => {
         event.preventDefault();
       }
@@ -14,22 +17,36 @@ function CreateCourse() {
                 <div className='form-box'>
                 <label>
                     Course title: 
-                    <input type="text" />
+                    <input 
+                    type="text" 
+                    value={className}
+                    onChange={(e) => setClassName(e.target.value)}
+                    />
                 </label>
                 <br></br>
                 <label>
                     Course code: 
-                    <input type="text"/>
+                    <input type="text" 
+                    value={courseCode}
+                    onChange={(e) => setCourseCode(e.target.value)} 
+                    />
                 </label>
                 <br></br>
                 <label>
                     Maximum participants: 
-                    <input type="number" min="1" max="600"/>
+                    <input type="number" min="1" max="600"
+                    value={maxParticipants}
+                    onChange={(e) => setMaxParticipants(e.target.value)}
+                    />
                 </label>
                 <br></br>
                 <label>
                     Semester offered: 
-                    <select name="selectedSemester" id="selectedSemester">
+                    <select 
+                    name="selectedSemester" 
+                    id="selectedSemester"
+                    value={selectedSemester}
+                    onChange={(e) => setSelectedSemester(e.target.value)}>
                         <option value="fall">Fall</option>
                         <option value="winter">Winter</option>
                         <option value="summer">Summer</option>
@@ -37,12 +54,13 @@ function CreateCourse() {
                 </label>
                
                <br></br>
-                <button className="input-box button" input="submit">Submit</button>
+                <button className="input-box button" type="submit">Submit</button>
                 </div>
                 
             </form>
-            )
-}
+        )
+    }
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<CreateCourse />);
 export default CreateCourse;
