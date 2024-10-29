@@ -1,0 +1,44 @@
+.courseLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.course {
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.courseImage {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.courseName {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.addButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
