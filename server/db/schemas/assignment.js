@@ -5,7 +5,8 @@ const assignmentSchema = new Schema(
     content: String,
     student_id: String,
   },
-  { collections: "Assignments", queryString: true }
+  { collections: "Assignments", queryString: true, strict: true }
+
 );
 
 const Assignment = mongoose.model("Assignment", assignmentSchema);
