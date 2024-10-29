@@ -10,6 +10,10 @@ import StudentLogin from "./pages/StudentLogin";
 import TeacherLogin from "./pages/TeacherLogin";
 import "./App.css";
 
+{/*--------TEMPORARY-----*/}
+import CourseCreation from "./pages/CourseCreation";
+{/*--------TEMPORARY-----*/}
+
 function App() {
   return (
     <div>
@@ -23,6 +27,11 @@ function App() {
           <Route path="/teacherreg" element={<TeacherRegistration />} />
           <Route path="/studentlogin" element={<StudentLogin />} />
           <Route path="/teacherlogin" element={<TeacherLogin />} />
+
+          {/*--------TEMPORARY-----*/}
+          <Route path="/course-creation" element={<CourseCreation />} />
+          {/*--------TEMPORARY-----*/}
+          
         </Routes>
       </main>
     </div>
