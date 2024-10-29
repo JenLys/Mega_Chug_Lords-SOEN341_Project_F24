@@ -2,12 +2,11 @@ import mongoose, { Schema } from "mongoose";
 
 const courseSchema = new Schema(
   {
-    course_id: String,
     number: String,
     dept: String,
     prof_id: String,
     student_ids: [String],
-    groups: [Array],
+    group_ids: [String],
   },
   { collections: "Courses", queryString: true }
 );
