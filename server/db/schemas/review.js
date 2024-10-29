@@ -6,7 +6,8 @@ const reviewSchema = new Schema(
     assignment_id: String,
     rating: Number,
   },
-  { collections: "Reviews", queryString: true }
+  { collections: "Reviews", queryString: true, strict: true }
+
 );
 
 const Review = mongoose.model("Review", reviewSchema);
