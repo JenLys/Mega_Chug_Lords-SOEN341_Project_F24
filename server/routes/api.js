@@ -11,7 +11,7 @@ router.use("/student", studentRouter);
 router.use("/teacher", studentRouter);
 
 // leaving here as an example of how to use the db functions
-router.get("/test", async (req, res) => {
+/* router.get("/test", async (req, res) => {
   db.addUser("Stue", "Dent", "student", "12345678", "Password!1");
   db.addUser("Dent", "Stue", "student", "12345679", "Password!2");
   db.addUser("Tech", "Art", "teacher", "87654321", "Password!1");
@@ -31,6 +31,6 @@ router.get("/test", async (req, res) => {
   );
   db.addReviewToGroup(group._id, "12345678", assignment._id, 2);
   res.status(200).json({ message: "done" });
-});
+}); */
 
 export default router;
