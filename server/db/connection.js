@@ -13,8 +13,9 @@ if (uri.length === 0) {
   process.exit(-1);
 }
 
-class Db {
-  constructor() {
+export class Db {
+  constructor(isTest = false) {
+    this.isTest = isTest;
     this.connectDb();
   }
 
@@ -24,7 +25,7 @@ class Db {
    */
   connectDb() {
     let dbOptions = {
-      dbName: "" + dbName,
+      dbName: "" + (this.isTest ? `${dbName}-test` : dbName),
     };
     mongoose.connect(uri, dbOptions);
     console.log("Connected to MongoDB");
@@ -161,4 +162,4 @@ class Db {
   }
 }
 
-export default new Db();
+export const initDb = new Db();
