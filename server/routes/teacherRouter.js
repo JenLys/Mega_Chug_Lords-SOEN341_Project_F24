@@ -4,6 +4,16 @@ import Course from "../db/schemas/course.js"
 import { validateId, validateName, validatePassword } from "./validation.js";
 const teacherRouter = express.Router({ mergeParams: true })
 
+
+{/*Added validation-- just like for /registration route  *PR comment */}
+const validateProfId = (profId) => {
+  if (!profId || typeof profId !== 'string') {
+    return false;
+  }
+  return profId.length >= 8;
+};
+
+
 teacherRouter.get("/login", async (req, res) => {
   if (req.query != null && req.query.user_id != null && req.query) {
     await db.getUserLogin(req.query.user_id, req.query.pw)
@@ -21,9 +31,12 @@ teacherRouter.get("/login", async (req, res) => {
 
 teacherRouter.get("/courses", async (req, res) => {
   try {
-    const profId = req.query.prof_id; // getting the  prof id from the request query
-    if (!profId) {
-      return res.status(400).json({ message: "Prof id required" });
+    const profId = req.query.prof_id;
+
+    if (!validateProfId(profId)) {
+      return res.status(400).json({
+        message: "Invalid professor ID."
+      });
     }
 
     // Find courses by prof id
@@ -34,7 +47,6 @@ teacherRouter.get("/courses", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
 
 
 teacherRouter.post("/register", async (req, res) => {
