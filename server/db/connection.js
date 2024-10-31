@@ -105,10 +105,9 @@ class Db {
     return assignment;
   }
 
-  async addUserToCourse(userId, name, courseId) {
+  async addUserToCourse(userId, courseId) {
     const course = await Course.findOne({
-      name: name,
-      course_id: courseId,
+      _id: courseId,
     });
     course.student_ids.push(userId);
     await course.save();
