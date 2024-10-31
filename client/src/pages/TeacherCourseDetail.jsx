@@ -14,7 +14,6 @@ const TeacherCourseDetail = ({course}) => {
         }
         const res =  await response.json();
         setStudents(res.students);
-        console.log(res.students);
       } catch (error) {
         console.error("Error:", error);
         

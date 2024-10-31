@@ -24,7 +24,6 @@ const AddCourse = () => {
   }, []);
 
   const handleClick = async (courseId) => {
-    console.log("clicked", courseId, user.user_id);
     try {
       const response = await request("/student/enroll-course", "GET", {student_id: user.user_id, course_id: courseId});
       if (!response.ok) {

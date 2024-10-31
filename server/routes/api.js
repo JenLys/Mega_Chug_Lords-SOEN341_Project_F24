@@ -1,7 +1,7 @@
 import express from "express";
 import studentRouter from "./studentRouter.js";
 import teacherRouter from "./teacherRouter.js";
-import db from "../db/connection.js";
+import { initDb as db } from "../db/connection.js";
 import Course from "../db/schemas/course.js";
 
 const router = express.Router();
