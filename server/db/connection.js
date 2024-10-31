@@ -120,6 +120,22 @@ class Db {
     await group.save();
   }
 
+  async getTeacherCourses(userId) {
+    const isTeacher = await User.findOne({ user_id: userId, role: "teacher" });
+    if (isTeacher == null) {
+      throw new Error("User is not a teacher");
+    }
+    return await Course.find({ prof_id: userId });
+  }
+
+  async getStudentCourses(userId) {
+    const isStudent = await User.findOne({ user_id: userId, role: "student" });
+    if (isStudent == null) {
+      throw new Error("User is not a student");
+    }
+    return await Course.find({ prof_id: userId });
+  }
+
   async getUserLogin(userId, pw) {
     return await User.findOne({ user_id: userId, pw: pw });
   }
