@@ -49,16 +49,16 @@ teacherRouter.get("/courseDetails", async (req, res) => {
 
 teacherRouter.post("/register", async (req, res) => {
   if (
-    req.query != null &&
-    req.query.fname != null &&
-    req.query.lname != null &&
-    req.query.user_id != null &&
-    req.query.pw != null
+    req.body != null &&
+    req.body.fname != null &&
+    req.body.lname != null &&
+    req.body.user_id != null &&
+    req.body.pw != null
   ) {
-    const isPasswordValid = validatePassword(req.query.pw);
-    const isFirstNameValid = validateName(req.query.fname);
-    const isLastNameValid = validateName(req.query.lname);
-    const isUserValid = validateId(req.query.user_id);
+    const isPasswordValid = validatePassword(req.body.pw);
+    const isFirstNameValid = validateName(req.body.fname);
+    const isLastNameValid = validateName(req.body.lname);
+    const isUserValid = validateId(req.body.user_id);
     if (!isFirstNameValid) {
       res.status(400).json({
         message:
@@ -79,14 +79,14 @@ teacherRouter.post("/register", async (req, res) => {
           "Invalid password. Must be 8 characters long with lowercase, uppercase and special",
       });
     } else {
-      const userAlreadyExists = await db.getUser(req.query.user_id)
+      const userAlreadyExists = await db.getUser(req.body.user_id)
       if (!userAlreadyExists) {
-        await db.addUser(req.query.fname, req.query.lname, "teacher", req.query.user_id, req.query.pw)
+        await db.addUser(req.body.fname, req.body.lname, "teacher", req.body.user_id, req.body.pw)
           .then(data => {
             if (data == null) {
               res.status(400).json({ message: "Could not register new user" })
             } else {
-              res.status(200).json(req.query)
+              res.status(200).json(req.body)
             }
           })
       } else {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { request } from "../utils"
 
 
 const TeacherCourseDetail = ({course}) => {
@@ -8,18 +9,7 @@ const TeacherCourseDetail = ({course}) => {
     const getUsers =  async (data) => {
       console.log(data)
       try {
-        const response = await fetch(
-          "http://localhost:5050/api/teacher/courseDetails" +
-            "?" +
-            new URLSearchParams(data).toString(),
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
+        const response = await request("/teacher/courseDetails", "GET", data);
         if (!response.ok) {
           throw new Error("Could not get course detail");
         }
