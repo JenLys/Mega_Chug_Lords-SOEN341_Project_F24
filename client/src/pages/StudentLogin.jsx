@@ -2,6 +2,7 @@ import "./reg.css";
 import Input from "../components/Input";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { request } from "../utils";
 
 const StudentLogin = () => {
   const {
@@ -12,29 +13,15 @@ const StudentLogin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const onSubmit = async (data) => {
     try {
-      // Sending the form data to the backend on a specific port (e.g., port 5000)
-      const response = await fetch(
-        "http://localhost:5050/api/student/login" +
-          "?" +
-          new URLSearchParams(data).toString(),
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
+      const response = await request("/student/login", "GET", data);
+      if (response.ok) {
+        setIsLoggedIn(true);
+      } else {
         throw new Error("Login failed. Please try again.");
       }
-
-      const result = await response.json();
       setIsLoggedIn(true);
-      // Handle successful login (e.g., redirect the user)
     } catch (error) {
       console.error("Error:", error);
-      // Handle login error (e.g., show an error message to the user)
     }
   };
   return isLoggedIn ? (
@@ -44,9 +31,7 @@ const StudentLogin = () => {
   ) : (
     <div className="wrapper">
       <h2>Student Login</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           id="user_id"
           placeholder="Enter your Student ID"
