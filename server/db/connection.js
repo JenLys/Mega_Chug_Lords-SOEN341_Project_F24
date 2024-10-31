@@ -13,8 +13,9 @@ if (uri.length === 0) {
   process.exit(-1);
 }
 
-class Db {
-  constructor() {
+export class Db {
+  constructor(isTest = false) {
+    this.isTest = isTest;
     this.connectDb();
   }
 
@@ -24,7 +25,7 @@ class Db {
    */
   connectDb() {
     let dbOptions = {
-      dbName: "" + dbName,
+      dbName: "" + (this.isTest ? `${dbName}-test` : dbName),
     };
     mongoose.connect(uri, dbOptions);
     console.log("Connected to MongoDB");
@@ -105,10 +106,9 @@ class Db {
     return assignment;
   }
 
-  async addUserToCourse(userId, name, courseId) {
+  async addUserToCourse(userId, courseId) {
     const course = await Course.findOne({
-      name: name,
-      course_id: courseId,
+      _id: courseId,
     });
     course.student_ids.push(userId);
     await course.save();
@@ -135,7 +135,8 @@ class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ prof_id: userId });
+
+    return await Course.find({ student_ids: { $in: userId } });
   }
 
   async getCourseDetails(courseId) {
@@ -202,4 +203,4 @@ class Db {
   }
 }
 
-export default new Db();
+export const initDb = new Db();
