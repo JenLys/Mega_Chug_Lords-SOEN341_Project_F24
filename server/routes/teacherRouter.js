@@ -29,11 +29,12 @@ teacherRouter.get("/login", async (req, res) => {
   }
 })
 
+//Get the courses
 teacherRouter.get("/courses", async (req, res) => {
   try {
     const profId = req.query.prof_id;
 
-    if (!validateProfId(profId)) {
+    if (!validateProfId(profId)) { //validation
       return res.status(400).json({
         message: "Invalid professor ID."
       });
