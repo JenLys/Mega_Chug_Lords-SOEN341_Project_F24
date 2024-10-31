@@ -4,6 +4,6 @@ services:
     name: review-mate
     runtime: docker
     repo: https://github.com/Vinuyans/Mega_Chug_Lords-SOEN341_Project_F24/tree/cicd
-    envVar:
+    envVars:
       - key: DB_NAME
       - key: ATLAS_URI
