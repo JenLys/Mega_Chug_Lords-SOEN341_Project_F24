@@ -1,6 +1,6 @@
 import express from "express";
 import studentRouter from "./studentRouter.js";
-import db from "../db/connection.js";
+import teacherRouter from "./teacherRouter.js";
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.use("/student", studentRouter);
-router.use("/teacher", studentRouter);
+router.use("/teacher", teacherRouter);
 
 // leaving here as an example of how to use the db functions
 /* router.get("/test", async (req, res) => {
