@@ -4,7 +4,7 @@
     "install:all": "npm i && cd ./client && npm i && cd ../server && npm i",
     "test": "cd ./server && npm run test",
     "prepare": "husky install",
-    "build": "npm i && cd ./client && npm i && cd ../server && npm i && cd ./client && npm run build",
+    "build": "npm i && cd ./client && npm i && npm run build && cd ../server && npm i",
     "prod": "concurrently \"cd ./client && npm run preview\" \"cd ./server && npm run prod\" "
   },
   "devDependencies": {
