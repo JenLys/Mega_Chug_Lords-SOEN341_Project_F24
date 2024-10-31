@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { request } from "../utils"
 
 
@@ -7,7 +7,6 @@ const TeacherCourseDetail = ({course}) => {
 
   useEffect(() => {
     const getUsers =  async (data) => {
-      console.log(data)
       try {
         const response = await request("/teacher/courseDetails", "GET", data);
         if (!response.ok) {
@@ -15,7 +14,6 @@ const TeacherCourseDetail = ({course}) => {
         }
         const res =  await response.json();
         setStudents(res.students);
-        console.log(res.students);
       } catch (error) {
         console.error("Error:", error);
         

@@ -106,10 +106,9 @@ export class Db {
     return assignment;
   }
 
-  async addUserToCourse(userId, name, courseId) {
+  async addUserToCourse(userId, courseId) {
     const course = await Course.findOne({
-      name: name,
-      course_id: courseId,
+      _id: courseId,
     });
     course.student_ids.push(userId);
     await course.save();
@@ -136,7 +135,8 @@ export class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ prof_id: userId });
+
+    return await Course.find({ student_ids: { $in: userId } });
   }
 
   async getCourseDetails(courseId) {
