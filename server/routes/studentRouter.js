@@ -1,5 +1,5 @@
 import express from "express";
-import db from "../db/connection.js";
+import { initDb as db } from "../db/connection.js";
 import { validateId, validateName, validatePassword } from "./validation.js";
 import { keepKeys } from "../utils.js";
 const studentRouter = express.Router({ mergeParams: true });
