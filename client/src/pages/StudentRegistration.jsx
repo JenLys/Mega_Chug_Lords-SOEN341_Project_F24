@@ -1,18 +1,39 @@
 import "./reg.css";
 import Input from "../components/Input";
-import { Form, useForm } from "react-hook-form"
+import { useState } from "react";
+import { useForm } from "react-hook-form"
+import { request } from "../utils";
 
 const StudentRegistration = () => {
-  const { register, control, formState: { errors } } = useForm();
+  const [isRegistered, setIsRegistered] = useState(false);
 
-  return (
+  const { 
+    register,
+    handleSubmit,
+    formState: { errors } 
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await request("/student/register", "POST", data); 
+      if (!response.ok) {
+        throw new Error("Login failed. Please try again.");
+      }
+      setIsRegistered(true);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  return isRegistered ?(
+    <div>
+      <p>Registered</p>
+    </div>
+    ): (
     <div className="wrapper">
       <h2>Student Registration</h2>
-      <Form
-        action="localhost:5050/api/student/register"
-        method="post"
-        encType={"application/json"}
-        control={control}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Input
           id="user_id"
@@ -54,7 +75,7 @@ const StudentRegistration = () => {
         <div className="input-box button">
           <input type="submit" />
         </div>
-      </Form>
+      </form>
       <div className="text">
         <h3>
           Creating a <a href="/teacherreg">teacher account</a> instead?

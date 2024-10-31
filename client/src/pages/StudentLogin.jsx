@@ -1,58 +1,28 @@
 import "./reg.css";
 import Input from "../components/Input";
 import { useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../components/AuthProvider";
 
 const StudentLogin = () => {
   const {
     register,
-    control,
+    handleSubmit,
     formState: { errors },
   } = useForm();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const auth = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState((auth.storedUser && auth.storedUser.role === "student"));
   const onSubmit = async (data) => {
-    data = data.data;
-    try {
-      // Sending the form data to the backend on a specific port (e.g., port 5000)
-      const response = await fetch(
-        "http://localhost:5050/api/student/login" +
-          "?" +
-          new URLSearchParams(data).toString(),
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Login failed. Please try again.");
-      }
-
-      const result = await response.json();
-      console.log("Login successful:", result);
-      setIsLoggedIn(true);
-      // Handle successful login (e.g., redirect the user)
-    } catch (error) {
-      console.error("Error:", error);
-      // Handle login error (e.g., show an error message to the user)
-    }
+    data.role = "student";
+    auth.loginAction(data);
   };
   return isLoggedIn ? (
-    <div>
-      <p>Logged in</p>
-    </div>
+    <Navigate to="/profile" />
   ) : (
     <div className="wrapper">
       <h2>Student Login</h2>
-      <Form
-        action="localhost:5050/api/student/login"
-        method="get"
-        encType={"application/json"}
-        control={control}
-        onSubmit={onSubmit}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           id="user_id"
           placeholder="Enter your Student ID"
@@ -82,7 +52,7 @@ const StudentLogin = () => {
         <div className="input-box button">
           <input type="submit" />
         </div>
-      </Form>
+      </form>
       <div className="text">
         <h3>
           Don't have an account? <a href="/studentreg">Create one here.</a>

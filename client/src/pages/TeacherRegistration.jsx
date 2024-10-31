@@ -1,21 +1,44 @@
 import "./reg.css";
 import Input from "../components/Input";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { request } from "../utils";
 
 const TeacherRegistration = () => {
+  const [isRegistered, setIsRegistered] = useState(false);
+
   const {
     register,
-    control,
+    handleSubmit,
     formState: { errors },
   } = useForm();
-  return (
+
+  const onSubmit = async (data) => {
+    try {
+      // Sending the form data to the backend on a specific port (e.g., port 5000)
+      const response = await request("/student/register", "POST", data); 
+      if (!response.ok) {
+        throw new Error("Login failed. Please try again.");
+      }
+
+      const result = await response.json();
+      // Handle successful login (e.g., redirect the user)
+      setIsRegistered(true);
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle login error (e.g., show an error message to the user)
+    }
+  };
+
+  return isRegistered ?(
+    <div>
+      <p>Registered</p>
+    </div>
+    ): (
     <div className="wrapper">
       <h2>Teacher Registration</h2>
-      <Form
-        action="localhost:5050/api/teacher/login"
-        method="post"
-        encType={"application/json"}
-        control={control}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Input
           id="user_id"
@@ -57,7 +80,7 @@ const TeacherRegistration = () => {
         <div className="input-box button">
           <input type="submit" />
         </div>
-      </Form>
+      </form>
       <div className="text">
         <h3>
           Creating a <a href="/studentreg">student account</a> instead?
