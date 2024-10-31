@@ -2,7 +2,8 @@ import "./reg.css";
 import Input from "../components/Input";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { request } from "../utils";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../components/AuthProvider";
 
 const StudentLogin = () => {
   const {
@@ -10,24 +11,14 @@ const StudentLogin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const auth = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState((auth.storedUser && auth.storedUser.role === "student"));
   const onSubmit = async (data) => {
-    try {
-      const response = await request("/student/login", "POST", data);
-      if (response.ok) {
-        setIsLoggedIn(true);
-      } else {
-        throw new Error("Login failed. Please try again.");
-      }
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    data.role = "student";
+    auth.loginAction(data);
   };
   return isLoggedIn ? (
-    <div>
-      <p>Logged in</p>
-    </div>
+    <Navigate to="/profile" />
   ) : (
     <div className="wrapper">
       <h2>Student Login</h2>

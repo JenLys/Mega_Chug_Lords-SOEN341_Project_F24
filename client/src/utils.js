@@ -8,15 +8,16 @@ const supportedMethods = ["GET", "POST"]
 export async function request(endpoint, method, data) {
   if (!isNull(endpoint) && !isNull(method) && supportedMethods.includes(method)) {
     if (typeof endpoint === "string" && endpoint.startsWith("/")) {
+      const commonHeaders = {
+        "Content-Type": "application/json",
+      }
       switch (method) {
         case "GET":
           return await fetch(
             baseUrl + endpoint + "?" + new URLSearchParams(data).toString(),
             {
               method: method,
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: commonHeaders,
             }
           )
         case "POST":
@@ -24,9 +25,7 @@ export async function request(endpoint, method, data) {
             baseUrl + endpoint,
             {
               method: method,
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: commonHeaders,
               body: JSON.stringify(data)
             }
           )

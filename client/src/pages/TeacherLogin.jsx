@@ -2,7 +2,8 @@ import "./reg.css";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { request } from "../utils";
+import { useAuth } from "../components/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 const TeacherLogin = () => {
   const {
@@ -10,23 +11,14 @@ const TeacherLogin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const onSubmit = async (data) => {
-    try {
-      const response = await request("/teacher/login", "POST", data);
-      if (response.ok) {
-        setIsLoggedIn(true);
-      } else {
-        throw new Error("Login failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const auth = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState((auth.storedUser && auth.storedUser.role === "teacher"));
+  const onSubmit = (data) => {
+    data.role = "teacher";
+    auth.loginAction(data);
   };
   return isLoggedIn ? (
-    <div>
-      <p>Logged in</p>
-    </div>
+    <Navigate to="/profile" />
   ) : (
     <div className="wrapper">
       <h2>Teacher Login</h2>
