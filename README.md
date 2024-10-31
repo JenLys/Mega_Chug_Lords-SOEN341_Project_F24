@@ -13,7 +13,15 @@ Our solution is to provide a lightweight web app which offers a simplistic UI, e
 - Jeslyn Sorotsky (40277100) : Full Stack developer
 - Kigham Kerry Kinyuy (40207088) : Full Stack developer
 - Srabanti Mazumdar (40263255) : Full Stack developer
+
 *information about the knowledge and experience of each member can be found in the Wiki
+
+## Technologies
+- React
+- MongoDB
+- NodeJS
+- ExpressJS
+
 ## Installation
 Make sure you have node version 20 and above: [Node download](https://nodejs.org/en/download/prebuilt-installer)
 

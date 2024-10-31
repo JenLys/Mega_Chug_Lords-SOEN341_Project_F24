@@ -2,6 +2,7 @@ import "./reg.css";
 import Input from "../components/Input";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
+import { request } from "../utils";
 
 const StudentRegistration = () => {
   const [isRegistered, setIsRegistered] = useState(false);
@@ -14,29 +15,13 @@ const StudentRegistration = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Sending the form data to the backend on a specific port (e.g., port 5000)
-      const response = await fetch(
-        "http://localhost:5050/api/student/register" +
-          "?" +
-          new URLSearchParams(data).toString(),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
+      const response = await request("/student/register", "POST", data); 
       if (!response.ok) {
         throw new Error("Login failed. Please try again.");
       }
-
-      const result = await response.json();
-      // Handle successful login (e.g., redirect the user)
       setIsRegistered(true);
     } catch (error) {
       console.error("Error:", error);
-      // Handle login error (e.g., show an error message to the user)
     }
   };
 
