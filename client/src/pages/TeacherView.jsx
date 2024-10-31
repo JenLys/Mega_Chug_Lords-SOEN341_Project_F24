@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import "./teacher.css"
+
+//got an error due to useNavigate. To correct it: npm install react-router-dom@6
+
 
 function TeacherView() {
     // State variables to manage component state
@@ -12,8 +15,6 @@ function TeacherView() {
     // Get the current location from react-router
     const location = useLocation();
 
-    //Navigate function
-    const navigate = useNavigate(); //use this to send back to log in
 
     // Effect hook to fetch courses when the component mounts
     useEffect(() => {
@@ -21,10 +22,7 @@ function TeacherView() {
             try {
                 //get prof id from local storage
                 const profId = localStorage.getItem('profId');
-                if (!profId){
-                    navigate('/login'); //send back the user
-                    return;
-                }
+               
 
                 const response = await fetch(`/teacher/courses?prof_id=${profId}`);
                 const data = await response.json();
