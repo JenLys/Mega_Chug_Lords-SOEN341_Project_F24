@@ -1,0 +1,9 @@
+services:
+  - type: web # A Python web service named django-app running on a free instance
+    plan: free
+    name: review-mate
+    runtime: docker
+    repo: https://github.com/Vinuyans/Mega_Chug_Lords-SOEN341_Project_F24/tree/cicd
+    envVar:
+      - key: DB_NAME
+      - key: ATLAS_URI
