@@ -22,23 +22,23 @@ describe("Student login tests", () => {
     });
 
     test('returns true if the db returns a non-null object', async () => {
-        const data = await db.getUserLogin(id, pw);
+        const data = await db.loginUser(id, pw, "student");
         expect(data).toBeTruthy();
     });
     
     test('rejects a login attempt with an invalid username', async () => {
-        const data = await db.getUserLogin('mimimi', pw);
+        const data = await db.loginUser('mimimi', pw, "student");
         expect(data).toBeFalsy();
     });
     
     test('rejects a login attempt with an invalid password', async () => {
-        const data = await db.getUserLogin(id, "mimimi");
+        const data = await db.loginUser(id, "mimimi", "student");
         expect(data).toBeFalsy();
     });
 
     test('returns true if the db returns the correct student object', async () => {
-        const data = await db.getUserLogin(id, pw);
-    
+        const data = await db.loginUser(id, pw, "student");
+        
         expect(data).toHaveProperty('fname', 'Dent');
         expect(data).toHaveProperty('lname', 'Stue');
         expect(data).toHaveProperty('role', 'student');

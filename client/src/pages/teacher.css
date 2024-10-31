@@ -1,0 +1,46 @@
+.class-box {
+    position: relative;
+    border: 3px solid white;
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  
+  .class-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--x) var(--y), rgba(101, 170, 199, 0.9), rgba(111, 155, 175, 0) 70%);
+    transition: background 0.1s ease-out;
+    z-index: 0; /* Ensure it stays behind the text */
+  }
+  
+  .class-box:hover::before {
+    visibility: visible;
+  }
+  
+  .class-box:hover {
+    border-color: transparent;
+  }
+  
+  .class-box > * {
+    position: relative;
+    z-index: 2; /* Ensure the text is always on top */
+  }
+
+  /*From the rendered page of a singular class*/
+  .otherbtn{
+        padding: 10px 20px;
+        font-size:  16px;
+        border-radius: 5px;
+        background-color:rgb(124, 170, 255);
+        color: white;
+        border: none;
+        cursor: pointer;
+        overflow: hidden;
+  }
+  
