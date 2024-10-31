@@ -161,8 +161,8 @@ class Db {
     };
   }
 
-  async getUserLogin(userId, pw) {
-    return await User.findOne({ user_id: userId, pw: pw });
+  async loginUser(userId, pw, role) {
+    return await User.findOne({ user_id: userId, pw: pw, role: role });
   }
 
   async getUser(id) {

@@ -1,6 +1,5 @@
 import express from "express";
 import studentRouter from "./studentRouter.js";
-import db from "../db/connection.js";
 import teacherRouter from "./teacherRouter.js";
 
 const router = express.Router();
