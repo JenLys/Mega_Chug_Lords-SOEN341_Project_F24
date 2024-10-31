@@ -24,7 +24,7 @@ function App() {
           <Route path="/teacherreg" element={<TeacherRegistration />} />
           <Route path="/studentlogin" element={<StudentLogin />} />
           <Route path="/teacherlogin" element={<TeacherLogin />} />
-          <Route path="/coursepage" element={<CoursePage />} />
+          <Route path="/student/courses" element={<CoursePage />} />
         </Routes>
       </main>
     </div>
