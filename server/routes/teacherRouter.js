@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/connection.js"
-import { validateId, validateName, validatePassword } from "./validation.js";
+import { validateNumber, validateId, validateName, validatePassword } from "./validation.js";
 const teacherRouter = express.Router({ mergeParams: true })
 
 teacherRouter.get("/login", async (req, res) => {
@@ -44,6 +44,31 @@ teacherRouter.post("/register", async (req, res) => {
     }
   }
 })
+
+teacherRouter.post("/create-courses", async (req, res) => {
+  const { courseId, number, dept, user_id} = req.query; // Extract values from req.query
+
+  if (courseId && number && dept && user_id) { // Check if all required fields are present
+    const isNumberValid = validateNumber(number);
+    if (!isNumberValid) {
+      res.status(400).json({ message: "Invalid Number. Must be between 3 and 4 digits." });
+    } else {
+      try {
+        const data = await db.addCourse(courseId, number, dept, user_id, null, null);
+        if (!data) {
+          res.status(400).json({ message: "Could not register new course" });
+        } else {
+          res.status(200).json(req.body);
+        }
+      } catch (error) {
+        res.status(500).json({ message: "Server error", error });
+      }
+    }
+  } else {
+    res.status(400).json({ message: "Missing required fields" });
+  }
+});
+
 
 teacherRouter.use(function (_, res) {
   res.status(404).send("NOT FOUND");

@@ -18,3 +18,7 @@ export function validatePassword(pw) {
     /[^A-Za-z0-9]/.test(pw) &&
     pw.length >= 10;
 }
+
+export function validateNumber(number) {
+  return !isNull(number) && /^[0-9]{3,4}$/.test(String(number));
+}
