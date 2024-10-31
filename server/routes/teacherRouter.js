@@ -10,17 +10,19 @@ const validateProfId = (profId) => {
   if (!profId || typeof profId !== 'string') {
     return false;
   }
-  return profId.length >= 8;
+  return profId.length >= 8; //prof id should have at least 8 characters
 };
 
 
 teacherRouter.get("/login", async (req, res) => {
-  if (req.query != null && req.query.user_id != null && req.query) {
+  if (req.query != null && req.query.user_id != null && req.query.pw != null) {
     await db.getUserLogin(req.query.user_id, req.query.pw)
       .then(data => {
         if (data == null) {
           res.status(400).json({ message: "Invalid login information" })
         } else {
+          //Store prof id in session (if successful login)
+          req.session.profId = data.prof_id;
           res.status(200).json(req.query)
         }
       })
@@ -32,7 +34,8 @@ teacherRouter.get("/login", async (req, res) => {
 //Get the courses
 teacherRouter.get("/courses", async (req, res) => {
   try {
-    const profId = req.query.prof_id;
+    //get prof id from query or session
+    const profId = req.query.prof_id || req.session.profId;
 
     if (!validateProfId(profId)) { //validation
       return res.status(400).json({
@@ -77,6 +80,7 @@ teacherRouter.post("/register", async (req, res) => {
   }
 })
 
+//default
 teacherRouter.use(function (_, res) {
   res.status(404).send("NOT FOUND");
 });
