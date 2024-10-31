@@ -4,14 +4,13 @@ import { validateId, validateName, validatePassword } from "./validation.js";
 const studentRouter = express.Router({ mergeParams: true })
 
 studentRouter.get("/login", async (req, res) => {
-  console.log(req);
-  if (req.query != null && req.query.user_id != null && req.query) {
-    await db.getUserLogin(req.query.user_id, req.query.pw)
+  if (req.query != null && req.query.user_id != null && req.query.pw != null) {
+    await db.loginUser(req.query.user_id, req.query.pw, "student")
       .then(data => {
         if (data == null) {
           res.status(400).json({ message: "Invalid login information" })
         } else {
-          res.status(200).json(req.query)
+          res.status(200).json(keepKeys(data, ["fname", "lname", "role", "user_id"]))
         }
       })
   } else {
