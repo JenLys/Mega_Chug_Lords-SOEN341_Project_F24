@@ -2,7 +2,8 @@ function isNull(value) {
   return value === null || value === undefined;
 };
 const PORT = 5050
-const baseUrl = "http://localhost:" + PORT + "/api"
+const URL = import.meta.env.PROD_URL || "http://localhost:"
+const baseUrl = URL + PORT + "/api"
 const supportedMethods = ["GET", "POST"]
 
 export async function request(endpoint, method, data) {
