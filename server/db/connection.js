@@ -120,6 +120,47 @@ class Db {
     await group.save();
   }
 
+  // Returns all courses that a teacher is teaching
+  async getTeacherCourses(userId) {
+    const isTeacher = await User.findOne({ user_id: userId, role: "teacher" });
+    if (isTeacher == null) {
+      throw new Error("User is not a teacher");
+    }
+    return await Course.find({ prof_id: userId });
+  }
+
+  // Returns all courses that a student is enrolled in
+  async getStudentCourses(userId) {
+    const isStudent = await User.findOne({ user_id: userId, role: "student" });
+    if (isStudent == null) {
+      throw new Error("User is not a student");
+    }
+    return await Course.find({ prof_id: userId });
+  }
+
+  async getCourseDetails(courseId) {
+    const isCourse = await Course.findOne({ _id: courseId });
+    if (isCourse == null) {
+      throw new Error("Course not found");
+    }
+    const course = await Course.findOne({ _id: courseId });
+    const groups = await Group.find({ course_id: courseId });
+    const students = await User.find({
+      user_id: { $in: course.student_ids },
+      role: "student",
+    });
+    const teacher = await User.findOne({
+      user_id: course.prof_id,
+      role: "teacher",
+    });
+    return {
+      course: course,
+      groups: groups,
+      students: students,
+      teacher: teacher,
+    };
+  }
+
   async loginUser(userId, pw, role) {
     return await User.findOne({ user_id: userId, pw: pw, role: role });
   }

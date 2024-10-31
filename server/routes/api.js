@@ -30,7 +30,16 @@ router.use("/teacher", teacherRouter);
     "12345678"
   );
   db.addReviewToGroup(group._id, "12345678", assignment._id, 2);
+  const courses = await db.getTeacherCourses("87654321");
+  console.log(courses);
+  for (const course of courses) {
+    const ids = course.student_ids;
+    console.log(ids);
+    for (const id of ids) {
+      console.log(await db.getUser(id));
+    }
+  }
   res.status(200).json({ message: "done" });
-}); */
+});*/
 
 export default router;
