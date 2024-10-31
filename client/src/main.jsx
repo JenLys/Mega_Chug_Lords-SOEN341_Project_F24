@@ -12,6 +12,7 @@ import StudentLogin from "./pages/StudentLogin";
 import TeacherLogin from "./pages/TeacherLogin";
 import Login from "./pages/Login";
 import UserView from "./pages/UserView";
+import AddCourse from "./pages/AddCourse";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <UserView />,
+      },
+      {
+        path: "/add-course",
+        element: <AddCourse />,
       },
     ],
   },

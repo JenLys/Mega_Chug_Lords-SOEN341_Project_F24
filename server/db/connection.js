@@ -134,7 +134,8 @@ class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ prof_id: userId });
+
+    return await Course.find({ student_ids: { $in: userId } });
   }
 
   async getCourseDetails(courseId) {

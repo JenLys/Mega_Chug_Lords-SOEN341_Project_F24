@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import UserView from "./pages/UserView";
 import "./App.css";
 import AuthProvider from "./components/AuthProvider";
+import AddCourse from "./pages/AddCourse";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/teacherreg" element={<TeacherRegistration />} />
             <Route path="/studentlogin" element={<StudentLogin />} />
             <Route path="/teacherlogin" element={<TeacherLogin />} />
+            <Route path="/add-course" element={<AddCourse/>} />
           </Routes>
         </main>
       </div>

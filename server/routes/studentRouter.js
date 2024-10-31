@@ -22,6 +22,20 @@ studentRouter.post("/login", async (req, res) => {
   }
 });
 
+studentRouter.get("/courses", async (req, res) => {
+  if (req.query != null && req.query.student_id != null) {
+    await db.getStudentCourses(req.query.student_id).then((data) => {
+      if (data == null) {
+        res.status(400).json({ message: "Could not get courses" });
+      } else {
+        res.status(200).json(data);
+      }
+    });
+  } else {
+    res.status(400).json({ message: "No student information found" });
+  }
+});
+
 studentRouter.get("/enroll-course", async (req, res) => {
   if (
     req.query != null &&
@@ -39,6 +53,7 @@ studentRouter.get("/enroll-course", async (req, res) => {
       .json({ message: "No course information or student information found" });
   }
 });
+
 studentRouter.post("/register", async (req, res) => {
   if (
     req.body != null &&
