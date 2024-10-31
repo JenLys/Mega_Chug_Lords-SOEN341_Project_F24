@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import "./reg.css";
+import "../pages/reg.css";
 
 function CreateCourse() {
-    const [className, setClassName] = useState("");
-    const [courseCode, setCourseCode] = useState("");
-    const [maxParticipants, setMaxParticipants] = useState("");
-    const [selectedSemester, setSelectedSemester] = useState("fall");
+    const [courseId, setCourseId] = useState("");
+    const [number, setNumber] = useState("");
+    const [dept, setDept] = useState("");
+    const [user_id, setUserId] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -16,41 +16,37 @@ function CreateCourse() {
                 {/*Specific length for title, requirements for course code, max participants (make sure the number is higher than 1), semester offered dropdown? */}
                 <div className='form-box'>
                 <label>
-                    Course title: 
+                    Course Id: 
                     <input 
                     type="text" 
-                    value={className}
-                    onChange={(e) => setClassName(e.target.value)}
+                    value={courseId}
+                    onChange={(e) => setCourseId(e.target.value)}
                     />
                 </label>
                 <br></br>
                 <label>
-                    Course code: 
+                    Course Number: 
                     <input type="text" 
-                    value={courseCode}
-                    onChange={(e) => setCourseCode(e.target.value)} 
+                    value={number}
+                    onChange={(e) => setNumber(e.target.value)} 
                     />
                 </label>
                 <br></br>
                 <label>
-                    Maximum participants: 
-                    <input type="number" min="1" max="600"
-                    value={maxParticipants}
-                    onChange={(e) => setMaxParticipants(e.target.value)}
+                    Department: 
+                    <input type="text"
+                    value={dept}
+                    onChange={(e) => setDept(e.target.value)}
                     />
                 </label>
                 <br></br>
                 <label>
-                    Semester offered: 
-                    <select 
-                    name="selectedSemester" 
-                    id="selectedSemester"
-                    value={selectedSemester}
-                    onChange={(e) => setSelectedSemester(e.target.value)}>
-                        <option value="fall">Fall</option>
-                        <option value="winter">Winter</option>
-                        <option value="summer">Summer</option>
-                    </select>
+                    User Id: 
+                    <input type="text" 
+                    name="user_id" 
+                    value={user_id}
+                    onChange={(e) => setUserId(e.target.value)}
+                    />
                 </label>
                
                <br></br>
