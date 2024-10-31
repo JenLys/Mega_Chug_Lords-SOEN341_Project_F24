@@ -4,9 +4,9 @@ import { validateId, validateName, validatePassword } from "./validation.js";
 import { keepKeys } from "../utils.js";
 const teacherRouter = express.Router({ mergeParams: true })
 
-teacherRouter.get("/login", async (req, res) => {
-  if (req.query != null && req.query.user_id != null && req.query.pw != null) {
-    await db.loginUser(req.query.user_id, req.query.pw, "teacher")
+teacherRouter.post("/login", async (req, res) => {
+  if (req.body != null && req.body.user_id != null && req.body.pw != null) {
+    await db.loginUser(req.body.user_id, req.body.pw, "teacher")
       .then(data => {
         if (data == null) {
           res.status(400).json({ message: "Invalid login information" })

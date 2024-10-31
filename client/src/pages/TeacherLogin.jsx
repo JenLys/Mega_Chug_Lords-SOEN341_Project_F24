@@ -13,7 +13,7 @@ const TeacherLogin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const onSubmit = async (data) => {
     try {
-      const response = await request("/teacher/login", "GET", data);
+      const response = await request("/teacher/login", "POST", data);
       if (response.ok) {
         setIsLoggedIn(true);
       } else {
