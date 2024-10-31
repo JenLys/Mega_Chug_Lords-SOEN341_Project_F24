@@ -1,6 +1,6 @@
 /**
- * Removes the given keys from the given object.
- * Uses Reflect.deleteProperty, so no error will appear if the key is not in the object
+ * Returns new object with only the keys specified. If a key is not found 
+ * then it is ignored
  * @export
  * @param {Object} obj Object 
  * @param {Array<String>} props keys to remove from object
