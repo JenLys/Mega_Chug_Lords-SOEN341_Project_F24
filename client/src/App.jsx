@@ -8,6 +8,7 @@ import StudentRegistration from "./pages/StudentRegistration";
 import TeacherRegistration from "./pages/TeacherRegistration";
 import StudentLogin from "./pages/StudentLogin";
 import TeacherLogin from "./pages/TeacherLogin";
+import TeacherView from "./pages/TeacherView";
 import Login from "./pages/Login";
 import UserView from "./pages/UserView";
 import "./App.css";
@@ -29,6 +30,7 @@ function App() {
             <Route path="/teacherreg" element={<TeacherRegistration />} />
             <Route path="/studentlogin" element={<StudentLogin />} />
             <Route path="/teacherlogin" element={<TeacherLogin />} />
+            <Route path="/teacherview" element={<TeacherView />} />
           </Routes>
         </main>
       </div>
