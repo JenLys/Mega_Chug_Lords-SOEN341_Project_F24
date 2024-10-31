@@ -1,8 +1,9 @@
 import express from "express";
 import db from "../db/connection.js"
-import { validateNumber, validateId, validateName, validatePassword } from "./validation.js";
+import { validateNumber, validateId, validateName, validatePassword, validateDepartment, validateCourseId } from "./validation.js";
 const teacherRouter = express.Router({ mergeParams: true })
 
+//route to fetch credentials when a user with role 'teacher' logs in
 teacherRouter.get("/login", async (req, res) => {
   if (req.query != null && req.query.user_id != null && req.query) {
     await db.getUserLogin(req.query.user_id, req.query.pw)
@@ -18,6 +19,7 @@ teacherRouter.get("/login", async (req, res) => {
   }
 })
 
+//route to register a new teacher user
 teacherRouter.post("/register", async (req, res) => {
   if (req.query != null && req.query.fname != null && req.query.lname != null && req.query.user_id != null && req.query.pw != null) {
     const isPasswordValid = validatePassword(req.query.pw)
@@ -45,13 +47,24 @@ teacherRouter.post("/register", async (req, res) => {
   }
 })
 
+//route to create a new course in the db
 teacherRouter.post("/create-courses", async (req, res) => {
-  const { courseId, number, dept, user_id} = req.query; // Extract values from req.query
+  const { courseId, number, dept, user_id} = req.query; //Extract all the values from req.query
 
   if (courseId && number && dept && user_id) { // Check if all required fields are present
-    const isNumberValid = validateNumber(number);
-    if (!isNumberValid) {
-      res.status(400).json({ message: "Invalid Number. Must be between 3 and 4 digits." });
+    const isNumberValid = validateNumber(number); 
+    const isDepartmentValid = validateDepartment(dept);
+    const isCourseIdValid = validateCourseId(courseId);
+    const isUserValid = validateId(user_id);
+    
+    if (!isNumberValid) { 
+      res.status(400).json({ message: "Invalid Number. Must be between 3 and 4 digits." })
+    } else if (!isDepartmentValid) {
+      res.status(400).json({ message: "Invalid Department. Must be between 2 and 20 characters." })
+    } else if (!isCourseIdValid) {
+      res.status(400).json({ message: "Invalid Course ID. Must be between 2 and 20 characters." })
+    } else if (!isUserValid) {
+      res.status(400).json({ message: "Invalid User ID." })
     } else {
       try {
         const data = await db.addCourse(courseId, number, dept, user_id, null, null);

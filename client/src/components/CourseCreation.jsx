@@ -10,10 +10,10 @@ function CreateCourse() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-      }
+    }
+    //Form for course creation: includes inputs for the course id, course number, department, and the user id of the teacher
     return(
         <form onSubmit={handleSubmit}>
-                {/*Specific length for title, requirements for course code, max participants (make sure the number is higher than 1), semester offered dropdown? */}
                 <div className='form-box'>
                 <label>
                     Course Id: 
@@ -52,7 +52,6 @@ function CreateCourse() {
                <br></br>
                 <button className="input-box button" type="submit">Submit</button>
                 </div>
-                
             </form>
         )
     }
