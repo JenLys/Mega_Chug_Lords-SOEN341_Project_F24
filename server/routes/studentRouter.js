@@ -1,6 +1,8 @@
 import express from "express";
 import db from "../db/connection.js";
+import Course from "../models/Course.js";
 import { validateId, validateName, validatePassword } from "./validation.js";
+
 const studentRouter = express.Router({ mergeParams: true });
 
 studentRouter.get("/login", async (req, res) => {
@@ -30,6 +32,7 @@ studentRouter.post("/register", async (req, res) => {
     const isFirstNameValid = validateName(req.query.fname);
     const isLastNameValid = validateName(req.query.lname);
     const isUserValid = validateId(req.query.user_id);
+
     if (!isFirstNameValid) {
       res.status(400).json({
         message:
@@ -79,11 +82,8 @@ studentRouter.get("/courses", async (req, res) => {
   }
 
   try {
-    // Fetch courses for the student by user_id, assuming user_id is a field in your student data
-    const courses = await Course.find(
-      { student_id: user_id },
-      "course_id number"
-    ); // Adjust field names as per your schema
+    // Fetch courses for the student by user_id using the custom static method
+    const courses = await Course.findCoursesByStudentId(user_id);
 
     if (!courses || courses.length === 0) {
       return res
@@ -92,18 +92,19 @@ studentRouter.get("/courses", async (req, res) => {
     }
 
     // Format the courses for frontend display (e.g., with random color)
-    const formattedCourses = courses.map((course) => ({
-      id: course.course_id,
-      name: `${course.number}`, // Customize as needed
-      color: getRandomColor(), // Optional: Add color dynamically if desired
-    }));
+    // const formattedCourses = courses.map((course) => ({
+    //   id: course.course_id,
+    //   name: `${course.number}`, // Customize as needed
+    //   color: getRandomColor(), // Optional: Add color dynamically if desired
+    // }));
 
-    res.status(200).json(formattedCourses);
+    //res.status(200).json(formattedCourses);
+    res.status(200).json(courses);
   } catch (error) {
     console.error("Error fetching courses:", error);
     res.status(500).json({ message: "Error fetching courses" });
   }
-});
+}); // <-- Added closing brace here
 
 studentRouter.use(function (_, res) {
   res.status(404).send("NOT FOUND");

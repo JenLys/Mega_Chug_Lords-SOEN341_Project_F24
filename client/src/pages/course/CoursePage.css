@@ -44,6 +44,26 @@
 }
 */
 .courseLink {
+  @apply no-underline; /* Removes underline from links */
+}
+
+.course {
+  @apply w-[200px] h-[180px] flex items-center justify-center rounded-md text-white font-bold transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-md;
+}
+
+.courseName {
+  @apply text-lg; /* Font size for course name */
+}
+
+.addButton {
+  @apply mt-5 px-5 py-2 text-base cursor-pointer bg-blue-600 text-white rounded transition-colors duration-300 ease-out;
+}
+
+.addButton:hover {
+  @apply bg-blue-700; /* Darker background on hover */
+}
+
+/* .courseLink {
   text-decoration: none;
 }
 
@@ -80,4 +100,4 @@
 
 .addButton:hover {
   background-color: #0056b3;
-}
+} */

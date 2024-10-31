@@ -10,7 +10,7 @@ import StudentRegistration from "./pages/StudentRegistration";
 import TeacherRegistration from "./pages/TeacherRegistration";
 import StudentLogin from "./pages/StudentLogin";
 import TeacherLogin from "./pages/TeacherLogin";
-import CoursePage from "./pages/CoursePage";
+import CoursePage from "./pages/course/StudentCourseView";
 
 const router = createBrowserRouter([
   {
