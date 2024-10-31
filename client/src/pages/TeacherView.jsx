@@ -12,12 +12,20 @@ function TeacherView() {
     // Get the current location from react-router
     const location = useLocation();
 
+    //Navigate function
+    const navigate = useNavigate(); //use this to send back to log in
+
     // Effect hook to fetch courses when the component mounts
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                // Replace PROF ID with professor ID!!!!!!!!!!!!!!!!!!!!!!!
-                const profId = "PROF ID HERE";
+                //get prof id from local storage
+                const profId = localStorage.getItem('profId');
+                if (!profId){
+                    navigate('/login'); //send back the user
+                    return;
+                }
+
                 const response = await fetch(`/teacher/courses?prof_id=${profId}`);
                 const data = await response.json();
                 setCourses(data); // Update the courses state with fetched data
@@ -43,7 +51,7 @@ function TeacherView() {
 
     // Function to handle course selection
     const handleClick = (course) => {
-        setSelectedCourse(course.name);
+        setSelectedCourse(course.number);
     };
 
     return (
