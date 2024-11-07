@@ -1,38 +1,26 @@
 import { Routes, Route } from "react-router-dom";
-// import { BrowserRouter as Routes, Route } from 'react-router-dom';
 import Welcome from "./pages/Welcome";
 import About from "./pages/About";
 import HowToUse from "./pages/HowToUse";
 import Navbar from "./components/Navbar";
-import StudentRegistration from "./pages/StudentRegistration";
-import TeacherRegistration from "./pages/TeacherRegistration";
-import StudentLogin from "./pages/StudentLogin";
-import TeacherLogin from "./pages/TeacherLogin";
-import TeacherView from "./pages/TeacherView";
 import Login from "./pages/Login";
-import UserView from "./pages/UserView";
-import "./App.css";
 import AuthProvider from "./components/AuthProvider";
 import AddCourse from "./pages/AddCourse";
+import Registration from "./pages/Registration";
 
 function App() {
   return (
     <AuthProvider>
-      <div>
+      <div className="w-screen h-screen flex flex-col bg-[#598DA4]/[0.47] font-display">
         <Navbar />
-        <main>
+        <main className="w-full h-full flex flex-row items-center justify-center">
           <Routes>
-            <Route path="*" element={<Welcome />} />
+            <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<UserView />} />
             <Route path="/about" element={<About />} />
             <Route path="/how-to-use" element={<HowToUse />} />
-            <Route path="/studentreg" element={<StudentRegistration />} />
-            <Route path="/teacherreg" element={<TeacherRegistration />} />
-            <Route path="/studentlogin" element={<StudentLogin />} />
-            <Route path="/teacherlogin" element={<TeacherLogin />} />
-            <Route path="/add-course" element={<AddCourse/>} />
-            <Route path="/teacherview" element={<TeacherView />} />
+            <Route path="/registration" element={<Registration />} />
+            <Route path="/add-course" element={<AddCourse />} />
           </Routes>
         </main>
       </div>

@@ -9,6 +9,7 @@ const AuthProvider = ({ children }) => {
   const [storedUser, setStoredUser] = useState(
     JSON.parse(localStorage.getItem("user")) || ""
   );
+  const [isLoggedIn, setIsLoggedIn] = useState(storedUser != "")
   const navigate = useNavigate();
   const loginAction = async (data) => {
     try {
@@ -23,15 +24,13 @@ const AuthProvider = ({ children }) => {
             if (res.ok) {
               return res.json();
             } else {
-              throw new Error(
-                `Status: ${res.status}, ${res.statusText}, ${res}`
-              );
+              return Promise.reject({message: "Invalid login information"})
             }
           })
           .then((data) => {
             setUser(data);
             localStorage.setItem("user", JSON.stringify(data));
-            navigate("/profile");
+            navigate("/");
           });
       }
     } catch (err) {
@@ -42,13 +41,13 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     setUser(null);
     setStoredUser("");
-    localStorage.removeItem("site");
-    navigate("/login");
+    localStorage.removeItem("user");
+    navigate("/");
   };
 
   return (
     <AuthContext.Provider
-      value={{ storedUser: storedUser, user, loginAction, logOut }}
+      value={{ storedUser: storedUser, isLoggedIn: isLoggedIn, user, loginAction, logOut }}
     >
       {children}
     </AuthContext.Provider>

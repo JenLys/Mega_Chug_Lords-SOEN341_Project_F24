@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import "./teacher.css";
 import { request } from "../utils";
 import { useAuth } from "../components/AuthProvider";
-
-//got an error due to useNavigate. To correct it: npm install react-router-dom@6
 
 function TeacherView() {
   // State variables to manage component state
@@ -55,7 +52,6 @@ function TeacherView() {
   return (
     <div>
       {selectedCourse ? (
-        // Render when a course is selected
         <div>
           <h1
             style={{
@@ -67,7 +63,6 @@ function TeacherView() {
           >
             {selectedCourse}
           </h1>
-
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="otherbtn">Create Teams</button>
             <button className="otherbtn">View Teams</button>
@@ -90,7 +85,6 @@ function TeacherView() {
           </div>
         </div>
       ) : (
-        // Render when no course is selected
         <div>
           <h1
             style={{ fontSize: "40px", color: "white", marginBottom: "20px" }}

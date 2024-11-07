@@ -1,39 +1,42 @@
-import './styles.css';
-import video from '../assets/video.webm'
-import {useAuth} from '../components/AuthProvider';
-import StudentView from '../components/StudentView';
+import video from "../assets/video.webm";
+import { useEffect } from "react";
+import { useAuth } from "../components/AuthProvider";
+import StudentView from "../components/StudentView";
+import TeacherView from "./TeacherView";
 
 function Welcome() {
-  const user = useAuth().storedUser
-  if(user.role === "teacher"){
+  const auth = useAuth();
+  const user = auth.storedUser;
+  const isLoggedIn = auth.isLoggedIn;
+  console.log("welcome user", user);
+
+  useEffect(() => {}, [isLoggedIn]);
+
+  if (user.role === "teacher") {
+    return <TeacherView />;
+  } else if (user.role === "student") {
+    return <StudentView user={user} />;
+  } else {
     return (
-      <></>
-    )
-  } else if(user.role === "student"){
-    return (
-      <StudentView user={user}/>
-    )
-  }else{
-    return (
-      <div className="page">
-        
-        <div className="vid">
-        <video src={video} type="video/webm" atl="background video" autoPlay loop muted/>
-        </div>
-        
-        <div className="content">
-          <h1>ReviewMate</h1>
-          <div className="button-container">
-            <button className="button"><a href="/teacherlogin">Login as a Teacher</a></button>
-            <button className="button"><a href="/studentlogin">Login as a Student</a></button>
-          </div>
-  
-          <p className="create-link"><a href="/studentreg" className="link">Don't have an account? Create one</a></p>
+      <div className="w-full h-full bg-[#598da478] flex align-middle justify-center">
+        <div className="pt-10 flex flex-col *:self-center gap-8 text-center ">
+          <h1 className="text-8xl font-semibold text-white">ReviewMate</h1>
+          <a
+            className="w-fit text-xl border-solid border-black border-[3px] ease-in duration-50 p-3 rounded-xl hover:invert hover:bg-white"
+            href="/login"
+          >
+            Login
+          </a>
+          <a
+            className="w-fit text-xl border-solid border-black border-[3px] ease-in duration-50 p-3 rounded-xl hover:invert hover:bg-white"
+            href="/registration"
+          >
+            Register
+          </a>
         </div>
       </div>
     );
   }
-  
 }
 
 export default Welcome;

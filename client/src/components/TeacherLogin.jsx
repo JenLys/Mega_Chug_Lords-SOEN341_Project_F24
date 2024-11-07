@@ -1,8 +1,7 @@
-import "./reg.css";
-import Input from "../components/Input";
+import Input from "./Input";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useAuth } from "../components/AuthProvider";
+import { useAuth } from "./AuthProvider";
 import { Navigate } from "react-router-dom";
 
 const TeacherLogin = () => {
@@ -12,17 +11,23 @@ const TeacherLogin = () => {
     formState: { errors },
   } = useForm();
   const auth = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState((auth.storedUser && auth.storedUser.role === "teacher"));
-  const onSubmit = (data) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    auth.isLoggedIn && auth.storedUser.role === "teacher"
+  );
+  const onSubmit = async (data) => {
     data.role = "teacher";
-    auth.loginAction(data);
+    await auth.loginAction(data).catch((res) => {} /* do nothing */);
+    setIsLoggedIn(auth.isLoggedIn);
   };
   return isLoggedIn ? (
-    <Navigate to="/profile" />
+    <Navigate to="/" />
   ) : (
-    <div className="wrapper">
-      <h2>Teacher Login</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="bg-[#6681a8] rounded-lg p-5 flex flex-col align-middle gap-4 text-center">
+      <h2 className="text-center text-white text-3xl">Teacher Login</h2>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-3 *:flex *:justify-between *:gap-6"
+      >
         <Input
           id="user_id"
           placeholder="Enter your Teacher ID"
@@ -46,15 +51,20 @@ const TeacherLogin = () => {
           }}
         />
         {errors?.pw?.message && <p>{errors.pw.message}</p>}
-        <div className="input-box button">
-          <input type="submit" />
-        </div>
+        <input
+          type="submit"
+          className="text-m text-center border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
+        />
       </form>
-      <div className="text">
-        <h3>
-          Don't have an account? <a href="/teacherreg">Create one here.</a>
-        </h3>
-      </div>
+      <h3>
+        Don't have an account?{" "}
+        <a
+          className="border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
+          href="/registration"
+        >
+          Create one here.
+        </a>
+      </h3>
     </div>
   );
 };
