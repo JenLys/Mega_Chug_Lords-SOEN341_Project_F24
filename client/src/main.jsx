@@ -7,7 +7,6 @@ import Welcome from "./pages/Welcome";
 import About from "./pages/About";
 import HowToUse from "./pages/HowToUse";
 import Login from "./pages/Login";
-import AddCourse from "./pages/AddCourse";
 import Registration from "./pages/Registration";
 
 const router = createBrowserRouter([
@@ -34,11 +33,7 @@ const router = createBrowserRouter([
       {
         path: "/registration",
         element: <Registration />,
-      },
-      {
-        path: "/add-course",
-        element: <AddCourse />,
-      },
+      }
     ],
   },
 ]);

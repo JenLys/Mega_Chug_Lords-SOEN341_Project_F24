@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { request } from "../utils";
-import { useAuth } from "../components/AuthProvider";
+import { request } from "../../utils";
+import { useAuth } from "../AuthProvider";
+import Modal from "@mui/material/Modal";
+import TeacherAddCourse from "./TeacherAddCourse";
 
 function TeacherView() {
   // State variables to manage component state
@@ -12,8 +14,9 @@ function TeacherView() {
   const user = useAuth().storedUser;
   // Get the current location from react-router
   const location = useLocation();
+  const [isAddingCourse, setIsAddingCourse] = useState(false);
 
-  if (!user || user.role != "teacher") return <Navigate to="/teacherlogin" />;
+  if (!user || user.role != "teacher") return <Navigate to="/login" />;
 
   // Effect hook to fetch courses when the component mounts
   useEffect(() => {
@@ -36,6 +39,10 @@ function TeacherView() {
     setIsHovered((prevState) => ({ ...prevState, [index]: true }));
   };
 
+  const handleCourseAddition = (newCourse) => {
+    setCourses([...courses, newCourse]);
+  };
+
   // Function to clear hover effect
   const handleUnhover = (index) => {
     setIsHovered((prevState) => ({
@@ -46,8 +53,11 @@ function TeacherView() {
 
   // Function to handle course selection
   const handleClick = (course) => {
-    setSelectedCourse(course.number);
+    setSelectedCourse(course);
   };
+
+  const handleOpen = () => setIsAddingCourse(true);
+  const handleClose = () => setIsAddingCourse(false);
 
   return (
     <div>
@@ -61,7 +71,7 @@ function TeacherView() {
               fontWeight: "bold",
             }}
           >
-            {selectedCourse}
+            {selectedCourse.dept} {selectedCourse.number}
           </h1>
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="otherbtn">Create Teams</button>
@@ -85,35 +95,36 @@ function TeacherView() {
           </div>
         </div>
       ) : (
-        <div>
-          <h1
-            style={{ fontSize: "40px", color: "white", marginBottom: "20px" }}
-          >
-            Welcome, here are your courses!
+        <div className="flex flex-col gap-5 justify-around">
+          <h1 className="text-4xl">
+            Welcome {user.fname} {user.lname}, here are your courses!
           </h1>
-          <br />
-          <div style={{ display: "flex", gap: "20px" }}>
+          <button className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpen();
+            }}
+          >
+            Add course
+          </button>
+          <Modal open={isAddingCourse} onClose={handleClose}>
+            <TeacherAddCourse
+              handleClose={handleClose}
+              addNewCourse={handleCourseAddition}
+            />
+          </Modal>
+          <div className="grid grid-cols-4 grid-flow-row gap-3">
             {courses.map((course, index) => (
               <div
                 key={index}
-                className="class-box"
-                style={{
-                  width: "150px",
-                  height: "100px",
-                  backgroundColor: "transparent",
-                  border: "3px solid white",
-                  borderRadius: 7,
-                  textAlign: "center",
-                  lineHeight: "100px",
-                  fontSize: "18px",
-                  color: "white",
-                  position: "relative",
-                }}
+                className="border-4 rounded-md p-4 border-[#49618e] text-[#49618e] text-center text-2xl"
                 onClick={() => handleClick(course)}
                 onMouseOver={() => handleHover(index)}
                 onMouseOut={() => handleUnhover(index)}
               >
-                <span>{course.number}</span> {/*course name from db*/}
+                <span className="font-bold">
+                  {course.dept} {course.number}
+                </span>
               </div>
             ))}
           </div>

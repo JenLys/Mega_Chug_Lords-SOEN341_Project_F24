@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthProvider";
 import { useState } from "react";
-import TeacherLogin from "../components/TeacherLogin";
-import StudentLogin from "../components/StudentLogin";
+import TeacherLogin from "../components/teacher/TeacherLogin";
+import StudentLogin from "../components/student/StudentLogin";
 
 export default function Login() {
   const [isTeacherLogin, setIsTeacherLogin] = useState(false);

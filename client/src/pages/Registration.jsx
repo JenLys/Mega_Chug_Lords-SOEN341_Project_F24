@@ -1,6 +1,6 @@
 import { useState } from "react";
-import TeacherRegistration from "../components/TeacherRegistration";
-import StudentRegistration from "../components/StudentRegistration";
+import TeacherRegistration from "../components/teacher/TeacherRegistration";
+import StudentRegistration from "../components/student/StudentRegistration";
 
 export default function Registration() {
   const [isTeacherRegistering, setIsTeacherRegistering] = useState(false);
@@ -22,7 +22,7 @@ export default function Registration() {
         </button>
       </div>
     );
-  } else if(isStudentRegistering) {
+  } else if (isStudentRegistering) {
     return (
       <div className="flex flex-col">
         <StudentRegistration />

@@ -1,21 +1,20 @@
 import video from "../assets/video.webm";
 import { useEffect } from "react";
 import { useAuth } from "../components/AuthProvider";
-import StudentView from "../components/StudentView";
-import TeacherView from "./TeacherView";
+import StudentView from "../components/student/StudentView";
+import TeacherView from "../components/teacher/TeacherView";
 
 function Welcome() {
   const auth = useAuth();
   const user = auth.storedUser;
   const isLoggedIn = auth.isLoggedIn;
-  console.log("welcome user", user);
 
   useEffect(() => {}, [isLoggedIn]);
 
   if (user.role === "teacher") {
     return <TeacherView />;
   } else if (user.role === "student") {
-    return <StudentView user={user} />;
+    return <StudentView />;
   } else {
     return (
       <div className="w-full h-full bg-[#598da478] flex align-middle justify-center">

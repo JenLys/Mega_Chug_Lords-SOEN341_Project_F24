@@ -3,6 +3,7 @@ import studentRouter from "./studentRouter.js";
 import teacherRouter from "./teacherRouter.js";
 import { initDb as db } from "../db/connection.js";
 import Course from "../db/schemas/course.js";
+import coursesRouter from "./coursesRouter.js";
 
 const router = express.Router();
 
@@ -11,12 +12,7 @@ router.use(express.urlencoded({ extended: true }));
 
 router.use("/student", studentRouter);
 router.use("/teacher", teacherRouter);
-
-router.get("/all-courses", async (req, res) => {
-  await db.getAll(Course).then((data) => {
-    res.status(200).json(data);
-  });
-});
+router.use("/courses", coursesRouter)
 
 // leaving here as an example of how to use the db functions
 /* router.get("/test", async (req, res) => {

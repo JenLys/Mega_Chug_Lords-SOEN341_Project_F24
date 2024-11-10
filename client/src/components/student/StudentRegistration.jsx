@@ -1,6 +1,6 @@
-import Input from "./Input";
+import Input from "../Input";
 import { useForm } from "react-hook-form";
-import { request } from "../utils";
+import { request } from "../../utils";
 import { useNavigate } from "react-router-dom";
 
 const StudentRegistration = () => {

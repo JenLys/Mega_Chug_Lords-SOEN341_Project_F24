@@ -1,10 +1,10 @@
-import Input from "./Input";
-import { useForm } from "react-hook-form";
+import Input from "../Input";
 import { useState } from "react";
-import { useAuth } from "./AuthProvider";
+import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../AuthProvider";
 
-const TeacherLogin = () => {
+const StudentLogin = () => {
   const {
     register,
     handleSubmit,
@@ -12,26 +12,26 @@ const TeacherLogin = () => {
   } = useForm();
   const auth = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(
-    auth.isLoggedIn && auth.storedUser.role === "teacher"
+    auth.storedUser && auth.storedUser.role === "student"
   );
   const onSubmit = async (data) => {
-    data.role = "teacher";
+    data.role = "student";
     await auth.loginAction(data).catch((res) => {} /* do nothing */);
-    setIsLoggedIn(auth.isLoggedIn);
+    setIsLoggedIn(true);
   };
   return isLoggedIn ? (
     <Navigate to="/" />
   ) : (
     <div className="bg-[#6681a8] rounded-lg p-5 flex flex-col align-middle gap-4 text-center">
-      <h2 className="text-center text-white text-3xl">Teacher Login</h2>
+      <h2 className="text-center text-white text-3xl">Student Login</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-3 *:flex *:justify-between *:gap-6"
       >
         <Input
           id="user_id"
-          placeholder="Enter your Teacher ID"
-          label="Teacher ID"
+          placeholder="Enter your Student ID"
+          label="Student ID"
           register={register}
           validationRules={{
             required: { value: true, message: "ID cannot be left blank." },
@@ -47,7 +47,10 @@ const TeacherLogin = () => {
           label="Password"
           register={register}
           validationRules={{
-            required: { value: true, message: "Password cannot be left blank" },
+            required: {
+              value: true,
+              message: "Password cannot be left blank",
+            },
           }}
         />
         {errors?.pw?.message && <p>{errors.pw.message}</p>}
@@ -69,4 +72,4 @@ const TeacherLogin = () => {
   );
 };
 
-export default TeacherLogin;
+export default StudentLogin;

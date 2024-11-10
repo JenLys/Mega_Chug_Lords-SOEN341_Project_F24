@@ -5,7 +5,6 @@ import HowToUse from "./pages/HowToUse";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import AuthProvider from "./components/AuthProvider";
-import AddCourse from "./pages/AddCourse";
 import Registration from "./pages/Registration";
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/how-to-use" element={<HowToUse />} />
             <Route path="/registration" element={<Registration />} />
-            <Route path="/add-course" element={<AddCourse />} />
           </Routes>
         </main>
       </div>
