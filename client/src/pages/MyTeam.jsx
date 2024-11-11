@@ -24,11 +24,11 @@ const [teamMembers, setTeamMembers] = useState([
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor: "#333",
+            backgroundColor: "#6596A8",
             padding: "30px",
             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
             borderRadius: "10px",
-            width: "400px",
+            width: "700px",
             color: "white",
             fontFamily: "'Poppins', sans-serif",
             textAlign: "center",
@@ -36,7 +36,7 @@ const [teamMembers, setTeamMembers] = useState([
         }}>
 
 {/*Display the name of the team as well as its teammates */}
-<h1 style={{ fontSize: "24px", marginBottom: "20px" }}>Team Name: MegaChugLords</h1>
+<h1 style={{ fontSize: "38px", marginBottom: "20px", fontWeigh: "bold" }}>Team Name: MegaChugLords</h1>
             <ul style={{
                 listStyle: "none",
                 padding: 0,
@@ -46,8 +46,22 @@ const [teamMembers, setTeamMembers] = useState([
             }}>
                 {/*will have to replace this part- check for the teacher course view--it will take the names from the db */}
                 {teamMembers.map(member => (
-                    <li key={member.id} style={{ marginBottom: "10px" }}>
-                        <strong>{member.name}</strong>
+                    <li key={member.id} style={{ marginBottom: "12px", fontSize: "20px" }}>
+                        {member.name}
+
+                        {/*include a rate button--for now it does nothing */}
+                        <button style={{
+                            backgroundColor: "transparent",
+                            color: "white",
+                            border: "solid" ,
+                            borderRadius: "4px",
+                            padding: "6px 12px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            marginLeft: "10px"
+                        }}>
+                            Rate
+                        </button>
                     </li>
                 ))}
             </ul>
