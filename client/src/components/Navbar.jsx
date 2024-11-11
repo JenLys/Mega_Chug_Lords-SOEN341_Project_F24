@@ -4,15 +4,21 @@ import { useAuth } from "./AuthProvider";
 import { useEffect } from "react";
 
 const Navbar = () => {
-  const auth = useAuth()
-  const navigate = useNavigate()
+  const auth = useAuth();
+  const navigate = useNavigate();
   const isLoggedIn = auth.isLoggedIn
 
-  useEffect(() => {}, [isLoggedIn]);
+  useEffect(() => {
+    console.log(auth.isLoggedIn, auth);
+  }, [isLoggedIn]);
 
   return (
     <nav className="w-full flex items-center justify-between p-6 bg-[#598da4b3] backdrop-filter-sm">
-      <img src={logo} alt="ReviewMate Logo" className="size-[80px] object-contain" />
+      <img
+        src={logo}
+        alt="ReviewMate Logo"
+        className="size-[80px] object-contain"
+      />
       <ul className="*:list-none *:inline-block *:ml-20 *:uppercase *:no-underline *:text-white *:text-2xl">
         <li>
           <a href="/">home</a>
@@ -23,13 +29,18 @@ const Navbar = () => {
         <li>
           <a href="/how-to-use">how to use</a>
         </li>
-        {
-          isLoggedIn ? <a href="" onClick={(e) => {
-            e.preventDefault()
-            auth.logOut()
-            navigate("/")
-          }}>log out</a> : null
-        }
+        {isLoggedIn ? (
+          <a
+            href=""
+            onClick={(e) => {
+              e.preventDefault();
+              auth.logOut();
+              navigate("/");
+            }}
+          >
+            log out
+          </a>
+        ) : null}
       </ul>
     </nav>
   );

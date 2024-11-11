@@ -140,7 +140,7 @@ export class Db {
     }
     return await Course.find({ student_ids: { $in: userId } });
   }
-  
+
   async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {
     const courses = courseIds.map(async (courseId) => {
       return this.getCourseDetailsWithTeacherOnlyById(courseId)
@@ -151,18 +151,16 @@ export class Db {
   async getCourseDetailsWithTeacherOnlyById(courseId) {
     const course = await Course.findOne({ _id: courseId });
     if (course == null) {
-      return Promise.reject("No course found")
+      throw new Error("No course found")
     }
     const teacher = await User.findOne({
       user_id: course.prof_id,
       role: "teacher",
     }, { pw: 0 });
-    return Promise.resolve(
-      {
-        course: course,
-        teacher: teacher
-      }
-    )
+    return {
+      course: course,
+      teacher: teacher
+    }
   }
 
   async getBulkCourseDetailsByIds(courseIds) {
@@ -176,11 +174,11 @@ export class Db {
     const courses = await Course.find({ student_ids: { $nin: [user_id] } })
     const coursesWithTeachers = courses.map(async (course) => {
       const teacher = await this.getTeacher(course.prof_id)
-      return Promise.resolve({
+      return {
         course: course,
         teacher: teacher
-      })
-    }) 
+      }
+    })
     return Promise.all(coursesWithTeachers)
   }
 
@@ -201,7 +199,7 @@ export class Db {
   async getCourseDetailsById(courseId) {
     const course = await Course.findOne({ _id: courseId });
     if (course == null) {
-      return Promise.reject("No course found")
+      throw new Error("No course found")
     }
     const groups = await Group.find({ course_id: courseId });
     const students = await User.find({
@@ -212,14 +210,12 @@ export class Db {
       user_id: course.prof_id,
       role: "teacher",
     }, { pw: 0 });
-    return Promise.resolve(
-      {
-        course: course,
-        groups: groups,
-        students: students,
-        teacher: teacher,
-      }
-    )
+    return {
+      course: course,
+      groups: groups,
+      students: students,
+      teacher: teacher,
+    }
   }
 
   async loginUser(userId, pw, role) {

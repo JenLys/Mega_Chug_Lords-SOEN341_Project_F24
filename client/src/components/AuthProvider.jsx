@@ -1,16 +1,14 @@
 import { useContext, createContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { request } from "../utils";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [storedUser, setStoredUser] = useState(
     JSON.parse(localStorage.getItem("user")) || ""
   );
+  const [user, setUser] = useState(storedUser);
   const [isLoggedIn, setIsLoggedIn] = useState(storedUser != "")
-  const navigate = useNavigate();
   const loginAction = async (data) => {
     try {
       if (
@@ -28,9 +26,10 @@ const AuthProvider = ({ children }) => {
             }
           })
           .then((data) => {
-            setUser(data);
             localStorage.setItem("user", JSON.stringify(data));
-            navigate("/");
+            setStoredUser(JSON.parse(localStorage.getItem("user")));
+            setIsLoggedIn(true);
+            setUser(data);
           });
       }
     } catch (err) {
@@ -42,7 +41,7 @@ const AuthProvider = ({ children }) => {
     setUser(null);
     setStoredUser("");
     localStorage.removeItem("user");
-    navigate("/");
+    setIsLoggedIn(false)
   };
 
   return (

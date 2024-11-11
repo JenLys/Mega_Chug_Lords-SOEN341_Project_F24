@@ -42,7 +42,7 @@ const TeacherRegistration = () => {
             maxLength: 8,
           }}
         />
-        {errors.id && <p>Teacher ID field is required</p>}
+        {errors.user_id && <p>Teacher ID field is required</p>}
         <Input
           id="fname"
           placeholder="Enter your first name"
@@ -66,7 +66,7 @@ const TeacherRegistration = () => {
           register={register}
           validationRules={{ required: true }}
         />
-        {errors.pwd && <p>Password field is required</p>}
+        {errors.pw && <p>Password field is required</p>}
         <input
           type="submit"
           className="text-m text-center border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"

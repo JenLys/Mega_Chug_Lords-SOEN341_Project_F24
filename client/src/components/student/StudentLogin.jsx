@@ -7,6 +7,7 @@ import { useAuth } from "../AuthProvider";
 const StudentLogin = () => {
   const {
     register,
+    setError,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -16,7 +17,10 @@ const StudentLogin = () => {
   );
   const onSubmit = async (data) => {
     data.role = "student";
-    await auth.loginAction(data).catch((res) => {} /* do nothing */);
+    await auth.loginAction(data)
+    .catch((err) => {
+      setError("root.serverError", { message: err.message });
+    });
     setIsLoggedIn(true);
   };
   return isLoggedIn ? (
@@ -54,6 +58,11 @@ const StudentLogin = () => {
           }}
         />
         {errors?.pw?.message && <p>{errors.pw.message}</p>}
+        {errors.root?.serverError?.message && (
+          <span className="text-red-500">
+            {errors.root.serverError.message}
+          </span>
+        )}
         <input
           type="submit"
           className="text-m text-center border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"

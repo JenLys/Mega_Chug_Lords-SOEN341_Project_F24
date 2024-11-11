@@ -2,7 +2,7 @@ import Input from "../Input";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useAuth } from "../AuthProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const TeacherLogin = () => {
   const {
@@ -11,13 +11,16 @@ const TeacherLogin = () => {
     formState: { errors },
   } = useForm();
   const auth = useAuth();
+  const navigate = useNavigate()
   const [isLoggedIn, setIsLoggedIn] = useState(
     auth.isLoggedIn && auth.storedUser.role === "teacher"
   );
   const onSubmit = async (data) => {
+    console.log(data);
     data.role = "teacher";
     await auth.loginAction(data).catch((res) => {} /* do nothing */);
     setIsLoggedIn(auth.isLoggedIn);
+    navigate("/")
   };
   return isLoggedIn ? (
     <Navigate to="/" />

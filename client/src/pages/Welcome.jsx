@@ -1,4 +1,3 @@
-import video from "../assets/video.webm";
 import { useEffect } from "react";
 import { useAuth } from "../components/AuthProvider";
 import StudentView from "../components/student/StudentView";

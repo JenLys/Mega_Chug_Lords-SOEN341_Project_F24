@@ -44,7 +44,6 @@ const StudentAddCourse = ({ handleClose, addNewCourse }) => {
     })
       .then((res) => {
         if (!res.ok) {
-          console.log("Res", res);
           throw new Error("Couldn't enroll student");
         }
         return res;
