@@ -9,6 +9,7 @@ import TeacherRegistration from "./pages/TeacherRegistration";
 import StudentLogin from "./pages/StudentLogin";
 import TeacherLogin from "./pages/TeacherLogin";
 import TeacherView from "./pages/TeacherView";
+import MyTeam from "./pages/MyTeam";
 import "./App.css";
 
 function App() {
