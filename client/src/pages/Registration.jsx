@@ -1,48 +1,40 @@
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/AuthProvider";
 import { useState } from "react";
-import TeacherLogin from "../components/teacher/TeacherLogin";
-import StudentLogin from "../components/student/StudentLogin";
+import TeacherRegistration from "../components/teacher/TeacherRegistration";
+import StudentRegistration from "../components/student/StudentRegistration";
 
-export default function Login() {
-  const [isTeacherLogin, setIsTeacherLogin] = useState(false);
-  const [isStudentLogin, setIsStudentLogin] = useState(false);
-  const auth = useAuth();
-  const user = auth.storedUser;
-  const isLoggedIn = auth.isLoggedIn;
-  const navigate = useNavigate();
+export default function Registration() {
+  const [isTeacherRegistering, setIsTeacherRegistering] = useState(false);
+  const [isStudentRegistering, setIsStudentRegistering] = useState(false);
 
-  if (isLoggedIn) navigate("/");
-
-  if (isTeacherLogin) {
+  if (isTeacherRegistering) {
     return (
       <div className="flex flex-col">
-        <TeacherLogin />
+        <TeacherRegistration />
         <button
           onClick={(e) => {
             e.preventDefault();
-            setIsTeacherLogin(false);
-            setIsStudentLogin(true);
+            setIsTeacherRegistering(false);
+            setIsStudentRegistering(true);
           }}
           className="text-lg"
         >
-          Student Login
+          Register as Student
         </button>
       </div>
     );
-  } else if (isStudentLogin) {
+  } else if (isStudentRegistering) {
     return (
       <div className="flex flex-col">
-        <StudentLogin />
+        <StudentRegistration />
         <button
           onClick={(e) => {
             e.preventDefault();
-            setIsStudentLogin(false);
-            setIsTeacherLogin(true);
+            setIsTeacherRegistering(true);
+            setIsStudentRegistering(false);
           }}
           className="text-lg"
         >
-          Teacher Login
+          Register as Teacher
         </button>
       </div>
     );
@@ -52,20 +44,20 @@ export default function Login() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            setIsTeacherLogin(true);
+            setIsTeacherRegistering(true);
           }}
           className="text-2xl border-solid border-black border-[3px] ease-in duration-50 p-4 rounded-3xl hover:invert hover:bg-white"
         >
-          Login as Teacher
+          Register as Teacher
         </button>
         <button
           onClick={(e) => {
             e.preventDefault();
-            setIsStudentLogin(true);
+            setIsStudentRegistering(true);
           }}
           className="text-2xl border-solid border-black border-[3px] ease-in duration-50 p-4 rounded-3xl hover:invert hover:bg-white"
         >
-          Login as Student
+          Register as Student
         </button>
       </div>
     );

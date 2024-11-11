@@ -28,7 +28,7 @@ teacherRouter.get("/courses", async (req, res) => {
         res.status(200).json(data);
       }
     }).catch(err => {
-      res.status(404).json({message: err.message})
+      res.status(404).json({ message: err.message })
     })
   } else {
     res.status(400).json({ message: "No course information found" });
@@ -37,7 +37,7 @@ teacherRouter.get("/courses", async (req, res) => {
 
 teacherRouter.get("/courseDetails", async (req, res) => {
   if (req.query != null && req.query.course_id != null && req.query) {
-    await db.getCourseDetails(req.query.course_id).then((data) => {
+    await db.getCourseDetailsById(req.query.course_id).then((data) => {
       if (data == null) {
         res.status(400).json({ message: "No course found" });
       } else {
@@ -48,6 +48,26 @@ teacherRouter.get("/courseDetails", async (req, res) => {
     res.status(400).json({ message: "No course information found" });
   }
 });
+
+teacherRouter.post("/add-course", async (req, res) => {
+  if (req.body != null && req.body.number != null && req.body.dept != null && req.body.prof_id != null) {
+    const courseAlreadyExists = await db.getCourseByInfo(req.body.number, req.body.dept, req.body.prof_id)
+    if (!courseAlreadyExists) {
+      await db.addCourse(req.body.number, req.body.dept, req.body.prof_id)
+        .then(data => {
+          if (data == null) {
+            res.status(400).json({ message: "Could not add new course" })
+          } else {
+            res.status(200).json(data)
+          }
+        })
+    } else {
+      return res.status(400).json({ message: "Course already exists" })
+    }
+  } else {
+    return res.status(400).json({ message: "Unsufficient information for adding course" })
+  }
+})
 
 teacherRouter.post("/register", async (req, res) => {
   if (
@@ -95,6 +115,8 @@ teacherRouter.post("/register", async (req, res) => {
         return res.status(400).json({ message: "User already exists" })
       }
     }
+  } else {
+    return res.status(400).json({ message: "Unsufficient information for registration" })
   }
 });
 

@@ -36,16 +36,30 @@ studentRouter.get("/courses", async (req, res) => {
   }
 });
 
-studentRouter.get("/enroll-course", async (req, res) => {
+studentRouter.post("/all-courses-not-enrolled", async (req, res) => {
+  if (req.body != null && req.body.user_id != null) {
+    await db.getCoursesStudentNotEnrolledIn(req.body.user_id)
+      .then(data => res.status(200).json(data))
+      .catch(err => res.status(400).json({ message: err.message }))
+  } else {
+    res.status(400).json({ message: "Invalid student information provided" })
+  }
+})
+
+studentRouter.post("/enroll-course", async (req, res) => {
   if (
-    req.query != null &&
-    req.query.course_id != null &&
-    req.query.student_id != null
+    req.body != null &&
+    req.body.course_id != null &&
+    req.body.student_id != null
   ) {
     await db
-      .addUserToCourse(req.query.student_id, req.query.course_id)
+      .addUserToCourse(req.body.student_id, req.body.course_id)
       .then((data) => {
-        res.status(200).send("Enrolled in course");
+        if (data != null) {
+          res.status(200).json(data);
+        } else {
+          res.status(400).json({ message: "Student already in course" })
+        }
       });
   } else {
     res
