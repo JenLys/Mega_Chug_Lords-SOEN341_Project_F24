@@ -1,12 +1,10 @@
-import "./reg.css";
-import Input from "../components/Input";
+import Input from "../Input";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { request } from "../utils";
+import { request } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 const TeacherRegistration = () => {
-  const [isRegistered, setIsRegistered] = useState(false);
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,30 +13,22 @@ const TeacherRegistration = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Sending the form data to the backend on a specific port (e.g., port 5000)
-      const response = await request("/student/register", "POST", data); 
+      const response = await request("/student/register", "POST", data);
       if (!response.ok) {
         throw new Error("Login failed. Please try again.");
       }
-
-      const result = await response.json();
-      // Handle successful login (e.g., redirect the user)
-      setIsRegistered(true);
+      navigate("/login");
     } catch (error) {
       console.error("Error:", error);
-      // Handle login error (e.g., show an error message to the user)
     }
   };
 
-  return isRegistered ?(
-    <div>
-      <p>Registered</p>
-    </div>
-    ): (
-    <div className="wrapper">
-      <h2>Teacher Registration</h2>
+  return (
+    <div className="bg-[#6681a8] rounded-lg p-5 flex flex-col align-middle gap-4 text-center">
+      <h2 className="text-center text-white text-3xl">Teacher Registration</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-3 *:flex *:justify-between *:gap-6"
       >
         <Input
           id="user_id"
@@ -52,7 +42,7 @@ const TeacherRegistration = () => {
             maxLength: 8,
           }}
         />
-        {errors.id && <p>Teacher ID field is required</p>}
+        {errors.user_id && <p>Teacher ID field is required</p>}
         <Input
           id="fname"
           placeholder="Enter your first name"
@@ -76,21 +66,31 @@ const TeacherRegistration = () => {
           register={register}
           validationRules={{ required: true }}
         />
-        {errors.pwd && <p>Password field is required</p>}
-        <div className="input-box button">
-          <input type="submit" />
-        </div>
+        {errors.pw && <p>Password field is required</p>}
+        <input
+          type="submit"
+          className="text-m text-center border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
+        />
       </form>
-      <div className="text">
-        <h3>
-          Creating a <a href="/studentreg">student account</a> instead?
-        </h3>
-      </div>
-      <div className="text">
-        <h3>
-          Already have an account? <a href="/teacherlogin">Login now. </a>
-        </h3>
-      </div>
+      <h3>
+        Creating a{" "}
+        <a
+          className="border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
+          href="/registration"
+        >
+          student account
+        </a>{" "}
+        instead?
+      </h3>
+      <h3>
+        Already have an account?{" "}
+        <a
+          className="border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
+          href="/login"
+        >
+          Login now.{" "}
+        </a>
+      </h3>
     </div>
   );
 };

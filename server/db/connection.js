@@ -13,8 +13,9 @@ if (uri.length === 0) {
   process.exit(-1);
 }
 
-class Db {
-  constructor() {
+export class Db {
+  constructor(isTest = false) {
+    this.isTest = isTest;
     this.connectDb();
   }
 
@@ -24,7 +25,7 @@ class Db {
    */
   connectDb() {
     let dbOptions = {
-      dbName: "" + dbName,
+      dbName: "" + (this.isTest ? `${dbName}-test` : dbName),
     };
     mongoose.connect(uri, dbOptions);
     console.log("Connected to MongoDB");
@@ -56,7 +57,7 @@ class Db {
     return user;
   }
 
-  async addCourse(number, dept, profId, students = None, groups = None) {
+  async addCourse(number, dept, profId, students = [], groups = []) {
     const course = await Course.create({
       number: number,
       dept: dept,
@@ -105,13 +106,15 @@ class Db {
     return assignment;
   }
 
-  async addUserToCourse(userId, name, courseId) {
+  async addUserToCourse(userId, courseId) {
     const course = await Course.findOne({
-      name: name,
-      course_id: courseId,
+      _id: courseId,
     });
-    course.student_ids.push(userId);
-    await course.save();
+    if (!course.student_ids.includes(userId)) {
+      course.student_ids.push(userId)
+      return await course.save()
+    }
+    return null
   }
 
   async addUserToCourseGroup(userId, groupId) {
@@ -135,30 +138,84 @@ class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ prof_id: userId });
+    return await Course.find({ student_ids: { $in: userId } });
   }
 
-  async getCourseDetails(courseId) {
-    const isCourse = await Course.findOne({ _id: courseId });
-    if (isCourse == null) {
-      throw new Error("Course not found");
-    }
+  async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {
+    const courses = courseIds.map(async (courseId) => {
+      return this.getCourseDetailsWithTeacherOnlyById(courseId)
+    })
+    return await Promise.all(courses)
+  }
+
+  async getCourseDetailsWithTeacherOnlyById(courseId) {
     const course = await Course.findOne({ _id: courseId });
+    if (course == null) {
+      throw new Error("No course found")
+    }
+    const teacher = await User.findOne({
+      user_id: course.prof_id,
+      role: "teacher",
+    }, { pw: 0 });
+    return {
+      course: course,
+      teacher: teacher
+    }
+  }
+
+  async getBulkCourseDetailsByIds(courseIds) {
+    const courses = courseIds.map(async (courseId) => {
+      return this.getCourseDetailsById(courseId)
+    })
+    return await Promise.all(courses)
+  }
+
+  async getCoursesStudentNotEnrolledIn(user_id) {
+    const courses = await Course.find({ student_ids: { $nin: [user_id] } })
+    const coursesWithTeachers = courses.map(async (course) => {
+      const teacher = await this.getTeacher(course.prof_id)
+      return {
+        course: course,
+        teacher: teacher
+      }
+    })
+    return Promise.all(coursesWithTeachers)
+  }
+
+  async getStudent(user_id) {
+    return await User.findOne({
+      user_id: user_id,
+      role: "student",
+    }, { pw: 0 });
+  }
+
+  async getTeacher(user_id) {
+    return await User.findOne({
+      user_id: user_id,
+      role: "teacher",
+    }, { pw: 0 });
+  }
+
+  async getCourseDetailsById(courseId) {
+    const course = await Course.findOne({ _id: courseId });
+    if (course == null) {
+      throw new Error("No course found")
+    }
     const groups = await Group.find({ course_id: courseId });
     const students = await User.find({
       user_id: { $in: course.student_ids },
       role: "student",
-    });
+    }, { pw: 0 });
     const teacher = await User.findOne({
       user_id: course.prof_id,
       role: "teacher",
-    });
+    }, { pw: 0 });
     return {
       course: course,
       groups: groups,
       students: students,
       teacher: teacher,
-    };
+    }
   }
 
   async loginUser(userId, pw, role) {
@@ -169,7 +226,11 @@ class Db {
     return await User.findOne({ user_id: id });
   }
 
-  async getCourse(id) {
+  async getCourseByInfo(number, dept, prof_id) {
+    return await Course.findOne({ number: number, dept: dept, prof_id: prof_id })
+  }
+
+  async getCourseById(id) {
     return await Course.findOne({ _id: id });
   }
 
@@ -202,4 +263,4 @@ class Db {
   }
 }
 
-export default new Db();
+export const initDb = new Db();

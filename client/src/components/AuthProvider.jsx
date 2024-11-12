@@ -1,15 +1,14 @@
 import { useContext, createContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { request } from "../utils";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [storedUser, setStoredUser] = useState(
     JSON.parse(localStorage.getItem("user")) || ""
   );
-  const navigate = useNavigate();
+  const [user, setUser] = useState(storedUser);
+  const [isLoggedIn, setIsLoggedIn] = useState(storedUser != "")
   const loginAction = async (data) => {
     try {
       if (
@@ -23,15 +22,14 @@ const AuthProvider = ({ children }) => {
             if (res.ok) {
               return res.json();
             } else {
-              throw new Error(
-                `Status: ${res.status}, ${res.statusText}, ${res}`
-              );
+              return Promise.reject({message: "Invalid login information"})
             }
           })
           .then((data) => {
-            setUser(data);
             localStorage.setItem("user", JSON.stringify(data));
-            navigate("/profile");
+            setStoredUser(JSON.parse(localStorage.getItem("user")));
+            setIsLoggedIn(true);
+            setUser(data);
           });
       }
     } catch (err) {
@@ -42,13 +40,13 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     setUser(null);
     setStoredUser("");
-    localStorage.removeItem("site");
-    navigate("/login");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false)
   };
 
   return (
     <AuthContext.Provider
-      value={{ storedUser: storedUser, user, loginAction, logOut }}
+      value={{ storedUser: storedUser, isLoggedIn: isLoggedIn, user, loginAction, logOut }}
     >
       {children}
     </AuthContext.Provider>

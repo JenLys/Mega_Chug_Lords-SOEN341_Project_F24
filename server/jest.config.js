@@ -3,5 +3,5 @@ export default {
     testEnvironment: 'node',
     transform: {},
     testMatch: ["**/__tests__/**/*.test.js"],
-    transformIgnorePatterns: ['<rootDir>/node_modules/'],
+    transformIgnorePatterns: ['<rootDir>/node_modules/']
 }
