@@ -29,13 +29,26 @@ const StudentView = () => {
     getCourses({ student_id: user.user_id });
   }, [user.user_id]);
 
-  
   const handleOpen = () => setIsAddingCourse(true);
   const handleClose = () => setIsAddingCourse(false);
 
   const handleCourseAddition = (newCourse) => {
-    setCourses([...courses, newCourse])
-  }
+    setCourses([...courses, newCourse]);
+  };
+  // Function to fetch and view team members for a selected course
+  const handleSelectCourse = async (courseId) => {
+    try {
+      const response = await request(`/student/team/${courseId}`, "GET");
+      if (!response.ok) {
+        throw new Error("Could not get team members");
+      }
+      const teamData = await response.json();
+      setTeamMembers(teamData);
+      setSelectedCourse(courseId);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   if (!auth.isLoggedIn) navigate("/login");
 
