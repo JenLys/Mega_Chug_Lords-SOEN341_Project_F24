@@ -1,4 +1,3 @@
-import React from 'react';
 import aboutGIF from '../assets/aboutGIF.gif'
 
 function About() {

@@ -6,12 +6,8 @@ import App from "./App";
 import Welcome from "./pages/Welcome";
 import About from "./pages/About";
 import HowToUse from "./pages/HowToUse";
-import StudentRegistration from "./pages/StudentRegistration";
-import TeacherRegistration from "./pages/TeacherRegistration";
-import StudentLogin from "./pages/StudentLogin";
-import TeacherLogin from "./pages/TeacherLogin";
-import TeacherView from "./pages/TeacherView";
-import MyTeam from "./pages/MyTeam";
+import Login from "./pages/Login";
+import Registration from "./pages/Registration";
 
 const router = createBrowserRouter([
   {
@@ -19,42 +15,27 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/studentreg",
-        element: <StudentRegistration />,
+        path: "*",
+        element: <Welcome />,
       },
-      {
-        path: "/teacherreg",
-        element: <TeacherRegistration />,
-      },
-      {
-        path: "/studentlogin",
-        element: <StudentLogin />,
-      },
-      {
-        path: "/teacherlogin",
-        element: <TeacherLogin />,
-      },
-      { 
-        path: "/", 
-        element: <Welcome /> },
       {
         path: "/about",
-        element: <About />
+        element: <About />,
       },
       {
         path: "/how-to-use",
-        element: <HowToUse />
+        element: <HowToUse />,
       },
       {
-        path: "/teacherview",
-        element: <TeacherView />
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: "/my-team",
-        element: <MyTeam/>
-      },
+        path: "/registration",
+        element: <Registration />,
+      }
     ],
-  },  
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
