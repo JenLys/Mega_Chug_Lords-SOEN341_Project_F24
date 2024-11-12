@@ -5,6 +5,7 @@ import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
 import Modal from "@mui/material/Modal";
 import TeacherAddCourse from "./TeacherAddCourse";
+import TeacherAddGroup from "./TeacherAddGroup";
 
 function TeacherView() {
   // State variables to manage component state
@@ -74,8 +75,22 @@ function TeacherView() {
             {selectedCourse.dept} {selectedCourse.number}
           </h1>
           <div style={{ display: "flex", gap: "10px" }}>
-            <button className="otherbtn">Create Teams</button>
+            <button className="otherbtn" onClick={() => setSelectedCourse(null)}
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpen();
+              }}
+              >Create Teams
+            </button>
+            <Modal open={isAddingCourse} onClose={handleClose}>
+              <TeacherAddGroup
+                handleClose={handleClose}
+                addNewGroup={handleCourseAddition}
+                />
+            </Modal>
+            
             <button className="otherbtn">View Teams</button>
+            
             <Link to={location.pathname}>
               <button
                 style={{
