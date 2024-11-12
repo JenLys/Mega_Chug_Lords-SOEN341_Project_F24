@@ -121,44 +121,4 @@ teacherRouter.post("/register", async (req, res) => {
   }
 })
 
-//route to create a new course in the db
-teacherRouter.post("/create-courses", async (req, res) => {
-  const { courseId, number, dept, user_id} = req.body; //Extract all the values from req.body
-
-  if (courseId && number && dept && user_id) { // Check if all required fields are present
-    const isNumberValid = validateNumber(number); 
-    const isDepartmentValid = validateDepartment(dept);
-    const isCourseIdValid = validateCourseId(courseId);
-    const isUserValid = validateId(user_id);
-    
-    if (!isNumberValid) { 
-      res.status(400).json({ message: "Invalid Number. Must be between 3 and 4 digits." })
-    } else if (!isDepartmentValid) {
-      res.status(400).json({ message: "Invalid Department. Must be between 2 and 20 characters." })
-    } else if (!isCourseIdValid) {
-      res.status(400).json({ message: "Invalid Course ID. Must be between 2 and 20 characters." })
-    } else if (!isUserValid) {
-      res.status(400).json({ message: "Invalid User ID." })
-    } else {
-      try {
-        const data = await db.addCourse(courseId, number, dept, user_id, null, null);
-        if (!data) {
-          res.status(400).json({ message: "Could not register new course" });
-        } else {
-          res.status(200).json(req.body);
-        }
-      } catch (error) {
-        res.status(500).json({ message: "Server error", error });
-      }
-    }
-  } else {
-    res.status(400).json({ message: "Missing required fields" });
-  }
-});
-
-
-teacherRouter.use(function (_, res) {
-  res.status(404).send("NOT FOUND");
-});
-
 export default teacherRouter;
