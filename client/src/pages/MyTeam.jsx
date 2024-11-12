@@ -46,10 +46,11 @@ const [teamMembers, setTeamMembers] = useState([
             }}>
                 {/*will have to replace this part- check for the teacher course view--it will take the names from the db */}
                 {teamMembers.map(member => (
-                    <li key={member.id} style={{ marginBottom: "12px", fontSize: "20px" }}>
+                    <li key={member.id} style={{ marginBottom: "12px", fontSize: "20px", display:"flex", alignItems:"left"}}>
                         {member.name}
 
                         {/*include a rate button--for now it does nothing */}
+                        
                         <button style={{
                             backgroundColor: "transparent",
                             color: "white",
@@ -58,7 +59,7 @@ const [teamMembers, setTeamMembers] = useState([
                             padding: "6px 12px",
                             cursor: "pointer",
                             fontSize: "14px",
-                            marginLeft: "10px"
+                            marginLeft: "auto"
                         }}>
                             Rate
                         </button>
