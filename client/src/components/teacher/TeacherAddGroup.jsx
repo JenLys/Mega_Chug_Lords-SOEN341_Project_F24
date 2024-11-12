@@ -13,7 +13,7 @@ export default function TeacherAddGroup({ handleClose, addNewGroup }) {
 
   const onSubmit = async (data) => {
     data["prof_id"] = user.user_id;
-    await request("/teacher/add-course", "POST", data)
+    await request("/teacher/add-group", "POST", data)
       .then((res) => res.json())
       .then((res) => {
         if (res.message) {

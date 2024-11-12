@@ -11,11 +11,13 @@ function TeacherView() {
   // State variables to manage component state
   const [selectedCourse, setSelectedCourse] = useState(null); // Stores the currently selected course
   const [courses, setCourses] = useState([]); // Stores the list of courses fetched from the API
+  const [groups, setGroups] = useState([]);
   const [isHovered, setIsHovered] = useState({}); // Tracks which course is being hovered
   const user = useAuth().storedUser;
   // Get the current location from react-router
   const location = useLocation();
   const [isAddingCourse, setIsAddingCourse] = useState(false);
+  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
 
   if (!user || user.role != "teacher") return <Navigate to="/login" />;
 
@@ -44,6 +46,10 @@ function TeacherView() {
     setCourses([...courses, newCourse]);
   };
 
+  const handleGroupAddition = (newGroup) => {
+    setGroups([...groups, newGroup]);
+  }
+
   // Function to clear hover effect
   const handleUnhover = (index) => {
     setIsHovered((prevState) => ({
@@ -60,6 +66,9 @@ function TeacherView() {
   const handleOpen = () => setIsAddingCourse(true);
   const handleClose = () => setIsAddingCourse(false);
 
+  const groupCreateHandleOpen = () => setIsCreatingGroup(true);
+  const groupCreateHandleClose = () => setIsCreatingGroup(false);
+
   return (
     <div>
       {selectedCourse ? (
@@ -75,17 +84,17 @@ function TeacherView() {
             {selectedCourse.dept} {selectedCourse.number}
           </h1>
           <div style={{ display: "flex", gap: "10px" }}>
-            <button className="otherbtn" onClick={() => setSelectedCourse(null)}
+            <button className="otherbtn"
               onClick={(e) => {
                 e.preventDefault();
-                handleOpen();
+                groupCreateHandleOpen();
               }}
               >Create Teams
             </button>
-            <Modal open={isAddingCourse} onClose={handleClose}>
+            <Modal open={isCreatingGroup} onClose={groupCreateHandleClose}>
               <TeacherAddGroup
-                handleClose={handleClose}
-                addNewGroup={handleCourseAddition}
+                handleClose={groupCreateHandleClose}
+                addNewGroup={handleGroupAddition}
                 />
             </Modal>
             
