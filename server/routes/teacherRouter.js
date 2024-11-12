@@ -69,6 +69,7 @@ teacherRouter.post("/add-course", async (req, res) => {
   }
 })
 
+//route to register a new teacher user
 teacherRouter.post("/register", async (req, res) => {
   if (
     req.body != null &&
@@ -118,6 +119,6 @@ teacherRouter.post("/register", async (req, res) => {
   } else {
     return res.status(400).json({ message: "Unsufficient information for registration" })
   }
-});
+})
 
 export default teacherRouter;
