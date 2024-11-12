@@ -8,5 +8,8 @@
   "devDependencies": {
     "concurrently": "^9.0.1",
     "husky": "^9.1.6"
+  },
+  "dependencies": {
+    "@mui/material": "^6.1.6"
   }
 }
