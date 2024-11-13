@@ -17,6 +17,7 @@ function TeacherView() {
   // Get the current location from react-router
   const location = useLocation();
   const [isAddingCourse, setIsAddingCourse] = useState(false);
+  const [isViewingTeams, setIsViewingTeams] = useState(false);
 
   if (!user || user.role != "teacher") return <Navigate to="/login" />;
 
@@ -65,8 +66,12 @@ function TeacherView() {
 
   return (
     <div>
-      {selectedCourse ? (
-        <div>
+    {
+      selectedCourse ? (
+        //if selected course = true
+        isViewingTeams ? ( 
+          //if isViewingTeams = true && selected course = true
+          <div>
           <h1
             style={{
               fontSize: "80px",
@@ -79,18 +84,6 @@ function TeacherView() {
           </h1>
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="otherbtn">Create Teams</button>
-            <button  style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  borderRadius: "5px",
-                  backgroundColor: "rgb(73, 97, 142)",
-                  color: "white",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-                onClick={() => navigate('')} //add link to the teacher view teams component 
-          > View Teams
-          </button>
             <Link to={location.pathname}>
               <button
                 style={{
@@ -102,14 +95,83 @@ function TeacherView() {
                   border: "none",
                   cursor: "pointer",
                 }}
-                onClick={() => setSelectedCourse(null)}
+                onClick={() => {
+                  setSelectedCourse(null);
+                  setIsViewingTeams(false);
+                }}
+                
               >
                 Back to Courses
               </button>
             </Link>
+            <div className="grid grid-cols-4 grid-flow-row gap-3">
+            {courses.map((course, index) => (
+              <div
+                key={index}
+                className="border-4 rounded-md p-4 border-[#49618e] text-[#49618e] text-center text-2xl"
+                onClick={() => handleClick(course)}
+                onMouseOver={() => handleHover(index)}
+                onMouseOut={() => handleUnhover(index)}
+              >
+                <span className="font-bold">
+                  {course.dept} {course.number}
+                </span>
+              </div>
+            ))}
           </div>
+          </div>
+        </div>     
+        ) : (
+        //if viewing teams is false && selected course = true
+        <div>
+        <h1
+          style={{
+            fontSize: "80px",
+            color: "white",
+            marginBottom: "20px",
+            fontWeight: "bold",
+          }}
+        >
+          {selectedCourse.dept} {selectedCourse.number}
+        </h1>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button className="otherbtn">Create Teams</button>
+          <button  style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                borderRadius: "5px",
+                backgroundColor: "rgb(73, 97, 142)",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => setIsViewingTeams(true)} 
+        > View Teams
+        </button>
+          <Link to={location.pathname}>
+            <button
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                borderRadius: "5px",
+                backgroundColor: "rgb(73, 97, 142)",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setSelectedCourse(null);
+                setIsViewingTeams(false);
+              }}
+              
+            >
+              Back to Courses
+            </button>
+          </Link>
         </div>
-      ) : (
+      </div>
+      )) : (
+        //if selected course = false
         <div className="flex flex-col gap-5 justify-around">
           <h1 className="text-4xl">
             Welcome {user.fname} {user.lname}, here are your courses!
@@ -144,7 +206,8 @@ function TeacherView() {
             ))}
           </div>
         </div>
-      )}
+      )
+    }
     </div>
   );
 }
