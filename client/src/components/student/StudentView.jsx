@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider";
 import StudentAddCourse from "./StudentAddCourse";
 import StudentCourseDetails from "./StudentCourseDetails";
+import MyTeam from "./MyTeam";
 import { Modal } from "@mui/material";
 
 const StudentView = () => {
