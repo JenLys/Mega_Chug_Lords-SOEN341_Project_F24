@@ -37,4 +37,8 @@ coursesRouter.get("/all-courses", async (req, res) => {
   });
 });
 
+coursesRouter.post("/create-group", async (req, res) => {
+  return 1;
+})
+
 export default coursesRouter;

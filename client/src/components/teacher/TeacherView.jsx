@@ -63,11 +63,35 @@ function TeacherView() {
     setSelectedCourse(course);
   };
 
-  const handleOpen = () => setIsAddingCourse(true);
-  const handleClose = () => setIsAddingCourse(false);
-
-  const groupCreateHandleOpen = () => setIsCreatingGroup(true);
-  const groupCreateHandleClose = () => setIsCreatingGroup(false);
+  // handleOpen performs different functions depending on string parameter
+  const handleOpen = (mode) => {
+    switch (mode) {
+      case 'course': {
+        setIsAddingCourse(true);
+        break;
+      }
+      case 'group': {
+        setIsCreatingGroup(true);
+        break;
+      }
+      default: break;
+    }
+    return;
+  }
+  const handleClose = (mode) => {
+    switch(mode) {
+      case 'course': { 
+        setIsAddingCourse(false);
+        break;
+      } 
+      case 'group': {
+        setIsCreatingGroup(false);
+        break;
+      }
+      default: break;
+    }
+    return;
+  }
 
   return (
     <div>
@@ -87,13 +111,13 @@ function TeacherView() {
             <button className="otherbtn"
               onClick={(e) => {
                 e.preventDefault();
-                groupCreateHandleOpen();
+                handleOpen('group');
               }}
               >Create Teams
             </button>
-            <Modal open={isCreatingGroup} onClose={groupCreateHandleClose}>
+            <Modal open={isCreatingGroup} onClose={handleClose}>
               <TeacherAddGroup
-                handleClose={groupCreateHandleClose}
+                handleClose={handleClose}
                 addNewGroup={handleGroupAddition}
                 />
             </Modal>
@@ -126,7 +150,7 @@ function TeacherView() {
           <button className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
             onClick={(e) => {
               e.preventDefault();
-              handleOpen();
+              handleOpen('course');
             }}
           >
             Add course

@@ -13,7 +13,7 @@ export default function TeacherAddGroup({ handleClose, addNewGroup }) {
 
   const onSubmit = async (data) => {
     data["prof_id"] = user.user_id;
-    await request("/teacher/add-group", "POST", data)
+    await request("/courses/add-group", "POST", data)
       .then((res) => res.json())
       .then((res) => {
         if (res.message) {
@@ -23,7 +23,7 @@ export default function TeacherAddGroup({ handleClose, addNewGroup }) {
       })
       .then((group) => {
         addNewGroup(group);
-        handleClose();
+        handleClose('group');
       })
       .catch((err) => {
         setError("root.serverError", { message: err.message });
@@ -62,7 +62,7 @@ export default function TeacherAddGroup({ handleClose, addNewGroup }) {
           className="text-m text-center border-solid border-white border-[3px] ease-in duration-50 p-1 rounded-lg hover:scale-110"
           onClick={(e) => {
             e.preventDefault();
-            handleClose();
+            handleClose('group');
           }}
         >
           Cancel
