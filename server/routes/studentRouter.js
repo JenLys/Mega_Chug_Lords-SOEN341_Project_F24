@@ -38,13 +38,14 @@ studentRouter.get("/courses", async (req, res) => {
 
 studentRouter.post("/all-courses-not-enrolled", async (req, res) => {
   if (req.body != null && req.body.user_id != null) {
-    await db.getCoursesStudentNotEnrolledIn(req.body.user_id)
-      .then(data => res.status(200).json(data))
-      .catch(err => res.status(400).json({ message: err.message }))
+    await db
+      .getCoursesStudentNotEnrolledIn(req.body.user_id)
+      .then((data) => res.status(200).json(data))
+      .catch((err) => res.status(400).json({ message: err.message }));
   } else {
-    res.status(400).json({ message: "Invalid student information provided" })
+    res.status(400).json({ message: "Invalid student information provided" });
   }
-})
+});
 
 studentRouter.post("/enroll-course", async (req, res) => {
   if (
@@ -58,7 +59,7 @@ studentRouter.post("/enroll-course", async (req, res) => {
         if (data != null) {
           res.status(200).json(data);
         } else {
-          res.status(400).json({ message: "Student already in course" })
+          res.status(400).json({ message: "Student already in course" });
         }
       });
   } else {
