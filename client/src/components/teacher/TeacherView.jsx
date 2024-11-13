@@ -5,6 +5,8 @@ import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
 import Modal from "@mui/material/Modal";
 import TeacherAddCourse from "./TeacherAddCourse";
+import { useNavigate } from 'react-router-dom';
+
 
 function TeacherView() {
   // State variables to manage component state
@@ -59,6 +61,8 @@ function TeacherView() {
   const handleOpen = () => setIsAddingCourse(true);
   const handleClose = () => setIsAddingCourse(false);
 
+  const navigate = useNavigate();
+
   return (
     <div>
       {selectedCourse ? (
@@ -75,7 +79,18 @@ function TeacherView() {
           </h1>
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="otherbtn">Create Teams</button>
-            <button className="otherbtn">View Teams</button>
+            <button  style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  borderRadius: "5px",
+                  backgroundColor: "rgb(73, 97, 142)",
+                  color: "white",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate('')} //add link to the teacher view teams component 
+          > View Teams
+          </button>
             <Link to={location.pathname}>
               <button
                 style={{
