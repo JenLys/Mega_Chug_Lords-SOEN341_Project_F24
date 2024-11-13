@@ -1,38 +1,86 @@
 import express from "express";
-import db from "../db/connection.js";
-import Course from "../models/Course.js";
+import { initDb as db } from "../db/connection.js";
 import { validateId, validateName, validatePassword } from "./validation.js";
-
+import { keepKeys } from "../utils.js";
 const studentRouter = express.Router({ mergeParams: true });
 
-studentRouter.get("/login", async (req, res) => {
-  console.log(req);
-  if (req.query != null && req.query.user_id != null && req.query) {
-    await db.getUserLogin(req.query.user_id, req.query.pw).then((data) => {
-      if (data == null) {
-        res.status(400).json({ message: "Invalid login information" });
-      } else {
-        res.status(200).json(req.query);
-      }
-    });
+studentRouter.post("/login", async (req, res) => {
+  if (req.body != null && req.body.user_id != null && req.body.pw != null) {
+    await db
+      .loginUser(req.body.user_id, req.body.pw, "student")
+      .then((data) => {
+        if (data == null) {
+          res.status(400).json({ message: "Invalid login information" });
+        } else {
+          res
+            .status(200)
+            .json(keepKeys(data, ["fname", "lname", "role", "user_id"]));
+        }
+      });
   } else {
     res.status(400).json({ message: "No user information found" });
   }
 });
 
+studentRouter.get("/courses", async (req, res) => {
+  if (req.query != null && req.query.student_id != null) {
+    await db.getStudentCourses(req.query.student_id).then((data) => {
+      if (data == null) {
+        res.status(400).json({ message: "Could not get courses" });
+      } else {
+        res.status(200).json(data);
+      }
+    });
+  } else {
+    res.status(400).json({ message: "No student information found" });
+  }
+});
+
+studentRouter.post("/all-courses-not-enrolled", async (req, res) => {
+  if (req.body != null && req.body.user_id != null) {
+    await db
+      .getCoursesStudentNotEnrolledIn(req.body.user_id)
+      .then((data) => res.status(200).json(data))
+      .catch((err) => res.status(400).json({ message: err.message }));
+  } else {
+    res.status(400).json({ message: "Invalid student information provided" });
+  }
+});
+
+studentRouter.post("/enroll-course", async (req, res) => {
+  if (
+    req.body != null &&
+    req.body.course_id != null &&
+    req.body.student_id != null
+  ) {
+    await db
+      .addUserToCourse(req.body.student_id, req.body.course_id)
+      .then((data) => {
+        if (data != null) {
+          res.status(200).json(data);
+        } else {
+          res.status(400).json({ message: "Student already in course" });
+        }
+      });
+  } else {
+    res
+      .status(400)
+      .json({ message: "No course information or student information found" });
+  }
+});
+
 studentRouter.post("/register", async (req, res) => {
   if (
-    req.query != null &&
-    req.query.fname != null &&
-    req.query.lname != null &&
-    req.query.user_id != null &&
-    req.query.pw != null
+    req.body != null &&
+    req.body.fname != null &&
+    req.body.lname != null &&
+    req.body.user_id != null &&
+    req.body.pw != null
   ) {
-    const isPasswordValid = validatePassword(req.query.pw);
-    const isFirstNameValid = validateName(req.query.fname);
-    const isLastNameValid = validateName(req.query.lname);
-    const isUserValid = validateId(req.query.user_id);
-
+    const isPasswordValid = validatePassword(req.body.pw);
+    const isFirstNameValid = validateName(req.body.fname);
+    const isLastNameValid = validateName(req.body.lname);
+    const isUserValid = validateId(req.body.user_id);
     if (!isFirstNameValid) {
       res.status(400).json({
         message:
@@ -55,56 +103,22 @@ studentRouter.post("/register", async (req, res) => {
     } else {
       await db
         .addUser(
-          req.query.fname,
-          req.query.lname,
+          req.body.fname,
+          req.body.lname,
           "student",
-          req.query.user_id,
-          req.query.pw
+          req.body.user_id,
+          req.body.pw
         )
         .then((data) => {
           if (data == null) {
             res.status(400).json({ message: "Could not register new user" });
           } else {
-            res.status(200).json(req.query);
+            res.status(200).json(req.body);
           }
         });
     }
   }
 });
-
-studentRouter.get("/courses", async (req, res) => {
-  const { user_id } = req.query;
-
-  if (!user_id) {
-    return res
-      .status(400)
-      .json({ message: "User ID is required to fetch courses" });
-  }
-
-  try {
-    // Fetch courses for the student by user_id using the custom static method
-    const courses = await Course.findCoursesByStudentId(user_id);
-
-    if (!courses || courses.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No courses found for this student" });
-    }
-
-    // Format the courses for frontend display (e.g., with random color)
-    // const formattedCourses = courses.map((course) => ({
-    //   id: course.course_id,
-    //   name: `${course.number}`, // Customize as needed
-    //   color: getRandomColor(), // Optional: Add color dynamically if desired
-    // }));
-
-    //res.status(200).json(formattedCourses);
-    res.status(200).json(courses);
-  } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ message: "Error fetching courses" });
-  }
-}); // <-- Added closing brace here
 
 studentRouter.use(function (_, res) {
   res.status(404).send("NOT FOUND");
