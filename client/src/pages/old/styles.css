@@ -8,7 +8,7 @@
 .page{
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(rgba(89, 141, 164, 0.47),rgba(89, 141, 164, 0.47));
+    background-image: linear-gradient(#598da478,rgba(89, 141, 164, 0.47));
     position: relative;
     padding: 0 5%;
     display: flex;
@@ -156,7 +156,7 @@ SOURCE FREE IMAGE AND VIDEOS BANK*/
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgba(89, 141, 164, 0.7); /* Adjust opacity as needed */
+    background-color: #598da4b3; /* Adjust opacity as needed */
     backdrop-filter: blur(10px);
     z-index: 1000;
 }

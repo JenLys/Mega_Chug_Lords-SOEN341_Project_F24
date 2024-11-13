@@ -1,28 +1,37 @@
-import "./reg.css";
-import Input from "../components/Input";
+import Input from "../Input";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../components/AuthProvider";
+import { useAuth } from "../AuthProvider";
 
 const StudentLogin = () => {
   const {
     register,
+    setError,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const auth = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState((auth.storedUser && auth.storedUser.role === "student"));
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    auth.storedUser && auth.storedUser.role === "student"
+  );
   const onSubmit = async (data) => {
     data.role = "student";
-    auth.loginAction(data);
+    await auth.loginAction(data)
+    .catch((err) => {
+      setError("root.serverError", { message: err.message });
+    });
+    setIsLoggedIn(true);
   };
   return isLoggedIn ? (
-    <Navigate to="/profile" />
+    <Navigate to="/" />
   ) : (
-    <div className="wrapper">
-      <h2>Student Login</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="bg-[#6681a8] rounded-lg p-5 flex flex-col align-middle gap-4 text-center">
+      <h2 className="text-center text-white text-3xl">Student Login</h2>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-3 *:flex *:justify-between *:gap-6"
+      >
         <Input
           id="user_id"
           placeholder="Enter your Student ID"
@@ -49,15 +58,25 @@ const StudentLogin = () => {
           }}
         />
         {errors?.pw?.message && <p>{errors.pw.message}</p>}
-        <div className="input-box button">
-          <input type="submit" />
-        </div>
+        {errors.root?.serverError?.message && (
+          <span className="text-red-500">
+            {errors.root.serverError.message}
+          </span>
+        )}
+        <input
+          type="submit"
+          className="text-m text-center border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
+        />
       </form>
-      <div className="text">
-        <h3>
-          Don't have an account? <a href="/studentreg">Create one here.</a>
-        </h3>
-      </div>
+      <h3>
+        Don't have an account?{" "}
+        <a
+          className="border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
+          href="/registration"
+        >
+          Create one here.
+        </a>
+      </h3>
     </div>
   );
 };
