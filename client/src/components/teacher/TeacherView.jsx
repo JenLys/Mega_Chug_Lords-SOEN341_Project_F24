@@ -63,6 +63,13 @@ function TeacherView() {
     setSelectedCourse(course);
   };
 
+  const handleCreateGroup = async () => {
+    const response = await request("/courses/create-group", "POST", {
+      course_id: selectedCourse._id,
+    });
+    return;
+  }
+
   // handleOpen performs different functions depending on string parameter
   const handleOpen = (mode) => {
     switch (mode) {
@@ -96,7 +103,7 @@ function TeacherView() {
   return (
     <div>
       {selectedCourse ? (
-        <div>
+        <div> 
           <h1
             style={{
               fontSize: "80px",
@@ -109,11 +116,12 @@ function TeacherView() {
           </h1>
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="otherbtn"
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
-                handleOpen('group');
+                // handleOpen('group');
+                handleCreateGroup();
               }}
-              >Create Teams
+              >Create a Group
             </button>
             <Modal open={isCreatingGroup} onClose={handleClose}>
               <TeacherAddGroup
