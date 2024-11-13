@@ -9,7 +9,7 @@ import TeacherRegistration from "./pages/TeacherRegistration";
 import StudentLogin from "./pages/StudentLogin";
 import TeacherLogin from "./pages/TeacherLogin";
 import "./App.css";
-import CoursePage from "./pages/CoursePage";
+import CoursePage from "./pages/course/StudentCourseView";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
           <Route path="/teacherreg" element={<TeacherRegistration />} />
           <Route path="/studentlogin" element={<StudentLogin />} />
           <Route path="/teacherlogin" element={<TeacherLogin />} />
-          <Route path="/coursepage" element={<CoursePage />} />
+          <Route path="/student/courses" element={<CoursePage />} />
         </Routes>
       </main>
     </div>
