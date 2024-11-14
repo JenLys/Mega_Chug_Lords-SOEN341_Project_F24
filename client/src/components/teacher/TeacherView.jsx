@@ -118,7 +118,6 @@ function TeacherView() {
             <button className="otherbtn"
               onClick={async (e) => {
                 e.preventDefault();
-                // handleOpen('group');
                 handleCreateGroup();
               }}
               >Create a Group
