@@ -11,7 +11,7 @@ import TeacherDashboard from "./pages/TeacherDashboard";
 function App() {
   return (
     <AuthProvider>
-      <div className="w-screen h-full flex flex-col bg-[#598DA4]/[0.47] font-display overflow-x-hidden">
+      <div className="w-screen h-screen flex flex-col bg-[#598DA4]/[0.47] font-display overflow-x-hidden">
         <Navbar />
         <main className="w-full h-full flex flex-row items-center justify-center">
           <Routes>
