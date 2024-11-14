@@ -38,13 +38,14 @@ studentRouter.get("/courses", async (req, res) => {
 
 studentRouter.post("/all-courses-not-enrolled", async (req, res) => {
   if (req.body != null && req.body.user_id != null) {
-    await db.getCoursesStudentNotEnrolledIn(req.body.user_id)
-      .then(data => res.status(200).json(data))
-      .catch(err => res.status(400).json({ message: err.message }))
+    await db
+      .getCoursesStudentNotEnrolledIn(req.body.user_id)
+      .then((data) => res.status(200).json(data))
+      .catch((err) => res.status(400).json({ message: err.message }));
   } else {
-    res.status(400).json({ message: "Invalid student information provided" })
+    res.status(400).json({ message: "Invalid student information provided" });
   }
-})
+});
 
 studentRouter.post("/enroll-course", async (req, res) => {
   if (
@@ -58,7 +59,7 @@ studentRouter.post("/enroll-course", async (req, res) => {
         if (data != null) {
           res.status(200).json(data);
         } else {
-          res.status(400).json({ message: "Student already in course" })
+          res.status(400).json({ message: "Student already in course" });
         }
       });
   } else {
@@ -121,6 +122,33 @@ studentRouter.post("/register", async (req, res) => {
 
 studentRouter.use(function (_, res) {
   res.status(404).send("NOT FOUND");
+});
+studentRouter.get("/team/:courseId", async (req, res) => {
+  const { courseId } = req.params;
+
+  try {
+    // Fetching the course group and its associated members from the database
+    const course = await db.getCourseById(courseId);
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    const studentIds = course.student_ids; // Assuming this is an array of student IDs
+    const teamMembers = await Promise.all(
+      studentIds.map((id) => db.getUser(id))
+    );
+
+    // Check if any team members were found
+    if (teamMembers.length > 0) {
+      res.status(200).json(teamMembers);
+    } else {
+      res.status(404).json({ message: "No team members found" });
+    }
+  } catch (error) {
+    console.error("Error fetching team members:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 export default studentRouter;
