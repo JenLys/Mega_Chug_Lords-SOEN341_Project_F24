@@ -4,6 +4,7 @@ const reviewSchema = new Schema(
   {
     reviewer_id: String,
     reviewee_id: String,
+    course_id: String,
     cooperation: Number,
     conceptual: Number,
     practical: Number,

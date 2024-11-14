@@ -84,10 +84,11 @@ export class Db {
     return group;
   }
 
-  async addReviewToGroup(groupId, reviewerId, revieweeId, reviewData) {
+  async addReviewToGroup(groupId, reviewerId, revieweeId, courseId, reviewData) {
     const review = await Review.create({
       reviewer_id: reviewerId,
       reviewee_id: revieweeId,
+      course_id: courseId,
       cooperation: reviewData.cooperation,
       conceptual: reviewData.conceptual,
       practical: reviewData.practical,

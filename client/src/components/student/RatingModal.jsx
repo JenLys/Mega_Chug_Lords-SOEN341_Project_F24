@@ -3,7 +3,7 @@ import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
 import { Rating } from 'react-simple-star-rating'
 
-const RatingModal = ({ handleClose, revieweeId, groupId }) => {
+const RatingModal = ({ handleClose, revieweeId, groupId, courseId }) => {
   const user = useAuth().storedUser;
   const [ratingCooperation, setRatingCooperation] = useState(0)
   const [ratingConceptual, setRatingConceptual] = useState(0)
@@ -33,6 +33,7 @@ const RatingModal = ({ handleClose, revieweeId, groupId }) => {
       reviewer_id : user.user_id,
       reviewee_id : revieweeId,
       group_id : groupId,
+      course_id: courseId,
       review: {
         cooperation: ratingCooperation,
         conceptual: ratingConceptual,
