@@ -44,7 +44,7 @@ jobs:
 
       - name: download node_modules
         if: steps.node-modules-cache.outputs.cache-hit != 'true'
-        run: cd server && npm run install:all
+        run: cd server && npm i
 
       - name: test the server
         env:
