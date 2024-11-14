@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
 import { Rating } from 'react-simple-star-rating'
 
-const StudentAddCourse = ({ handleClose }) => {
+const RatingModal = ({ handleClose, revieweeId, groupId }) => {
   const user = useAuth().storedUser;
   const [ratingCooperation, setRatingCooperation] = useState(0)
   const [ratingConceptual, setRatingConceptual] = useState(0)
@@ -26,7 +26,34 @@ const StudentAddCourse = ({ handleClose }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(comments);
+    if (!window.confirm("Are you sure you want to submit?")) return;
+
+    
+    await request("/courses/add-review", "POST", {
+      reviewer_id : user.user_id,
+      reviewee_id : revieweeId,
+      group_id : groupId,
+      review: {
+        cooperation: ratingCooperation,
+        conceptual: ratingConceptual,
+        practical: ratingPractical,
+        work_ethic: ratingWorkEthic,
+        cooperation_comment: comments.Cooperation,
+        conceptual_comment: comments.Conceptual,
+        practical_comment: comments.Practical,
+        work_ethic_comment: comments.WorkEthic
+      }
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Couldn't add review");
+        }
+        return res;
+      })
+      .then(res => handleClose())
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   return (
@@ -69,4 +96,17 @@ const StudentAddCourse = ({ handleClose }) => {
   );
 };
 
-export default StudentAddCourse;
+export default RatingModal;
+
+
+{/* <button
+  className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
+  onClick={() => setIsReviewing(true)}
+>
+  Add Review
+</button>
+<Modal open={isReviewing} onClose={() => setIsReviewing(false)}>
+  <RatingModal
+    handleClose={() => setIsReviewing(false)}
+  />
+</Modal> */}

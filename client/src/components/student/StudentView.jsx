@@ -14,7 +14,6 @@ const StudentView = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
   const [isAddingCourse, setIsAddingCourse] = useState(false);
-  const [isReviewing, setIsReviewing] = useState(false);
 
   useEffect(() => {
     const getCourses = async (data) => {
@@ -57,17 +56,6 @@ const StudentView = () => {
         <StudentAddCourse
           handleClose={handleClose}
           addNewCourse={handleCourseAddition}
-        />
-      </Modal>
-      <button
-        className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
-        onClick={() => setIsReviewing(true)}
-      >
-        Add Review
-      </button>
-      <Modal open={isReviewing} onClose={() => setIsReviewing(false)}>
-        <RatingModal
-          handleClose={() => setIsReviewing(false)}
         />
       </Modal>
       <div className="grid grid-cols-4 grid-flow-row gap-3">
