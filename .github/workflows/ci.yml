@@ -50,4 +50,4 @@ jobs:
         env:
           BACKEND_PORT: ${{ env.BACKEND_PORT }}
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
-        run: echo $ATLAS_URI && cd server && npm run test_ci
+        run: cd server && npm run test_ci
