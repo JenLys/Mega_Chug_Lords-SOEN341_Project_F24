@@ -3,8 +3,6 @@ import SummaryCourseRow from "./SummaryCourseRow";
 export default function SummaryCourse({course}) {
   const reviews = course.studentReviews;
   course = course.course
-
-  console.log(course, reviews);
   
   
   return (

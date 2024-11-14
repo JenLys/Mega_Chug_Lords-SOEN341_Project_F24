@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthProvider";
 import { useState } from "react";
-import DetailedDashboard from "../components/teacher/DetailedDashbaord";
+import DetailedDashboard from "../components/teacher/DetailedDashboard";
 import SummaryDashboard from "../components/teacher/SummaryDashboard";
 
 export default function TeacherDashboard() {

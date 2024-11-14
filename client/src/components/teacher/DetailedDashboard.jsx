@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
-import SummaryCourse from "./SummaryCourse";
+import DetailedCourse from "./DetailedCourse.jsx";
 
-export default function SummaryDashboard() {
+export default function DetailedDashboard() {
   const auth = useAuth();
   const user = auth.storedUser;
   const [courses, setCourses] = useState([]);
@@ -34,10 +34,10 @@ export default function SummaryDashboard() {
   } else {
     return (
       <div className="flex flex-col gap-8">
-        <h1>Summary dashboard</h1>
-        <div className="flex flex-col gap-4 overflow-y-auto">
+        <h1>Detailed dashboard</h1>
+        <div className="flex flex-col gap-4 overflow-y-hidden">
           {courses.map((course, idx) => (
-            <SummaryCourse course={course} key={idx} />
+            <DetailedCourse course={course} key={idx} />
           ))}
         </div>
       </div>
