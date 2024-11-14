@@ -140,9 +140,6 @@ studentRouter.post("/register", async (req, res) => {
   }
 });
 
-studentRouter.use(function (_, res) {
-  res.status(404).send("NOT FOUND");
-});
 studentRouter.get("/team/:courseId", async (req, res) => {
   const { courseId } = req.params;
 
@@ -169,6 +166,10 @@ studentRouter.get("/team/:courseId", async (req, res) => {
     console.error("Error fetching team members:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+studentRouter.use(function (_, res) {
+  res.status(404).send("NOT FOUND");
 });
 
 export default studentRouter;

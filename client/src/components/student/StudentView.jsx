@@ -59,7 +59,7 @@ const StudentView = () => {
       }
       const teamData = await response.json();
       setTeamMembers(teamData);
-      setSelectedCourse(courseId);
+      setSelectedCourse(courses.find((course) => course._id === courseId));
     } catch (error) {
       console.error("Error:", error);
     }
@@ -72,15 +72,13 @@ const StudentView = () => {
   };
 
   if (!auth.isLoggedIn) navigate("/login");
-  console.log(courses);
-  console.log(isInTeam);
   
   return (
     <div className="flex flex-col gap-5 justify-around">
       {selectedCourse ? (
         // If a course is selected, show team members
         <div>
-          <h2 className="text-3xl">Team Members for Course {selectedCourse}</h2>
+          <h2 className="text-3xl">Team Members for Course {selectedCourse.dept} {selectedCourse.number}</h2>
           <button
             className="text-lg border-solid border-2 p-2 rounded-md mt-4"
             onClick={handleBackToCourses}
