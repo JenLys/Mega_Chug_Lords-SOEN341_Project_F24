@@ -62,7 +62,7 @@ const [teamMembers, setTeamMembers] = useState([
                             marginLeft: "auto"
                         }}>
                             Rate
-                        </button>
+                        </button> {/*for now it has no functionality, will need to add an onclick to link it with the Part of the rating form later on*/}
                     </li>
                 ))}
             </ul>
