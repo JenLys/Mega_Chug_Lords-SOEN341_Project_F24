@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon --env-file=./.env",
     "test": "node --experimental-vm-modules --env-file=./.env node_modules/jest/bin/jest.js",
+    "test_ci": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prod": "nodemon"
   },
   "keywords": [],
