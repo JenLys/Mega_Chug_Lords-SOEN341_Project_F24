@@ -99,14 +99,23 @@ function TeacherView() {
           <h1 className="text-4xl">
             Welcome {user.fname} {user.lname}, here are your courses!
           </h1>
-          <button className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
-            onClick={(e) => {
-              e.preventDefault();
-              handleOpen();
-            }}
-          >
-            Add course
-          </button>
+          <div className="flex gap-4 justify-center">
+            <button
+              className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpen();
+              }}
+            >
+              Add course
+            </button>
+            <Link
+              className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
+              to={"/dashboard"}
+            >
+              Dashboard
+            </Link>
+          </div>
           <Modal open={isAddingCourse} onClose={handleClose}>
             <TeacherAddCourse
               handleClose={handleClose}

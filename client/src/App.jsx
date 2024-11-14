@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import AuthProvider from "./components/AuthProvider";
 import Registration from "./pages/Registration";
+import TeacherDashboard from "./pages/TeacherDashboard";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/how-to-use" element={<HowToUse />} />
             <Route path="/registration" element={<Registration />} />
+            <Route path="/dashboard" element={<TeacherDashboard />} />
           </Routes>
         </main>
       </div>
