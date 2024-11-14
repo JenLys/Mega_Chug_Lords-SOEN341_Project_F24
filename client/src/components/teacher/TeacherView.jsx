@@ -21,6 +21,7 @@ function TeacherView() {
   const [isAddingCourse, setIsAddingCourse] = useState(false);
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
   const [isViewingTeams, setIsViewingTeams] = useState(false);
+  const [student, setStudent] = useState("");
 
   if (!user || user.role != "teacher") return <Navigate to="/login" />;
 
@@ -124,6 +125,22 @@ function TeacherView() {
     return;
   }
 
+  const handleText = (e) => {
+    setStudent(e.target.value);
+  }
+
+  const handleAddStudent = async (group_id) => {
+    try {
+      const response = await request("/courses/add-to-group", "POST", {
+        group_id: group_id,
+        user_id: student,
+      });
+      const data = await response.json();
+      setGroups(data)
+    } catch (error) {
+      console.error("Error fetching groups");
+    }
+  }
 
   return (
     <div>
@@ -157,6 +174,8 @@ function TeacherView() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={()=> handleAddStudent(group.group._id)}>Add Student</button>
+                      <textarea onChange={(e) => handleText(e)}></textarea>
                     </div>
                   ))}
                 </div>
