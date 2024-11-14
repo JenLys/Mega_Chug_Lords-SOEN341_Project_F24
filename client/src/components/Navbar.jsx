@@ -9,7 +9,6 @@ const Navbar = () => {
   const isLoggedIn = auth.isLoggedIn
 
   useEffect(() => {
-    console.log(auth.isLoggedIn, auth);
   }, [isLoggedIn]);
 
   return (

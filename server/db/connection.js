@@ -148,6 +148,18 @@ export class Db {
     return await Course.find({ student_ids: { $in: userId } });
   }
 
+  async getIsInTeam(userId, courseId) {
+    const course = await this.getCourseById(courseId);
+    if (course.group_ids.length == 0) {
+      return false;
+    }
+    const res = course.group_ids.map(async (groupId) => {
+      const group = await this.getGroup(groupId);
+      return group.student_ids.includes(userId);
+    });
+    return (await Promise.all(res)).includes(true);
+  }
+
   async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {
     const courses = courseIds.map(async (courseId) => {
       return this.getCourseDetailsWithTeacherOnlyById(courseId);
