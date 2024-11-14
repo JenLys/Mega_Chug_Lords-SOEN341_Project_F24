@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation} from "react-router-dom";
 
+
 function MyTeam() {
 
 //get the teammates--in this case temporarily hardcode them

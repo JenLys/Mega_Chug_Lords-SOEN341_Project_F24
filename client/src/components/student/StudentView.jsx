@@ -30,7 +30,7 @@ const StudentView = () => {
       }
     };
     getCourses({ student_id: user.user_id });
-  }, [user.user_id]);
+  }, [user.user_id, isViewingTeam]);
 
   
   const handleOpen = () => setIsAddingCourse(true);
@@ -78,7 +78,7 @@ const StudentView = () => {
           {selectedCourse && selectedCourse.id === course.id && (
             <button
               className="text-sm mt-2 p-1 border rounded-md bg-blue-500 text-white"
-              onClick={handleOpenTeamModal} /*Not sure if this button was already implemented or not, but
+              onClick={handleOpenTeam} /*Not sure if this button was already implemented or not, but
                here I'm adding it just in case: when you click it it renders the next Modal*/
             >
               View my Team
