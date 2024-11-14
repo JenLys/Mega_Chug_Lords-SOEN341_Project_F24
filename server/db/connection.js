@@ -72,8 +72,10 @@ export class Db {
     if (students == null) {
       students = [];
     }
-    const course = await this.getCourse(courseId);
+    const course = await this.getCourseById(courseId);
+
     const group = await Group.create({
+      name: `Group #${course.group_ids.length + 1}`,  // groups are just numbered incrementally
       course_id: courseId,
       student_ids: students,
       review_ids: [],

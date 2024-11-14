@@ -5,6 +5,7 @@ import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
 import Modal from "@mui/material/Modal";
 import TeacherAddCourse from "./TeacherAddCourse";
+import TeacherAddGroup from "./TeacherAddGroup";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -12,12 +13,13 @@ function TeacherView() {
   // State variables to manage component state
   const [selectedCourse, setSelectedCourse] = useState(null); // Stores the currently selected course
   const [courses, setCourses] = useState([]); // Stores the list of courses fetched from the API
-  const [groups, setGroups] = useState([]); //stores the list of teams fetched 
+  const [groups, setGroups] = useState([]);
   const [isHovered, setIsHovered] = useState({}); // Tracks which course is being hovered
   const user = useAuth().storedUser;
   // Get the current location from react-router
   const location = useLocation();
   const [isAddingCourse, setIsAddingCourse] = useState(false);
+  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
   const [isViewingTeams, setIsViewingTeams] = useState(false);
 
   if (!user || user.role != "teacher") return <Navigate to="/login" />;
@@ -60,6 +62,10 @@ function TeacherView() {
     setCourses([...courses, newCourse]);
   };
 
+  const handleGroupAddition = (newGroup) => {
+    setGroups([...groups, newGroup]);
+  }
+
   // Function to clear hover effect
   const handleUnhover = (index) => {
     setIsHovered((prevState) => ({
@@ -74,8 +80,49 @@ function TeacherView() {
     getGroupInfo(course._id);
   }; 
 
-  const handleOpen = () => setIsAddingCourse(true);
-  const handleClose = () => setIsAddingCourse(false);
+  const handleCreateGroup = async () => {
+    const response = await request("/courses/create-group", "POST", {
+      course_id: selectedCourse._id,
+    });
+
+    // Confirms when the group creating is successful
+    if (response != null) {
+      window.alert("Created a new group.");
+    } else {
+      window.alert("Error creating a new group.")
+    }
+    return;
+  }
+
+  // handleOpen performs different functions depending on string parameter
+  const handleOpen = (mode) => {
+    switch (mode) {
+      case 'course': {
+        setIsAddingCourse(true);
+        break;
+      }
+      case 'group': {
+        setIsCreatingGroup(true);
+        break;
+      }
+      default: break;
+    }
+    return;
+  }
+  const handleClose = (mode) => {
+    switch(mode) {
+      case 'course': { 
+        setIsAddingCourse(false);
+        break;
+      } 
+      case 'group': {
+        setIsCreatingGroup(false);
+        break;
+      }
+      default: break;
+    }
+    return;
+  }
 
 
   return (
@@ -104,7 +151,6 @@ function TeacherView() {
                     <div key={index} className="border rounded-md p-7 text-center"style={{border: "3px solid #FFFFFF",borderRadius: "14px"}}>
                       <span className="font-bold">{group.group.name}</span>
                       <div className="mt-2">
-                        {console.log(group)}
                         {group.students.map((student, idx) => (
                           <div key={idx} className="text-sm">
                             Student ID: {student.user_id}
@@ -115,22 +161,7 @@ function TeacherView() {
                   ))}
                 </div>
                 <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                  <Link to={location.pathname}>
-                    <button
-                      style={{
-                        padding: "10px 20px",
-                        fontSize: "16px",
-                        borderRadius: "5px",
-                        backgroundColor: "rgb(73, 97, 142)",
-                        color: "white",
-                        border: "none",
-                        cursor: "pointer",
-                        display: "flex",
-                        gap: "gap"
-                      }}>
-                      Create Teams
-                    </button>
-                  </Link>
+              
                   <Link to={location.pathname}>
                     <button
                       style={{
@@ -171,7 +202,31 @@ function TeacherView() {
                 {selectedCourse.dept} {selectedCourse.number}
               </h1>
               <div style={{ display: "flex", gap: "10px" }}>
-                <button className="otherbtn">Create Teams</button>
+                <button className="otherbtn"
+                  style={{
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    borderRadius: "5px",
+                    backgroundColor: "rgb(73, 97, 142)",
+                    color: "white",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    gap: "gap"
+                  }}
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    handleCreateGroup();
+                  }}
+                  >Create a Group
+                </button>
+                <Modal open={isCreatingGroup} onClose={handleClose}>
+                  <TeacherAddGroup
+                    handleClose={handleClose}
+                    addNewGroup={handleGroupAddition}
+                    />
+                </Modal>
+            
                 <button style={{
                   padding: "10px 20px",
                   fontSize: "16px",
