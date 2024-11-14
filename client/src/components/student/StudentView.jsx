@@ -88,10 +88,11 @@ const StudentView = () => {
             Back to Courses
           </button>
           <div className="mt-5">
+            {console.log(teamMembers)}
             {teamMembers.length > 0 ? (
               teamMembers.map((member, idx) => (
                 <div key={idx} className="p-3 border-b">
-                  {member.name} - {member.email}
+                  {member.fname} - {member.lname}
                 </div>
               ))
             ) : (

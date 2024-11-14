@@ -13,7 +13,6 @@ function TeacherView() {
   const [selectedCourse, setSelectedCourse] = useState(null); // Stores the currently selected course
   const [courses, setCourses] = useState([]); // Stores the list of courses fetched from the API
   const [groups, setGroups] = useState([]); //stores the list of teams fetched 
-  const [students, setStudents] = useState([]); //stores list of students fetched
   const [isHovered, setIsHovered] = useState({}); // Tracks which course is being hovered
   const user = useAuth().storedUser;
   // Get the current location from react-router
@@ -39,6 +38,18 @@ function TeacherView() {
     fetchCourses();
   }, []);
 
+  const getGroupInfo = async (courseId) => {
+    try {
+      const response = await request("/teacher/group-info", "GET", {
+        course_id: courseId,
+      });
+      const data = await response.json();
+      setGroups(data)
+    } catch (error) {
+      console.error("Error fetching groups");
+    }
+  }
+
 
   // Function to handle hover effect
   const handleHover = (index) => {
@@ -60,8 +71,7 @@ function TeacherView() {
   // Function to handle course selection
   const handleClick = (course) => {
     setSelectedCourse(course);
-        setGroups(course.group_ids || []);
-    setStudents(course.student_ids || []); 
+    getGroupInfo(course._id);
   }; 
 
   const handleOpen = () => setIsAddingCourse(true);
@@ -92,11 +102,12 @@ function TeacherView() {
                 <div className="grid grid-cols-4 gap-4 p-4">
                   {groups.map((group, index) => (
                     <div key={index} className="border rounded-md p-7 text-center"style={{border: "3px solid #FFFFFF",borderRadius: "14px"}}>
-                      <span className="font-bold">{group}</span>
+                      <span className="font-bold">{group.group.name}</span>
                       <div className="mt-2">
-                        {students.map((studentId, idx) => (
+                        {console.log(group)}
+                        {group.students.map((student, idx) => (
                           <div key={idx} className="text-sm">
-                            Student ID: {studentId}
+                            Student ID: {student.user_id}
                           </div>
                         ))}
                       </div>

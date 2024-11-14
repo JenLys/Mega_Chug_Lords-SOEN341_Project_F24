@@ -1,19 +1,22 @@
 import express from "express";
-import { initDb as db } from "../db/connection.js"
+import { initDb as db } from "../db/connection.js";
 import { validateId, validateName, validatePassword } from "./validation.js";
 import { keepKeys } from "../utils.js";
-const teacherRouter = express.Router({ mergeParams: true })
+const teacherRouter = express.Router({ mergeParams: true });
 
 teacherRouter.post("/login", async (req, res) => {
   if (req.body != null && req.body.user_id != null && req.body.pw != null) {
-    await db.loginUser(req.body.user_id, req.body.pw, "teacher")
-      .then(data => {
+    await db
+      .loginUser(req.body.user_id, req.body.pw, "teacher")
+      .then((data) => {
         if (data == null) {
-          res.status(400).json({ message: "Invalid login information" })
+          res.status(400).json({ message: "Invalid login information" });
         } else {
-          res.status(200).json(keepKeys(data, ["fname", "lname", "role", "user_id"]))
+          res
+            .status(200)
+            .json(keepKeys(data, ["fname", "lname", "role", "user_id"]));
         }
-      })
+      });
   } else {
     res.status(400).json({ message: "No user information found" });
   }
@@ -21,15 +24,18 @@ teacherRouter.post("/login", async (req, res) => {
 
 teacherRouter.get("/courses", async (req, res) => {
   if (req.query != null && req.query.prof_id != null && req.query) {
-    await db.getTeacherCourses(req.query.prof_id).then((data) => {
-      if (data == null) {
-        res.status(400).json({ message: "No course found" });
-      } else {
-        res.status(200).json(data);
-      }
-    }).catch(err => {
-      res.status(404).json({ message: err.message })
-    })
+    await db
+      .getTeacherCourses(req.query.prof_id)
+      .then((data) => {
+        if (data == null) {
+          res.status(400).json({ message: "No course found" });
+        } else {
+          res.status(200).json(data);
+        }
+      })
+      .catch((err) => {
+        res.status(404).json({ message: err.message });
+      });
   } else {
     res.status(400).json({ message: "No course information found" });
   }
@@ -49,25 +55,52 @@ teacherRouter.get("/courseDetails", async (req, res) => {
   }
 });
 
+teacherRouter.get("/group-info", async (req, res) => {
+  if (req.query != null && req.query.course_id != null) {
+    await db.getGroupsInfo(req.query.course_id).then((data) => {
+      if (data == null) {
+        console.log(data);
+        res.status(400).json({ message: "No group found" });
+      } else {
+        res.status(200).json(data);
+      }
+    });
+  } else {
+    res.status(400).json({ message: "No group information found" });
+  }
+});
+
 teacherRouter.post("/add-course", async (req, res) => {
-  if (req.body != null && req.body.number != null && req.body.dept != null && req.body.prof_id != null) {
-    const courseAlreadyExists = await db.getCourseByInfo(req.body.number, req.body.dept, req.body.prof_id)
+  if (
+    req.body != null &&
+    req.body.number != null &&
+    req.body.dept != null &&
+    req.body.prof_id != null
+  ) {
+    const courseAlreadyExists = await db.getCourseByInfo(
+      req.body.number,
+      req.body.dept,
+      req.body.prof_id
+    );
     if (!courseAlreadyExists) {
-      await db.addCourse(req.body.number, req.body.dept, req.body.prof_id)
-        .then(data => {
+      await db
+        .addCourse(req.body.number, req.body.dept, req.body.prof_id)
+        .then((data) => {
           if (data == null) {
-            res.status(400).json({ message: "Could not add new course" })
+            res.status(400).json({ message: "Could not add new course" });
           } else {
-            res.status(200).json(data)
+            res.status(200).json(data);
           }
-        })
+        });
     } else {
-      return res.status(400).json({ message: "Course already exists" })
+      return res.status(400).json({ message: "Course already exists" });
     }
   } else {
-    return res.status(400).json({ message: "Unsufficient information for adding course" })
+    return res
+      .status(400)
+      .json({ message: "Unsufficient information for adding course" });
   }
-})
+});
 
 //route to register a new teacher user
 teacherRouter.post("/register", async (req, res) => {
@@ -102,23 +135,32 @@ teacherRouter.post("/register", async (req, res) => {
           "Invalid password. Must be 8 characters long with lowercase, uppercase and special",
       });
     } else {
-      const userAlreadyExists = await db.getUser(req.body.user_id)
+      const userAlreadyExists = await db.getUser(req.body.user_id);
       if (!userAlreadyExists) {
-        await db.addUser(req.body.fname, req.body.lname, "teacher", req.body.user_id, req.body.pw)
-          .then(data => {
+        await db
+          .addUser(
+            req.body.fname,
+            req.body.lname,
+            "teacher",
+            req.body.user_id,
+            req.body.pw
+          )
+          .then((data) => {
             if (data == null) {
-              res.status(400).json({ message: "Could not register new user" })
+              res.status(400).json({ message: "Could not register new user" });
             } else {
-              res.status(200).json(req.body)
+              res.status(200).json(req.body);
             }
-          })
+          });
       } else {
-        return res.status(400).json({ message: "User already exists" })
+        return res.status(400).json({ message: "User already exists" });
       }
     }
   } else {
-    return res.status(400).json({ message: "Unsufficient information for registration" })
+    return res
+      .status(400)
+      .json({ message: "Unsufficient information for registration" });
   }
-})
+});
 
 export default teacherRouter;
