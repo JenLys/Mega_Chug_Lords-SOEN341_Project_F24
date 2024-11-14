@@ -5,6 +5,8 @@ import { useAuth } from "../AuthProvider";
 import StudentAddCourse from "./StudentAddCourse";
 import StudentCourseDetails from "./StudentCourseDetails";
 import { Modal } from "@mui/material";
+import RatingModal from "./RatingModal";
+import { Rating } from "react-simple-star-rating";
 
 const StudentView = () => {
   const auth = useAuth();

@@ -84,11 +84,18 @@ export class Db {
     return group;
   }
 
-  async addReviewToGroup(groupId, reviewerId, assignmentId, rating) {
+  async addReviewToGroup(groupId, reviewerId, revieweeId, reviewData) {
     const review = await Review.create({
       reviewer_id: reviewerId,
-      assignment_id: assignmentId,
-      rating: rating,
+      reviewee_id: revieweeId,
+      cooperation: reviewData.cooperation,
+      conceptual: reviewData.conceptual,
+      practical: reviewData.practical,
+      work_ethic: reviewData.work_ethic,
+      cooperation_comment: reviewData.cooperation_comment,
+      conceptual_comment: reviewData.conceptual_comment,
+      practical_comment: reviewData.practical_comment,
+      work_ethic_comment: reviewData.work_ethic_comment,
     });
     const group = await this.getGroup(groupId);
     group.review_ids.push(review._id);
