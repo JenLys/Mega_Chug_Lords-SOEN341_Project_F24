@@ -10,6 +10,7 @@ const StudentView = () => {
   const auth = useAuth();
   const user = auth.storedUser;
   const [courses, setCourses] = useState([]);
+  const [isInTeam, setIsInTeam] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [isAddingCourse, setIsAddingCourse] = useState(false);
@@ -24,13 +25,22 @@ const StudentView = () => {
         }
         const res = await response.json();
         setCourses(res);
+        setIsInTeam(Array(courses.length).fill(false));            
+        res.map(async (course) => {
+          const response = await request("/student/in-team", "GET", {course_id : course._id, student_id: user.user_id});
+          if (!response.ok) {
+            throw new Error("Could not get teams which student is in");
+          }
+          const teamData = await response.json();
+          setIsInTeam([...isInTeam, {course_id: course._id, isInTeam: teamData}]);
+        });
       } catch (error) {
         console.error("Error:", error);
-      }
+      }      
     };
     getCourses({ student_id: user.user_id });
   }, [user.user_id]);
-
+  
   // Function to handle opening the "Add Course" modal
   const handleOpen = () => setIsAddingCourse(true);
   const handleClose = () => setIsAddingCourse(false);
@@ -62,7 +72,9 @@ const StudentView = () => {
   };
 
   if (!auth.isLoggedIn) navigate("/login");
-
+  console.log(courses);
+  console.log(isInTeam);
+  
   return (
     <div className="flex flex-col gap-5 justify-around">
       {selectedCourse ? (
@@ -106,17 +118,22 @@ const StudentView = () => {
             />
           </Modal>
           <div className="grid grid-cols-4 grid-flow-row gap-3 mt-5">
-            {courses.map((course, idx) => (
+            {courses.map((course, idx) => 
               <div key={idx} className="border p-4 rounded-lg">
-                <StudentCourseDetails course={course} />
+              <StudentCourseDetails course={course} />
+              {isInTeam.find((x) => x.course_id === course._id)?.isInTeam ? (
                 <button
-                  className="mt-3 text-sm border-solid border-2 p-1 rounded-md"
-                  onClick={() => handleSelectCourse(course.id)}
+                className="mt-3 text-sm border-solid border-2 p-1 rounded-md"
+                onClick={() => handleSelectCourse(course._id)}
                 >
                   View Team
                 </button>
-              </div>
-            ))}
+              ) : (
+                <span>No teams </span>
+              )}
+              
+            </div>
+            )}
           </div>
         </div>
       )}
