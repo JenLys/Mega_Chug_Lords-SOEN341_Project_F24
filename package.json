@@ -8,6 +8,10 @@
     "prod": "concurrently \"cd ./client && npm run preview\" \"cd ./server && npm run prod\" "
   },
   "devDependencies": {
+    "concurrently": "^6.2.0",
     "husky": "^9.1.6"
+  },
+  "dependencies": {
+    "react-simple-star-rating": "^5.1.7"
   }
 }

@@ -2,53 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 .navbar {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 20px 8%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: rgba(89, 141, 164, 0.7); /* Adjust opacity as needed */
-    backdrop-filter: blur(10px);
-    z-index: 1000;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(89, 141, 164, 0.7); /* Adjust opacity as needed */
+  backdrop-filter: blur(10px);
+  z-index: 1000;
 }
 
 .navbar .logo {
-    width: 90px;
-    height: 90px;
-    object-fit: contain;
-    
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
 }
 
-
 .navbar ul {
-    display: flex;
-    list-style-type: none;
+  display: flex;
+  list-style-type: none;
 }
 
 .navbar ul li {
-    margin-left: 40px;
+  margin-left: 40px;
 }
 
 .navbar ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 17px;
-    display: inline-block;
-    transition: color 0.3s ease;
+  text-decoration: none;
+  color: #fff;
+  font-size: 17px;
+  display: inline-block;
+  transition: color 0.3s ease;
 }
 
 .navbar ul li a:hover {
-    color: #00d5ff;
+  color: #00d5ff;
+}
+
+/* Seems to be a bug where the stars are vertical if this is not here */
+svg.star-svg {
+  display: inline;
 }
