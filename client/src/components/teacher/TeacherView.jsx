@@ -67,6 +67,13 @@ function TeacherView() {
     const response = await request("/courses/create-group", "POST", {
       course_id: selectedCourse._id,
     });
+
+    // Confirms when the group creating is successful
+    if (response != null) {
+      window.alert("Created a new group.");
+    } else {
+      window.alert("Error creating a new group.")
+    }
     return;
   }
 
