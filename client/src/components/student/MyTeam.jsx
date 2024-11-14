@@ -7,9 +7,9 @@ function MyTeam() {
 
 //get the teammates--in this case temporarily hardcode them
 const [teamMembers, setTeamMembers] = useState([
-    { id: 1, name: "Alice"},
-    { id: 2, name: "Bob"},
-    { id: 3, name: "Charlie"}
+    { id: 1, name: "Alice A"},
+    { id: 2, name: "Bob B"},
+    { id: 3, name: "Charlie C"}
 ]);
 
 
