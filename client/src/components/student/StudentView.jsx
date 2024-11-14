@@ -75,6 +75,7 @@ const StudentView = () => {
           <StudentCourseDetails key={idx} course={course} />
           {/*button to view teammates should display only when a course gets selected 
           check with the course id since it's unique*/}
+          {/*course exists and is the one selected */}
           {selectedCourse && selectedCourse.id === course.id && (
             <button
               className="text-sm mt-2 p-1 border rounded-md bg-blue-500 text-white"
@@ -90,6 +91,7 @@ const StudentView = () => {
       {/*Displays the Team view modal */}
       <Modal open={isViewingTeam} onClose={handleCloseTeam}>
         <MyTeam /> {/*render MyTeam.jsx */}
+        handleCloseTeam = {handleCloseTeam}
       </Modal>
     </div>
   );
