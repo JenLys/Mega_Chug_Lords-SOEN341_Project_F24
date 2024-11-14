@@ -73,7 +73,8 @@ const StudentView = () => {
         {courses.map((course, idx) => (
           <div key={idx} onClick={() => handleCourseClick(course)}>
           <StudentCourseDetails key={idx} course={course} />
-          {/*button to view teammates should display only when a course gets selected */}
+          {/*button to view teammates should display only when a course gets selected 
+          check with the course id since it's unique*/}
           {selectedCourse && selectedCourse.id === course.id && (
             <button
               className="text-sm mt-2 p-1 border rounded-md bg-blue-500 text-white"
@@ -87,9 +88,8 @@ const StudentView = () => {
         ))}
       </div>
       {/*Displays the Team view modal */}
-      <Modal open={setIsViewingTeam} onClose={handleCloseTeam}>
-        <MyTeam/> {/*render MyTeam.jsx */}
-
+      <Modal open={isViewingTeam} onClose={handleCloseTeam}>
+        <MyTeam /> {/*render MyTeam.jsx */}
       </Modal>
     </div>
   );
