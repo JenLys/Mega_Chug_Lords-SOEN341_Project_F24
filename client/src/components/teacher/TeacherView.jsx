@@ -130,8 +130,6 @@ function TeacherView() {
   }
 
   const handleAddStudent = async (group_id) => {
-    console.log("fetch");
-    
     try {
       const response = await request("/courses/add-to-group", "POST", {
         group_id: group_id,

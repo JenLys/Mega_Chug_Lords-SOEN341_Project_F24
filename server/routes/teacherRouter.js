@@ -59,7 +59,6 @@ teacherRouter.get("/group-info", async (req, res) => {
   if (req.query != null && req.query.course_id != null) {
     await db.getGroupsInfo(req.query.course_id).then((data) => {
       if (data == null) {
-        console.log(data);
         res.status(400).json({ message: "No group found" });
       } else {
         res.status(200).json(data);

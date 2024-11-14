@@ -127,8 +127,6 @@ export class Db {
   }
 
   async addUserToCourseGroup(groupId, userId) {
-    console.log("called");
-
     const group = await this.getGroup(groupId);
     group.student_ids.push(userId);
     await group.save();

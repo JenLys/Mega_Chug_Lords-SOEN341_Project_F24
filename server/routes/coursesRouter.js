@@ -59,15 +59,12 @@ coursesRouter.post("/add-review", async (req, res) => {
 });
 
 coursesRouter.post("/add-to-group", async (req, res) => {
-  console.log("called");
-
   if (req.body && req.body.group_id != null && req.body.user_id != null) {
     try {
       const result = await db.addUserToCourseGroup(
         req.body.group_id,
         req.body.user_id
       );
-      console.log("worked");
 
       res.status(200).json(result);
     } catch (err) {
