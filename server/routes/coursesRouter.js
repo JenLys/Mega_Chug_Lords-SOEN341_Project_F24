@@ -6,30 +6,57 @@ const coursesRouter = express.Router({ mergeParams: true });
 coursesRouter.post("/courses-details", async (req, res) => {
   if (req.body && req.body.courseIds != null) {
     try {
-      const result = await db.getBulkCourseDetailsByIds(req.body.courseIds)
-      res.status(200).json(result)
+      const result = await db.getBulkCourseDetailsByIds(req.body.courseIds);
+      res.status(200).json(result);
     } catch (err) {
       console.log(err);
-      res.status(400).json([])
+      res.status(400).json([]);
     }
   } else {
-    res.status(400).json([])
+    res.status(400).json([]);
   }
-})
+});
 
 coursesRouter.post("/courses-details-with-teacher-only", async (req, res) => {
   if (req.body && req.body.courseIds != null) {
     try {
-      const result = await db.getBulkCourseDetailsTeacherOnlyByIds(req.body.courseIds)
-      res.status(200).json(result)
+      const result = await db.getBulkCourseDetailsTeacherOnlyByIds(
+        req.body.courseIds
+      );
+      res.status(200).json(result);
     } catch (err) {
       console.log(err);
-      res.status(400).json([])
+      res.status(400).json([]);
     }
   } else {
-    res.status(400).json([])
+    res.status(400).json([]);
   }
-})
+});
+
+coursesRouter.post("/add-review", async (req, res) => {
+  if (
+    req.body &&
+    req.body.group_id != null &&
+    req.body.reviewer_id != null &&
+    req.body.reviewee_id != null &&
+    req.body.review != null
+  ) {
+    try {
+      const result = await db.addReviewToGroup(
+        req.body.group_id,
+        req.body.reviewer_id,
+        req.body.reviewee_id,
+        req.body.review
+      );
+      res.status(200).json(result);
+    } catch (err) {
+      console.log(err);
+      res.status(400).json("error adding review");
+    }
+  } else {
+    res.status(400).json("error in body");
+  }
+});
 
 coursesRouter.get("/all-courses", async (req, res) => {
   await db.getAll(Course).then((data) => {
