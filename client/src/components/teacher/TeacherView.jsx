@@ -40,31 +40,6 @@ function TeacherView() {
   }, []);
 
 
-  // Effect hook to fetch course details when the component mounts
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await request("/courses/course-details", "GET", {
-          prof_id: user.user_id,
-        });
-        const data = await response.json();
-
-        setCourses(data); // Store courses
-
-        // Check if the response has group and student data
-        const courseGroups = data.map(course => course.group_ids).flat();
-        const courseStudents = data.map(course => course.student_ids).flat();
-
-        setGroups(courseGroups || []); // Store groups if available
-        setStudents(courseStudents || []); // Store students if available
-      } catch (error) {
-        console.error("Error fetching course details");
-      }
-    };
-    fetchCourses();
-  }, []);
-
-
   // Function to handle hover effect
   const handleHover = (index) => {
     setIsHovered((prevState) => ({ ...prevState, [index]: true }));
@@ -85,14 +60,13 @@ function TeacherView() {
   // Function to handle course selection
   const handleClick = (course) => {
     setSelectedCourse(course);
-    setGroups(course.group_ids || []); 
+        setGroups(course.group_ids || []);
     setStudents(course.student_ids || []); 
-  };
+  }; 
 
   const handleOpen = () => setIsAddingCourse(true);
   const handleClose = () => setIsAddingCourse(false);
 
-  const navigate = useNavigate();
 
   return (
     <div>
