@@ -75,7 +75,7 @@ export class Db {
     const course = await this.getCourseById(courseId);
 
     const group = await Group.create({
-      name: `Group #${course.group_ids.length + 1}`,  // groups are just numbered incrementally
+      name: `Group #${course.group_ids.length + 1}`, // groups are just numbered incrementally
       course_id: courseId,
       student_ids: students,
       review_ids: [],
@@ -126,7 +126,9 @@ export class Db {
     return null;
   }
 
-  async addUserToCourseGroup(userId, groupId) {
+  async addUserToCourseGroup(groupId, userId) {
+    console.log("called");
+
     const group = await this.getGroup(groupId);
     group.student_ids.push(userId);
     await group.save();
