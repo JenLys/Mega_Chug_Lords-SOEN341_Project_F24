@@ -85,6 +85,8 @@ function TeacherView() {
   // Function to handle course selection
   const handleClick = (course) => {
     setSelectedCourse(course);
+    setGroups(course.group_ids || []); 
+    setStudents(course.student_ids || []); 
   };
 
   const handleOpen = () => setIsAddingCourse(true);
@@ -114,11 +116,11 @@ function TeacherView() {
               </h1>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <div className="grid grid-cols-4 gap-4 p-4">
-                  {courses.map((course, index) => (
+                  {groups.map((group, index) => (
                     <div key={index} className="border rounded-md p-7 text-center"style={{border: "3px solid #FFFFFF",borderRadius: "14px"}}>
-                      <span className="font-bold">{course.group_ids}</span>
+                      <span className="font-bold">{group}</span>
                       <div className="mt-2">
-                        {course.student_ids && course.student_ids.map((studentId, idx) => (
+                        {students.map((studentId, idx) => (
                           <div key={idx} className="text-sm">
                             Student ID: {studentId}
                           </div>
