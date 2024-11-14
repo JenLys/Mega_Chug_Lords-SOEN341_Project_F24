@@ -150,6 +150,35 @@ export class Db {
     return await Course.find({ student_ids: { $in: userId } });
   }
 
+  async getIsInTeam(userId, courseId) {
+    const course = await this.getCourseById(courseId);
+    if (course.group_ids.length == 0) {
+      return false;
+    }
+    const res = course.group_ids.map(async (groupId) => {
+      const group = await this.getGroup(groupId);
+      return group.student_ids.includes(userId);
+    });
+    return (await Promise.all(res)).includes(true);
+  }
+
+  async getGroupsInfo(course_id) {
+    const groups = await Group.find({ course_id: course_id });
+    const groupDetails = await Promise.all(
+      groups.map(async (group) => {
+        const students = await User.find(
+          {
+            user_id: { $in: group.student_ids },
+            role: "student",
+          },
+          { pw: 0 } // Exclude the password field
+        );
+        return { group, students };
+      })
+    );
+    return groupDetails;
+  }
+
   async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {
     const courses = courseIds.map(async (courseId) => {
       return this.getCourseDetailsWithTeacherOnlyById(courseId);
