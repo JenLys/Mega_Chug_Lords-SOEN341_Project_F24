@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const groupSchema = new Schema(
   {
+    name: String,
     course_id: String,
     student_ids: [String],
     review_ids: [String],

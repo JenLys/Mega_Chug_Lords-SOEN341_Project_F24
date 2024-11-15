@@ -71,8 +71,10 @@ export class Db {
     if (students == null) {
       students = [];
     }
-    const course = await this.getCourse(courseId);
+    const course = await this.getCourseById(courseId);
+
     const group = await Group.create({
+      name: `Group #${course.group_ids.length + 1}`, // groups are just numbered incrementally
       course_id: courseId,
       student_ids: students,
       review_ids: []
@@ -112,7 +114,7 @@ export class Db {
     return null;
   }
 
-  async addUserToCourseGroup(userId, groupId) {
+  async addUserToCourseGroup(groupId, userId) {
     const group = await this.getGroup(groupId);
     group.student_ids.push(userId);
     await group.save();
@@ -146,6 +148,23 @@ export class Db {
       return group.student_ids.includes(userId);
     });
     return (await Promise.all(res)).includes(true);
+  }
+
+  async getGroupsInfo(course_id) {
+    const groups = await Group.find({ course_id: course_id });
+    const groupDetails = await Promise.all(
+      groups.map(async (group) => {
+        const students = await User.find(
+          {
+            user_id: { $in: group.student_ids },
+            role: "student",
+          },
+          { pw: 0 } // Exclude the password field
+        );
+        return { group, students };
+      })
+    );
+    return groupDetails;
   }
 
   async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {

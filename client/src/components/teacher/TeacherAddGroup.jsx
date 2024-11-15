@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../AuthProvider";
 import { request } from "../../utils";
 
-export default function TeacherAddCourse({ handleClose, addNewCourse }) {
+export default function TeacherAddGroup({ handleClose, addNewGroup }) {
   const user = useAuth().storedUser;
   const {
     register,
@@ -13,7 +13,7 @@ export default function TeacherAddCourse({ handleClose, addNewCourse }) {
 
   const onSubmit = async (data) => {
     data["prof_id"] = user.user_id;
-    await request("/teacher/add-course", "POST", data)
+    await request("/courses/add-group", "POST", data)
       .then((res) => res.json())
       .then((res) => {
         if (res.message) {
@@ -21,9 +21,9 @@ export default function TeacherAddCourse({ handleClose, addNewCourse }) {
         }
         return res;
       })
-      .then((course) => {
-        addNewCourse(course);
-        handleClose('course');
+      .then((group) => {
+        addNewGroup(group);
+        handleClose('group');
       })
       .catch((err) => {
         setError("root.serverError", { message: err.message });
@@ -33,29 +33,19 @@ export default function TeacherAddCourse({ handleClose, addNewCourse }) {
   return (
     <div className="w-full h-full flex align-center justify-center text-white">
       <div className="bg-black w-fit h-fit p-8 rounded-lg flex flex-col gap-4">
-        <h2 className="text-center text-white text-3xl">Add a course</h2>
+        <h2 className="text-center text-white text-3xl">Add a student to the group</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-3 *:flex *:justify-between *:gap-6"
         >
           <div>
-            <label>Course Dept.</label>
+            <label>Student ID.</label>
             <input
               className="text-black"
               required
               type="text"
-              placeholder="Enter the course department"
+              placeholder="Enter the student's ID number"
               {...register("dept")}
-            />
-          </div>
-          <div>
-            <label>Course number</label>
-            <input
-              className="text-black"
-              required
-              type="text"
-              placeholder="Enter the course number"
-              {...register("number")}
             />
           </div>
           {errors.root?.serverError?.message && (
@@ -72,7 +62,7 @@ export default function TeacherAddCourse({ handleClose, addNewCourse }) {
           className="text-m text-center border-solid border-white border-[3px] ease-in duration-50 p-1 rounded-lg hover:scale-110"
           onClick={(e) => {
             e.preventDefault();
-            handleClose('course');
+            handleClose('group');
           }}
         >
           Cancel
