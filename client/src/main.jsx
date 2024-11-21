@@ -9,6 +9,7 @@ import HowToUse from "./pages/HowToUse";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import TeacherDashboard from "./pages/TeacherDashboard";
+import StudentDashboard from "./components/student/StudentDashboard";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <TeacherDashboard />,
+      },
+      {
+        path: "/summary",
+        element: <StudentDashboard />,
       },
     ],
   },

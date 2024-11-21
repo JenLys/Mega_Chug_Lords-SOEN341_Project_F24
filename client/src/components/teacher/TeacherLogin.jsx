@@ -11,16 +11,16 @@ const TeacherLogin = () => {
     formState: { errors },
   } = useForm();
   const auth = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(
     auth.isLoggedIn && auth.storedUser.role === "teacher"
   );
   const onSubmit = async (data) => {
     console.log(data);
     data.role = "teacher";
-    await auth.loginAction(data).catch((res) => {} /* do nothing */);
+    await auth.loginAction(data).catch(() => {} /* do nothing */);
     setIsLoggedIn(auth.isLoggedIn);
-    navigate("/")
+    navigate("/");
   };
   return isLoggedIn ? (
     <Navigate to="/" />
@@ -60,7 +60,7 @@ const TeacherLogin = () => {
         />
       </form>
       <h3>
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <a
           className="border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
           href="/registration"

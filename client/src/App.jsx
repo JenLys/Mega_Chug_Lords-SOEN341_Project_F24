@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import AuthProvider from "./components/AuthProvider";
 import Registration from "./pages/Registration";
 import TeacherDashboard from "./pages/TeacherDashboard";
+import StudentDashboard from "./components/student/StudentDashboard";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/how-to-use" element={<HowToUse />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/dashboard" element={<TeacherDashboard />} />
+            <Route path="/summary" element={<StudentDashboard />} />
           </Routes>
         </main>
       </div>

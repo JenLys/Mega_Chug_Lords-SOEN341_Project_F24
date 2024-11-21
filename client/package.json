@@ -16,8 +16,8 @@
     "client": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-simple-star-rating": "^5.1.7",
-    "react-hook-form": "^7.53.0"
+    "react-hook-form": "^7.53.0",
+    "react-simple-star-rating": "^5.1.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

@@ -74,7 +74,7 @@ export class Db {
     const course = await this.getCourseById(courseId);
 
     const group = await Group.create({
-      name: `Group #${course.group_ids.length + 1}`, // groups are just numbered incrementally
+      name: `Group #${course.group_ids.length + 1}`,  // groups are just numbered incrementally
       course_id: courseId,
       student_ids: students,
       review_ids: []
@@ -84,7 +84,7 @@ export class Db {
     return group;
   }
 
-  async addReviewToGroup(groupId, reviewerId, revieweeId, courseId, reviewData) {
+  async addReviewToGroup(courseId, groupId, reviewerId, revieweeId, reviewData) {
     const review = await Review.create({
       reviewer_id: reviewerId,
       reviewee_id: revieweeId,
@@ -107,6 +107,7 @@ export class Db {
     const course = await Course.findOne({
       _id: courseId,
     });
+    
     if (!course.student_ids.includes(userId)) {
       course.student_ids.push(userId);
       return await course.save();
@@ -165,6 +166,11 @@ export class Db {
       })
     );
     return groupDetails;
+  }
+
+  async getAllReviewsForStudent(userId) {
+    const reviews = await Review.find({ reviewee_id: userId })
+    return reviews
   }
 
   async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {
@@ -275,6 +281,13 @@ export class Db {
     });
   }
 
+  async getGroupWithCourseAndMember(courseId, memberId) {
+    return await Group.findOne({
+      course_id: courseId,
+      student_ids: { $in: memberId }
+    })
+  }
+
   async getCourseById(id) {
     return await Course.findOne({ _id: id });
   }
@@ -287,13 +300,13 @@ export class Db {
     return await Review.findOne({ _id: id });
   }
 
-  async removeUserFromCourse(userId, name, courseId) {
+  async removeUserFromCourse(userId, courseId) {
     const course = await Course.findOne({
-      name: name,
       course_id: courseId,
     });
     course.student_ids = course.student_ids.filter((id) => id !== userId);
-    await course.save();
+    await course.save()
+    return true
   }
 
   async removeUser(id) {

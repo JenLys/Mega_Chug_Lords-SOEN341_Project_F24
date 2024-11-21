@@ -1,26 +1,31 @@
 import { useState } from "react";
 import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
-import { Rating } from 'react-simple-star-rating'
+import { Rating } from "react-simple-star-rating";
 
-const RatingModal = ({ handleClose, revieweeId, groupId, courseId }) => {
+const RatingModal = ({ handleClose, revieweeId, courseId }) => {
   const user = useAuth().storedUser;
-  const [ratingCooperation, setRatingCooperation] = useState(0)
-  const [ratingConceptual, setRatingConceptual] = useState(0)
-  const [ratingPractical, setRatingPractical] = useState(0)
-  const [ratingWorkEthic, setRatingWorkEthic] = useState(0)
-  const criteria = [setRatingCooperation, setRatingConceptual, setRatingPractical, setRatingWorkEthic]
+  const [ratingCooperation, setRatingCooperation] = useState(0);
+  const [ratingConceptual, setRatingConceptual] = useState(0);
+  const [ratingPractical, setRatingPractical] = useState(0);
+  const [ratingWorkEthic, setRatingWorkEthic] = useState(0);
+  const criteria = [
+    setRatingCooperation,
+    setRatingConceptual,
+    setRatingPractical,
+    setRatingWorkEthic,
+  ];
   const [comments, setComments] = useState({
-    Cooperation: '',
-    Conceptual: '',
-    Practical: '',
-    WorkEthic: ''
+    Cooperation: "",
+    Conceptual: "",
+    Practical: "",
+    WorkEthic: "",
   });
 
   const handleCommentChange = (field, value) => {
     setComments((prevComments) => ({
       ...prevComments,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -28,11 +33,9 @@ const RatingModal = ({ handleClose, revieweeId, groupId, courseId }) => {
     e.preventDefault();
     if (!window.confirm("Are you sure you want to submit?")) return;
 
-    
     await request("/courses/add-review", "POST", {
-      reviewer_id : user.user_id,
-      reviewee_id : revieweeId,
-      group_id : groupId,
+      reviewer_id: user.user_id,
+      reviewee_id: revieweeId,
       course_id: courseId,
       review: {
         cooperation: ratingCooperation,
@@ -42,8 +45,8 @@ const RatingModal = ({ handleClose, revieweeId, groupId, courseId }) => {
         cooperation_comment: comments.Cooperation,
         conceptual_comment: comments.Conceptual,
         practical_comment: comments.Practical,
-        work_ethic_comment: comments.WorkEthic
-      }
+        work_ethic_comment: comments.WorkEthic,
+      },
     })
       .then((res) => {
         if (!res.ok) {
@@ -51,7 +54,7 @@ const RatingModal = ({ handleClose, revieweeId, groupId, courseId }) => {
         }
         return res;
       })
-      .then(res => handleClose())
+      .then(handleClose())
       .catch((e) => {
         console.error(e);
       });
@@ -63,20 +66,28 @@ const RatingModal = ({ handleClose, revieweeId, groupId, courseId }) => {
         <h2 className="text-center text-white text-3xl">Enroll in a course</h2>
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
           <div className="grid grid-cols-2 gap-4">
-            {['Cooperation', 'Conceptual', 'Practical', 'Work Ethic'].map((field, idx) => (
-              <div key={idx} className="flex flex-col items-center p-4 border border-white rounded-lg">
-                <label className="mb-2">{field}</label>
-                <Rating
-                  onClick={(rate) => criteria[idx](rate)}
-                />
-                <textarea
-                  className="text-black mt-2 w-full"
-                  placeholder={`${field} Comment`}
-                  value={comments[field]}
-                  onChange={(e) => handleCommentChange(field.replace(/\s+/g, ''), e.target.value)}
-                />
-              </div>
-            ))}
+            {["Cooperation", "Conceptual", "Practical", "Work Ethic"].map(
+              (field, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center p-4 border border-white rounded-lg"
+                >
+                  <label className="mb-2">{field}</label>
+                  <Rating onClick={(rate) => criteria[idx](rate)} />
+                  <textarea
+                    className="text-black mt-2 w-full"
+                    placeholder={`${field} Comment`}
+                    value={comments[field]}
+                    onChange={(e) =>
+                      handleCommentChange(
+                        field.replace(/\s+/g, ""),
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+              )
+            )}
           </div>
           <input
             type="submit"
@@ -98,16 +109,3 @@ const RatingModal = ({ handleClose, revieweeId, groupId, courseId }) => {
 };
 
 export default RatingModal;
-
-
-{/* <button
-  className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
-  onClick={() => setIsReviewing(true)}
->
-  Add Review
-</button>
-<Modal open={isReviewing} onClose={() => setIsReviewing(false)}>
-  <RatingModal
-    handleClose={() => setIsReviewing(false)}
-  />
-</Modal> */}

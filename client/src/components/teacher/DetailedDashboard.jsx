@@ -27,7 +27,7 @@ export default function DetailedDashboard() {
       }
     };
     getCourses();
-  }, []);
+  }, [user.user_id]);
 
   if (isLoading) {
     return <span>Loading...</span>;
