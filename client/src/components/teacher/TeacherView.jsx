@@ -6,15 +6,12 @@ import { useAuth } from "../AuthProvider";
 import Modal from "@mui/material/Modal";
 import TeacherAddCourse from "./TeacherAddCourse";
 import TeacherAddGroup from "./TeacherAddGroup";
-import { useNavigate } from 'react-router-dom';
-
 
 function TeacherView() {
   // State variables to manage component state
   const [selectedCourse, setSelectedCourse] = useState(null); // Stores the currently selected course
   const [courses, setCourses] = useState([]); // Stores the list of courses fetched from the API
   const [groups, setGroups] = useState([]);
-  const [isHovered, setIsHovered] = useState({}); // Tracks which course is being hovered
   const user = useAuth().storedUser;
   // Get the current location from react-router
   const location = useLocation();
@@ -22,8 +19,6 @@ function TeacherView() {
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
   const [isViewingTeams, setIsViewingTeams] = useState(false);
   const [student, setStudent] = useState("");
-
-  if (!user || user.role != "teacher") return <Navigate to="/login" />;
 
   // Effect hook to fetch courses when the component mounts
   useEffect(() => {
@@ -34,12 +29,14 @@ function TeacherView() {
         });
         const data = await response.json();
         setCourses(data); // Update the courses state with fetched data
-      } catch (error) {
+      } catch {
         console.error("Error fetching courses");
       }
     };
     fetchCourses();
-  }, []);
+  }, [user?.user_id]);
+
+  if (!user || user.role != "teacher") return <Navigate to="/login" />;
 
   const getGroupInfo = async (courseId) => {
     try {
@@ -47,16 +44,10 @@ function TeacherView() {
         course_id: courseId,
       });
       const data = await response.json();
-      setGroups(data)
-    } catch (error) {
+      setGroups(data);
+    } catch {
       console.error("Error fetching groups");
     }
-  }
-
-
-  // Function to handle hover effect
-  const handleHover = (index) => {
-    setIsHovered((prevState) => ({ ...prevState, [index]: true }));
   };
 
   const handleCourseAddition = (newCourse) => {
@@ -65,21 +56,13 @@ function TeacherView() {
 
   const handleGroupAddition = (newGroup) => {
     setGroups([...groups, newGroup]);
-  }
-
-  // Function to clear hover effect
-  const handleUnhover = (index) => {
-    setIsHovered((prevState) => ({
-      ...prevState,
-      [index]: false,
-    }));
   };
 
   // Function to handle course selection
   const handleClick = (course) => {
     setSelectedCourse(course);
     getGroupInfo(course._id);
-  }; 
+  };
 
   const handleCreateGroup = async () => {
     const response = await request("/courses/create-group", "POST", {
@@ -90,44 +73,46 @@ function TeacherView() {
     if (response != null) {
       window.alert("Created a new group.");
     } else {
-      window.alert("Error creating a new group.")
+      window.alert("Error creating a new group.");
     }
     return;
-  }
+  };
 
   // handleOpen performs different functions depending on string parameter
   const handleOpen = (mode) => {
     switch (mode) {
-      case 'course': {
+      case "course": {
         setIsAddingCourse(true);
         break;
       }
-      case 'group': {
+      case "group": {
         setIsCreatingGroup(true);
         break;
       }
-      default: break;
+      default:
+        break;
     }
     return;
-  }
+  };
   const handleClose = (mode) => {
-    switch(mode) {
-      case 'course': { 
+    switch (mode) {
+      case "course": {
         setIsAddingCourse(false);
         break;
-      } 
-      case 'group': {
+      }
+      case "group": {
         setIsCreatingGroup(false);
         break;
       }
-      default: break;
+      default:
+        break;
     }
     return;
-  }
+  };
 
   const handleText = (e) => {
     setStudent(e.target.value);
-  }
+  };
 
   const handleAddStudent = async (group_id) => {
     try {
@@ -136,128 +121,64 @@ function TeacherView() {
         user_id: student,
       });
       const data = await response.json();
-      setGroups(data)
-    } catch (error) {
+      setGroups(data);
+    } catch {
       console.error("Error fetching groups");
     }
-  }
+  };
 
   return (
     <div>
-      {
-        selectedCourse ? (
-          //if selected course = true
-          isViewingTeams ? (
-            //if isViewingTeams = true && selected course = true
-            <div>
-              <h1
-                style={{
-                  fontSize: "80px",
-                  color: "white",
-                  textAlign: "center",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  fontWeight: "bold",
-                }}
-              >
-                {selectedCourse.dept} {selectedCourse.number}
-              </h1>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <div className="grid grid-cols-4 gap-4 p-4">
-                  {groups.map((group, index) => (
-                    <div key={index} className="border rounded-md p-7 text-center"style={{border: "3px solid #FFFFFF",borderRadius: "14px"}}>
-                      <span className="font-bold">{group.group.name}</span>
-                      <div className="mt-2">
-                        {group.students.map((student, idx) => (
-                          <div key={idx} className="text-sm">
-                            Student ID: {student.user_id}
-                          </div>
-                        ))}
-                      </div>
-                      <button onClick={()=> handleAddStudent(group.group._id)}>Add Student</button>
-                      <textarea onChange={(e) => handleText(e)}></textarea>
+      {selectedCourse ? (
+        //if selected course = true
+        isViewingTeams ? (
+          //if isViewingTeams = true && selected course = true
+          <div>
+            <h1
+              style={{
+                fontSize: "80px",
+                color: "white",
+                textAlign: "center",
+                marginLeft: "auto",
+                marginRight: "auto",
+                fontWeight: "bold",
+              }}
+            >
+              {selectedCourse.dept} {selectedCourse.number}
+            </h1>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div className="grid grid-cols-4 gap-4 p-4">
+                {groups.map((group, index) => (
+                  <div
+                    key={index}
+                    className="border rounded-md p-7 text-center"
+                    style={{
+                      border: "3px solid #FFFFFF",
+                      borderRadius: "14px",
+                    }}
+                  >
+                    <span className="font-bold">{group.group.name}</span>
+                    <div className="mt-2">
+                      {group.students.map((student, idx) => (
+                        <div key={idx} className="text-sm">
+                          Student ID: {student.user_id}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-              
-                  <Link to={location.pathname}>
-                    <button
-                      style={{
-                        padding: "10px 20px",
-                        fontSize: "16px",
-                        borderRadius: "5px",
-                        backgroundColor: "rgb(73, 97, 142)",
-                        color: "white",
-                        border: "none",
-                        cursor: "pointer",
-                        display: "flex",
-                        gap: "gap"
-                      }}
-                      onClick={() => {
-                        setSelectedCourse(null);
-                        setIsViewingTeams(false);
-                      }}
-                    >
-                      Back to Courses
+                    <button onClick={() => handleAddStudent(group.group._id)}>
+                      Add Student
                     </button>
-                  </Link>
-                </div>
-
-
+                    <textarea onChange={(e) => handleText(e)}></textarea>
+                  </div>
+                ))}
               </div>
-            </div>
-          ) : (
-            //if viewing teams is false && selected course = true
-            <div>
-              <h1
-                style={{
-                  fontSize: "80px",
-                  color: "white",
-                  marginBottom: "20px",
-                  fontWeight: "bold",
-                }}
-              >
-                {selectedCourse.dept} {selectedCourse.number}
-              </h1>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button className="otherbtn"
-                  style={{
-                    padding: "10px 20px",
-                    fontSize: "16px",
-                    borderRadius: "5px",
-                    backgroundColor: "rgb(73, 97, 142)",
-                    color: "white",
-                    border: "none",
-                    cursor: "pointer",
-                    display: "flex",
-                    gap: "gap"
-                  }}
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    handleCreateGroup();
-                  }}
-                  >Create a Group
-                </button>
-                <Modal open={isCreatingGroup} onClose={handleClose}>
-                  <TeacherAddGroup
-                    handleClose={handleClose}
-                    addNewGroup={handleGroupAddition}
-                    />
-                </Modal>
-            
-                <button style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  borderRadius: "5px",
-                  backgroundColor: "rgb(73, 97, 142)",
-                  color: "white",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-                  onClick={() => setIsViewingTeams(true)}
-                > View Teams
-                </button>
+              <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
                 <Link to={location.pathname}>
                   <button
                     style={{
@@ -268,56 +189,134 @@ function TeacherView() {
                       color: "white",
                       border: "none",
                       cursor: "pointer",
+                      display: "flex",
+                      gap: "gap",
                     }}
                     onClick={() => {
                       setSelectedCourse(null);
                       setIsViewingTeams(false);
                     }}
-
                   >
                     Back to Courses
                   </button>
                 </Link>
               </div>
             </div>
-          )) : (
-          //if selected course = false
-          <div className="flex flex-col gap-5 justify-around">
-            <h1 className="text-4xl">
-              Welcome {user.fname} {user.lname}, here are your courses!
-            </h1>
-            <button className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
-              onClick={(e) => {
-                e.preventDefault();
-                handleOpen();
+          </div>
+        ) : (
+          //if viewing teams is false && selected course = true
+          <div>
+            <h1
+              style={{
+                fontSize: "80px",
+                color: "white",
+                marginBottom: "20px",
+                fontWeight: "bold",
               }}
             >
-              Add course
-            </button>
-            <Modal open={isAddingCourse} onClose={handleClose}>
-              <TeacherAddCourse
-                handleClose={handleClose}
-                addNewCourse={handleCourseAddition}
-              />
-            </Modal>
-            <div className="grid grid-cols-4 grid-flow-row gap-3">
-              {courses.map((course, index) => (
-                <div
-                  key={index}
-                  className="border-4 rounded-md p-4 border-[#49618e] text-[#49618e] text-center text-2xl"
-                  onClick={() => handleClick(course)}
-                  onMouseOver={() => handleHover(index)}
-                  onMouseOut={() => handleUnhover(index)}
+              {selectedCourse.dept} {selectedCourse.number}
+            </h1>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                className="otherbtn"
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  borderRadius: "5px",
+                  backgroundColor: "rgb(73, 97, 142)",
+                  color: "white",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  gap: "gap",
+                }}
+                onClick={async (e) => {
+                  e.preventDefault();
+                  handleCreateGroup();
+                }}
+              >
+                Create a Group
+              </button>
+              <Modal open={isCreatingGroup} onClose={handleClose}>
+                <TeacherAddGroup
+                  handleClose={handleClose}
+                  addNewGroup={handleGroupAddition}
+                />
+              </Modal>
+
+              <button
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  borderRadius: "5px",
+                  backgroundColor: "rgb(73, 97, 142)",
+                  color: "white",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                onClick={() => setIsViewingTeams(true)}
+              >
+                {" "}
+                View Teams
+              </button>
+              <Link to={location.pathname}>
+                <button
+                  style={{
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    borderRadius: "5px",
+                    backgroundColor: "rgb(73, 97, 142)",
+                    color: "white",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setSelectedCourse(null);
+                    setIsViewingTeams(false);
+                  }}
                 >
-                  <span className="font-bold">
-                    {course.dept} {course.number}
-                  </span>
-                </div>
-              ))}
+                  Back to Courses
+                </button>
+              </Link>
             </div>
           </div>
         )
-      }
+      ) : (
+        //if selected course = false
+        <div className="flex flex-col gap-5 justify-around">
+          <h1 className="text-4xl">
+            Welcome {user.fname} {user.lname}, here are your courses!
+          </h1>
+          <button
+            className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpen();
+            }}
+          >
+            Add course
+          </button>
+          <Modal open={isAddingCourse} onClose={handleClose}>
+            <TeacherAddCourse
+              handleClose={handleClose}
+              addNewCourse={handleCourseAddition}
+            />
+          </Modal>
+          <div className="grid grid-cols-4 grid-flow-row gap-3">
+            {courses.map((course, index) => (
+              <div
+                key={index}
+                className="border-4 rounded-md p-4 border-[#49618e] text-[#49618e] text-center text-2xl"
+                onClick={() => handleClick(course)}
+              >
+                <span className="font-bold">
+                  {course.dept} {course.number}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

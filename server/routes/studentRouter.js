@@ -22,6 +22,15 @@ studentRouter.post("/login", async (req, res) => {
   }
 });
 
+studentRouter.post("/summary", async (req, res) => {
+  if (req.body != null && req.body.student_id) {
+    const reviews = await db.getAllReviewsForStudent(req.body.student_id)
+    res.status(200).json(reviews)
+  } else {
+    res.status(400).json({ message: "No user information found" });
+  }
+})
+
 studentRouter.get("/courses", async (req, res) => {
   if (req.query != null && req.query.student_id != null) {
     await db.getStudentCourses(req.query.student_id).then((data) => {

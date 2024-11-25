@@ -3,7 +3,6 @@ import User from "../db/schemas/user.js";
 import Course from "../db/schemas/course.js";
 import Group from "../db/schemas/group.js";
 import Review from "../db/schemas/review.js";
-import Assignment from "../db/schemas/assignment.js";
 
 const uri = process.env.ATLAS_URI || "";
 const dbName = process.env.DB_NAME || "reviewmate";
@@ -75,21 +74,21 @@ export class Db {
     const course = await this.getCourseById(courseId);
 
     const group = await Group.create({
-      name: `Group #${course.group_ids.length + 1}`, // groups are just numbered incrementally
+      name: `Group #${course.group_ids.length + 1}`,  // groups are just numbered incrementally
       course_id: courseId,
       student_ids: students,
-      review_ids: [],
-      assignment_ids: [],
+      review_ids: []
     });
     course.group_ids.push(group._id);
     await course.save();
     return group;
   }
 
-  async addReviewToGroup(groupId, reviewerId, revieweeId, reviewData) {
+  async addReviewToGroup(courseId, groupId, reviewerId, revieweeId, reviewData) {
     const review = await Review.create({
       reviewer_id: reviewerId,
       reviewee_id: revieweeId,
+      course_id: courseId,
       cooperation: reviewData.cooperation,
       conceptual: reviewData.conceptual,
       practical: reviewData.practical,
@@ -104,21 +103,11 @@ export class Db {
     group.save();
   }
 
-  async addAssignmentToGroup(groupId, content, studentId) {
-    const assignment = await Assignment.create({
-      content: content,
-      student_id: studentId,
-    });
-    const group = await this.getGroup(groupId);
-    group.assignment_ids.push(assignment._id);
-    group.save();
-    return assignment;
-  }
-
   async addUserToCourse(userId, courseId) {
     const course = await Course.findOne({
       _id: courseId,
     });
+    
     if (!course.student_ids.includes(userId)) {
       course.student_ids.push(userId);
       return await course.save();
@@ -134,7 +123,7 @@ export class Db {
 
   // Returns all courses that a teacher is teaching
   async getTeacherCourses(userId) {
-    const isTeacher = await User.findOne({ user_id: userId, role: "teacher" });
+    const isTeacher = await this.getTeacher(userId)
     if (isTeacher == null) {
       throw new Error("User is not a teacher");
     }
@@ -177,6 +166,11 @@ export class Db {
       })
     );
     return groupDetails;
+  }
+
+  async getAllReviewsForStudent(userId) {
+    const reviews = await Review.find({ reviewee_id: userId })
+    return reviews
   }
 
   async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {
@@ -287,6 +281,13 @@ export class Db {
     });
   }
 
+  async getGroupWithCourseAndMember(courseId, memberId) {
+    return await Group.findOne({
+      course_id: courseId,
+      student_ids: { $in: memberId }
+    })
+  }
+
   async getCourseById(id) {
     return await Course.findOne({ _id: id });
   }
@@ -299,16 +300,13 @@ export class Db {
     return await Review.findOne({ _id: id });
   }
 
-  async getAssignment(id) {
-    return await Assignment.findOne({ _id: id });
-  }
-  async removeUserFromCourse(userId, name, courseId) {
+  async removeUserFromCourse(userId, courseId) {
     const course = await Course.findOne({
-      name: name,
       course_id: courseId,
     });
     course.student_ids = course.student_ids.filter((id) => id !== userId);
-    await course.save();
+    await course.save()
+    return true
   }
 
   async removeUser(id) {
@@ -317,6 +315,31 @@ export class Db {
 
   async removeCourse(id) {
     await Course.deleteOne({ course_id: id });
+  }
+
+  async getAllReviewsForAllCourseOfTeacher(teacherId) {
+    const courses = await this.getTeacherCourses(teacherId)
+    const reviews = courses.map(async (course) => {
+      const studentReviews = await this.getAllReviewsForCourse(course._id)
+      return {
+        course: course,
+        studentReviews: studentReviews
+      }
+    })
+    return await Promise.all(reviews)
+  }
+
+  async getAllReviewsForCourse(courseId) {
+    const course = await Course.findOne({ _id: courseId })
+    const allReviews = course.student_ids.map(async (student_id) => {
+      const reviews = await Review.find({ reviewee_id: student_id, course_id: courseId })
+      const student = await this.getStudent(student_id)
+      return {
+        student: student,
+        reviews: reviews
+      }
+    })
+    return await Promise.all(allReviews)
   }
 }
 

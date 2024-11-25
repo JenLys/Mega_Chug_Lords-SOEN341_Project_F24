@@ -6,10 +6,9 @@ import { useEffect } from "react";
 const Navbar = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-  const isLoggedIn = auth.isLoggedIn
+  const isLoggedIn = auth.isLoggedIn;
 
-  useEffect(() => {
-  }, [isLoggedIn]);
+  useEffect(() => {}, [isLoggedIn]);
 
   return (
     <nav className="w-full flex items-center justify-between p-6 bg-[#598da4b3] backdrop-filter-sm">

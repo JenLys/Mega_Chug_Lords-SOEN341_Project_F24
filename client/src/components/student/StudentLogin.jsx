@@ -69,7 +69,7 @@ const StudentLogin = () => {
         />
       </form>
       <h3>
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <a
           className="border-solid border-black border-[3px] ease-in duration-50 p-1 rounded-lg hover:invert hover:bg-white"
           href="/registration"

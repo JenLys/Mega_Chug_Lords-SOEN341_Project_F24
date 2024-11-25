@@ -101,6 +101,15 @@ teacherRouter.post("/add-course", async (req, res) => {
   }
 });
 
+teacherRouter.post("/summary", async(req, res) => {
+  if(req.body != null && req.body.teacher_id) {
+    const reviews = await db.getAllReviewsForAllCourseOfTeacher(req.body.teacher_id)
+    res.status(200).json(reviews)
+  } else {
+    return res.status(400).json({ message: "No teacher provided or user isn't a teacher" })
+  }
+})
+
 //route to register a new teacher user
 teacherRouter.post("/register", async (req, res) => {
   if (
