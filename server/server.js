@@ -18,7 +18,7 @@ app.use("/api", api);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((_, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://reviewmate.onrender.com"); // Change * to your frontend domain
+  res.header("Access-Control-Allow-Origin", "*"); // Change * to your frontend domain
   res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
