@@ -5,7 +5,8 @@
     "test": "cd ./server && npm run test",
     "prepare": "husky install",
     "build": "npm i && cd ./client && npm i && npm run build && cd ../server && npm i",
-    "prod": "concurrently \"cd ./client && npm run preview\" \"cd ./server && npm run prod\" "
+    "prod": "concurrently \"cd ./client && npm run preview\" \"cd ./server && npm run prod\" ",
+    "lint": "cd ./client && npm run lint && cd ../server && npm run lint"
   },
   "devDependencies": {
     "concurrently": "^6.2.0",

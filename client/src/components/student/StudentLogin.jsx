@@ -58,9 +58,9 @@ const StudentLogin = () => {
           }}
         />
         {errors?.pw?.message && <p>{errors.pw.message}</p>}
-        {errors.root?.serverError?.message && (
+        {errors?.root?.serverError?.message && (
           <span className="text-red-500">
-            {errors.root.serverError.message}
+            {errors?.root.serverError.message}
           </span>
         )}
         <input

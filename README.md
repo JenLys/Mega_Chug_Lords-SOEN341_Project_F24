@@ -37,3 +37,7 @@ npm -v
 ## Get started with development
 1. ```npm run install:all```
 2. ```npm run dev```
+
+
+## Wiki References
+- [Static Analysis Tools](https://github.com/Vinuyans/Mega_Chug_Lords-SOEN341_Project_F24/wiki/Static-Analysis-Tool)
