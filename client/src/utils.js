@@ -7,7 +7,7 @@ function isNull(value) {
   return value === null || value === undefined;
 }
 const PORT = 5050;
-const URL = import.meta.env.PROD_URL || "http://localhost:";
+const URL = import.meta.env.VITE_PROD_URL || "http://localhost:";
 const baseUrl = URL + PORT + "/api";
 const supportedMethods = ["GET", "POST"];
 

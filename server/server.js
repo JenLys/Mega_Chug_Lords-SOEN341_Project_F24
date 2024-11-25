@@ -6,7 +6,13 @@ import bodyParser from "body-parser";
 const PORT = process.env.BACKEND_PORT || 5050;
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://reviewmate.onrender.com/", // Replace with your frontend domain
+  methods: "GET,POST,OPTIONS",
+  allowedHeaders: "Content-Type, Authorization",
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use("/api", api);
 app.use(bodyParser.urlencoded({ extended: true }));
