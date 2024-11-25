@@ -3,7 +3,7 @@ import RatingModal from "./RatingModal";
 import { Modal } from "@mui/material";
 import { request } from "../../utils";
 
-export default function MyTeam({ courseId, teamMember }) {
+export default function StudentTeam({ courseId, teamMember }) {
   const [isReviewing, setIsReviewing] = useState(false);
 
   const handleOpen = () => setIsReviewing(true);
@@ -13,10 +13,14 @@ export default function MyTeam({ courseId, teamMember }) {
   useEffect(() => {
     const getGroup = async () => {
       try {
-        const group = await request("/courses/group-from-course-member", "POST", {
-          course_id: courseId,
-          member_id: teamMember,
-        });
+        const group = await request(
+          "/courses/group-from-course-member",
+          "POST",
+          {
+            course_id: courseId,
+            member_id: teamMember,
+          }
+        );
         if (!group.ok) {
           throw new Error("No group found");
         }

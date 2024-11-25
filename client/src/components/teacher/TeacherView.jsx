@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { request } from "../../utils";
 import { useAuth } from "../AuthProvider";
 import Modal from "@mui/material/Modal";
 import TeacherAddCourse from "./TeacherAddCourse";
 import TeacherAddGroup from "./TeacherAddGroup";
+import GroupsDisplay from "./GroupsDisplay";
 
 function TeacherView() {
   // State variables to manage component state
@@ -13,12 +13,9 @@ function TeacherView() {
   const [courses, setCourses] = useState([]); // Stores the list of courses fetched from the API
   const [groups, setGroups] = useState([]);
   const user = useAuth().storedUser;
-  // Get the current location from react-router
-  const location = useLocation();
   const [isAddingCourse, setIsAddingCourse] = useState(false);
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
   const [isViewingTeams, setIsViewingTeams] = useState(false);
-  const [student, setStudent] = useState("");
 
   // Effect hook to fetch courses when the component mounts
   useEffect(() => {
@@ -70,8 +67,11 @@ function TeacherView() {
     });
 
     // Confirms when the group creating is successful
-    if (response != null) {
+    const newGroup = await response.json();
+    if (response.ok) {
       window.alert("Created a new group.");
+      handleGroupAddition({ group: newGroup, students: [] });
+      setIsViewingTeams(true);
     } else {
       window.alert("Error creating a new group.");
     }
@@ -110,18 +110,19 @@ function TeacherView() {
     return;
   };
 
-  const handleText = (e) => {
-    setStudent(e.target.value);
-  };
-
-  const handleAddStudent = async (group_id) => {
+  const handleAddStudent = async (data, group_id, index) => {
     try {
       const response = await request("/courses/add-to-group", "POST", {
         group_id: group_id,
-        user_id: student,
+        user_id: data.student_id,
       });
-      const data = await response.json();
-      setGroups(data);
+      const addedStudent = await response.json();
+      if (response.ok && addedStudent != null) {
+        const newGroups = [...groups]
+        newGroups[index].students.push(addedStudent.student);
+        setGroups(newGroups);
+        setCourses(courses);
+      }
     } catch {
       console.error("Error fetching groups");
     }
@@ -130,9 +131,7 @@ function TeacherView() {
   return (
     <div>
       {selectedCourse ? (
-        //if selected course = true
         isViewingTeams ? (
-          //if isViewingTeams = true && selected course = true
           <div>
             <h1
               style={{
@@ -153,53 +152,29 @@ function TeacherView() {
                 alignItems: "center",
               }}
             >
-              <div className="grid grid-cols-4 gap-4 p-4">
-                {groups.map((group, index) => (
-                  <div
-                    key={index}
-                    className="border rounded-md p-7 text-center"
-                    style={{
-                      border: "3px solid #FFFFFF",
-                      borderRadius: "14px",
-                    }}
-                  >
-                    <span className="font-bold">{group.group.name}</span>
-                    <div className="mt-2">
-                      {group.students.map((student, idx) => (
-                        <div key={idx} className="text-sm">
-                          Student ID: {student.user_id}
-                        </div>
-                      ))}
-                    </div>
-                    <button onClick={() => handleAddStudent(group.group._id)}>
-                      Add Student
-                    </button>
-                    <textarea onChange={(e) => handleText(e)}></textarea>
-                  </div>
-                ))}
-              </div>
+              <GroupsDisplay
+                groups={groups}
+                handleAddStudent={handleAddStudent}
+              />
               <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                <Link to={location.pathname}>
-                  <button
-                    style={{
-                      padding: "10px 20px",
-                      fontSize: "16px",
-                      borderRadius: "5px",
-                      backgroundColor: "rgb(73, 97, 142)",
-                      color: "white",
-                      border: "none",
-                      cursor: "pointer",
-                      display: "flex",
-                      gap: "gap",
-                    }}
-                    onClick={() => {
-                      setSelectedCourse(null);
-                      setIsViewingTeams(false);
-                    }}
-                  >
-                    Back to Courses
-                  </button>
-                </Link>
+                <button
+                  style={{
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    borderRadius: "5px",
+                    backgroundColor: "rgb(73, 97, 142)",
+                    color: "white",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    gap: "gap",
+                  }}
+                  onClick={() => {
+                    setIsViewingTeams(false);
+                  }}
+                >
+                  Back to Course
+                </button>
               </div>
             </div>
           </div>
@@ -259,25 +234,23 @@ function TeacherView() {
                 {" "}
                 View Teams
               </button>
-              <Link to={location.pathname}>
-                <button
-                  style={{
-                    padding: "10px 20px",
-                    fontSize: "16px",
-                    borderRadius: "5px",
-                    backgroundColor: "rgb(73, 97, 142)",
-                    color: "white",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    setSelectedCourse(null);
-                    setIsViewingTeams(false);
-                  }}
-                >
-                  Back to Courses
-                </button>
-              </Link>
+              <button
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  borderRadius: "5px",
+                  backgroundColor: "rgb(73, 97, 142)",
+                  color: "white",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setSelectedCourse(null);
+                  setIsViewingTeams(false);
+                }}
+              >
+                Back to Courses
+              </button>
             </div>
           </div>
         )

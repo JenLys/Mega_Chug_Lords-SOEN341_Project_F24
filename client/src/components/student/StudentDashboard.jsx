@@ -25,11 +25,8 @@ export default function StudentDashboard() {
       })
         .then((res) => res.json())
         .catch(setIsLoading(false));
-      console.log("res", res);
-
       setReviews(res);
       setIsLoading(false);
-      console.log(res);
     };
     getReviews();
   }, [user.user_id]);
