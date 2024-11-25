@@ -107,7 +107,7 @@ export class Db {
     const course = await Course.findOne({
       _id: courseId,
     });
-    
+
     if (!course.student_ids.includes(userId)) {
       course.student_ids.push(userId);
       return await course.save();
@@ -136,7 +136,20 @@ export class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ student_ids: { $in: userId } });
+    const courses = await Course.find({ student_ids: { $in: userId } });
+    const results = courses.map(async (course) => {
+      const group = await this.getGroupForStudent(userId, course._id)
+      const newCourse = JSON.parse(JSON.stringify(course))
+      newCourse.group = group
+      return newCourse
+    })
+    return await Promise.all(results)
+  }
+
+  async getGroupForStudent(student_id, course_id) {
+    const group = await Group.findOne({ student_ids: { $in: [student_id] }, course_id: course_id })
+    
+    return group
   }
 
   async getIsInTeam(userId, courseId) {

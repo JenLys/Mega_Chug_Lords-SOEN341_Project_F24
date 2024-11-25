@@ -3,7 +3,7 @@ const isNull = (value) => {
   return value === null || value === undefined;
 };
 
-export async function validateId(user_id) {
+export function validateId(user_id) {
   return /^[0-9]{8}$/.test(user_id)
 }
 

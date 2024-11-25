@@ -130,21 +130,26 @@ studentRouter.post("/register", async (req, res) => {
           "Invalid password. Must be 8 characters long with lowercase, uppercase and special",
       });
     } else {
-      await db
-        .addUser(
-          req.body.fname,
-          req.body.lname,
-          "student",
-          req.body.user_id,
-          req.body.pw
-        )
-        .then((data) => {
-          if (data == null) {
-            res.status(400).json({ message: "Could not register new user" });
-          } else {
-            res.status(200).json(req.body);
-          }
-        });
+      const userAlreadyExists = await db.getTeacher(req.body.user_id);
+      if (!userAlreadyExists) {
+        await db
+          .addUser(
+            req.body.fname,
+            req.body.lname,
+            "student",
+            req.body.user_id,
+            req.body.pw
+          )
+          .then((data) => {
+            if (data == null) {
+              res.status(400).json({ message: "Could not register new user" });
+            } else {
+              res.status(200).json(req.body);
+            }
+          });
+      } else {
+        return res.status(400).json({ message: "User already exists" });
+      }
     }
   }
 });
