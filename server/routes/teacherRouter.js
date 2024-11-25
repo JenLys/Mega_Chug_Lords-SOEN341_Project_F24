@@ -143,7 +143,7 @@ teacherRouter.post("/register", async (req, res) => {
           "Invalid password. Must be 8 characters long with lowercase, uppercase and special",
       });
     } else {
-      const userAlreadyExists = await db.getUser(req.body.user_id);
+      const userAlreadyExists = await db.getTeacher(req.body.user_id);
       if (!userAlreadyExists) {
         await db
           .addUser(

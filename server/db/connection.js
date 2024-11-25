@@ -123,8 +123,12 @@ export class Db {
 
   async addUserToCourseGroup(groupId, userId) {
     const group = await this.getGroup(groupId);
-    group.student_ids.push(userId);
-    await group.save();
+    if(!group.student_ids.includes(userId)){
+      group.student_ids.push(userId);
+      await group.save();
+    }
+    const student = await this.getStudent(userId)
+    return { group: group, student: student }
   }
 
   // Returns all courses that a teacher is teaching
@@ -142,7 +146,20 @@ export class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ student_ids: { $in: userId } });
+    const courses = await Course.find({ student_ids: { $in: userId } });
+    const results = courses.map(async (course) => {
+      const group = await this.getGroupForStudent(userId, course._id)
+      const newCourse = JSON.parse(JSON.stringify(course))
+      newCourse.group = group
+      return newCourse
+    })
+    return await Promise.all(results)
+  }
+
+  async getGroupForStudent(student_id, course_id) {
+    const group = await Group.findOne({ student_ids: { $in: [student_id] }, course_id: course_id })
+
+    return group
   }
 
   async getIsInTeam(userId, courseId) {
