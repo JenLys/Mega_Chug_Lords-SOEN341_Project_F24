@@ -86,12 +86,6 @@ coursesRouter.post("/add-to-group", async (req, res) => {
   }
 });
 
-coursesRouter.get("/all-courses", async (req, res) => {
-  await db.getAll(Course).then((data) => {
-    res.status(200).json(data);
-  });
-});
-
 // Currently only creates empty groups; does not initialize students array
 coursesRouter.post("/create-group", async (req, res) => {
   if (req.body && req.body.course_id != null) {
