@@ -43,7 +43,6 @@ coursesRouter.post("/group-from-course-member", async(req, res) => {
 })
 
 coursesRouter.post("/add-review", async (req, res) => {
-  console.log(req.body);
   if (
     req.body &&
     req.body.course_id != null &&
@@ -77,7 +76,6 @@ coursesRouter.post("/add-to-group", async (req, res) => {
         req.body.group_id,
         req.body.user_id
       );
-
       res.status(200).json(result);
     } catch (err) {
       console.log(err);

@@ -5,7 +5,7 @@ import { useAuth } from "../AuthProvider";
 import StudentAddCourse from "./StudentAddCourse";
 import StudentCourseDetails from "./StudentCourseDetails";
 import { Modal } from "@mui/material";
-import MyTeam from "./MyTeam";
+import StudentTeam from "./StudentTeam";
 
 const StudentView = () => {
   const auth = useAuth();
@@ -80,7 +80,6 @@ const StudentView = () => {
             Back to Courses
           </button>
           <div className="mt-5">
-            {console.log(teamMembers)}
             {teamMembers.length > 0 ? (
               teamMembers.map(
                 (member, idx) =>
@@ -92,7 +91,7 @@ const StudentView = () => {
                       <div>
                         {member.fname} - {member.lname}
                       </div>
-                      <MyTeam
+                      <StudentTeam
                         teamMember={member.user_id}
                         courseId={selectedCourse._id}
                       />

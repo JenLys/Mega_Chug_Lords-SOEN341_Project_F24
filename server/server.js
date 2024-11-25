@@ -26,11 +26,6 @@ app.use(function (_, res) {
   res.status(404).send("404 NOT FOUND");
 });
 
-app.post("/submit", (req, res) => {
-  console.log(req.body);
-  res.json({ message: "Form submitted successfully!" });
-});
-
 // start the Express server
 app.listen(PORT, () => {
   console.log(`Backend server listening on port ${PORT}`);

@@ -16,7 +16,6 @@ const TeacherLogin = () => {
     auth.isLoggedIn && auth.storedUser.role === "teacher"
   );
   const onSubmit = async (data) => {
-    console.log(data);
     data.role = "teacher";
     await auth.loginAction(data).catch(() => {} /* do nothing */);
     setIsLoggedIn(auth.isLoggedIn);
