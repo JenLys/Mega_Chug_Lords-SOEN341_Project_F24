@@ -1,8 +1,8 @@
 import { Db } from "../db/connection.js";
 
 // Used since there is a student object in the test DB with these credentials
-const student_id = "12345679";
-const course_id = "67369b97fa731b9a41393c1c"
+// const student_id = "12345679";
+// const course_id = "67369b97fa731b9a41393c1c"
 
 let db;
 
@@ -19,5 +19,9 @@ describe("Add student to course tests", () => {
         } catch (error) {
             console.error(error);
         }
+    });
+
+    test('add user from course', async () => {
+        // test to be implemented
     });
 });

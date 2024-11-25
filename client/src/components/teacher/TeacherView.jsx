@@ -34,7 +34,7 @@ function TeacherView() {
       }
     };
     fetchCourses();
-  }, [user.user_id]);
+  }, [user?.user_id]);
 
   if (!user || user.role != "teacher") return <Navigate to="/login" />;
 
