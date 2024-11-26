@@ -68,6 +68,9 @@ export class Db {
   async deleteGroupById(id) {
     await Group.findOneAndDelete({ '_id': id });
   }
+  async deleteReviewById(id) {
+    return await Review.findOneAndDelete({ '_id': id });
+  }
 
   async addCourse(number, dept, profId, students = [], groups = []) {
     const course = await Course.create({

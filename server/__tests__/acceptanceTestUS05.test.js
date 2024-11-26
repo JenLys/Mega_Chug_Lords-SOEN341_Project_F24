@@ -69,11 +69,13 @@ describe("Student reviews tests", () => {
             practical_comment: "8",
             work_ethic_comment: "7",
         }
-        const newReview = await db.addReviewToGroup(contextCourse._id, contextGroup._id, contextStudent1._id, contextStudent2._id, reviewData);
-        const deletedReview = await Review.findOneAndDelete({ _id: newReview.review._id });
-
+        const newReview = await db.addReviewToGroup(contextCourse._id, contextGroup._id, contextStudent1.user_id, contextStudent2.user_id, reviewData);
+        const newReviewId = newReview.review._id;
+        const deletedReview = await db.deleteReviewById(newReviewId);
+        
         expect(deletedReview).toBeDefined();
-        // expect(deletedReview).toHaveProperty("_id", newReview._id);
-        // expect(deletedReview).toHaveProperty("_id", newReview._id);
+        expect(deletedReview).toHaveProperty("course_id", contextCourse._id.toString());
+        expect(deletedReview).toHaveProperty("cooperation", 10);
+        expect(deletedReview).toHaveProperty("practical_comment", '8');
     });
 });
