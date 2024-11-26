@@ -12,7 +12,12 @@ const corsOptions = {
   allowedHeaders: "Content-Type, Authorization",
 };
 
-app.use(cors(corsOptions));
+if (process.env.BACKEND_PORT) {
+  app.use(cors(corsOptions));
+} else {
+  app.use(cors())
+}
+
 app.use(bodyParser.json());
 app.use("/api", api);
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -18,7 +18,14 @@ coursesRouter.post("/courses-details", async (req, res) => {
 });
 
 coursesRouter.get("/leaderboard", async (_, res) => {
-  res.status(200).json(await db.getTop5BestReviewScores())
+  try {
+    const leaderboard = await db.getTop5BestReviewScores()
+    const filtered = leaderboard.filter(_ => _.student !== null)
+    res.status(200).json(filtered)
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: "Couldn't fetch leaderboard" })
+  }
 })
 
 coursesRouter.post("/courses-details-with-teacher-only", async (req, res) => {
@@ -37,12 +44,12 @@ coursesRouter.post("/courses-details-with-teacher-only", async (req, res) => {
   }
 });
 
-coursesRouter.post("/group-from-course-member", async(req, res) => {
-  if(req.body && req.body.course_id != null && req.body.member_id != null){
+coursesRouter.post("/group-from-course-member", async (req, res) => {
+  if (req.body && req.body.course_id != null && req.body.member_id != null) {
     const group = await db.getGroupWithCourseAndMember(req.body.course_id, req.body.member_id)
     res.status(200).json(group)
   } else {
-    res.status(400).json({message: "Missing information"})
+    res.status(400).json({ message: "Missing information" })
   }
 })
 
