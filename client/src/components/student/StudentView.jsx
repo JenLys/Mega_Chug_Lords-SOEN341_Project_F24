@@ -115,6 +115,12 @@ const StudentView = () => {
           >
             Add Course
           </button>
+          <button
+            className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
+            onClick={() => navigate("/summary")}
+          >
+            Your Summary
+          </button>
           <Modal open={isAddingCourse} onClose={handleClose}>
             <StudentAddCourse
               handleClose={handleClose}

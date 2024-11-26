@@ -17,6 +17,10 @@ coursesRouter.post("/courses-details", async (req, res) => {
   }
 });
 
+coursesRouter.get("/leaderboard", async (_, res) => {
+  res.status(200).json(await db.getTop5BestReviewScores())
+})
+
 coursesRouter.post("/courses-details-with-teacher-only", async (req, res) => {
   if (req.body && req.body.courseIds != null) {
     try {
