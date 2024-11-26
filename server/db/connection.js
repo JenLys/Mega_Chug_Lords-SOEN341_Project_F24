@@ -15,22 +15,25 @@ if (uri.length === 0) {
 export class Db {
   constructor(isTest = false) {
     this.isTest = isTest;
-    this.connectDb();
+    (async () => {
+      await this.connectDb();
+    })()
   }
 
   /**
    * Connect to the MongoDB database
    * Reads ATLAS_URI and DB_NAME environment variable
    */
-  connectDb() {
+  async connectDb() {
     let dbOptions = {
       dbName: "" + (this.isTest ? `${dbName}-test` : dbName),
     };
-    mongoose.connect(uri, dbOptions);
-    console.log("Connected to MongoDB");
+    await mongoose.connect(uri, dbOptions)
+      .then(console.log("Connected to MongoDB"))
+      .catch(() => {throw new Error("Connection to DB failed")})
   }
 
-  disconnectDb() {
+  async disconnectDb() {
     mongoose.connection.close();
   }
 
@@ -106,7 +109,11 @@ export class Db {
     });
     const group = await this.getGroup(groupId);
     group.review_ids.push(review._id);
-    group.save();
+    const savedGroup = await group.save();
+    return {
+      group: savedGroup,
+      review: review,
+    }
   }
 
   async addUserToCourse(userId, courseId) {
