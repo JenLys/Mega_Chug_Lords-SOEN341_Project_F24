@@ -1,6 +1,5 @@
 // Student reviewing teammates tests
 import { Db } from "../db/connection.js";
-import Review from "../db/schemas/review.js";
 
 let db;
 let contextTeacher;
@@ -35,14 +34,14 @@ describe("Student reviews tests", () => {
     beforeAll( async () => {
         // 'true' opens connection to test db instead of main db; see connection.js
         db = new Db(true);  
-        await setupDbContext(db);
+        await setupDbContext();
         return db;
     });
 
     // After tests are done we close the connection and tear down the context
     afterAll( async () => {
         try {
-            await deleteDbContext(db);
+            await deleteDbContext();
             await db.disconnectDb();
         } catch (error) {
             console.error(error);
