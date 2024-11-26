@@ -22,6 +22,6 @@ describe("Add student to course tests", () => {
     });
 
     test('add user from course', async () => {
-        // test to be implemented
+        // to be added
     });
 });
