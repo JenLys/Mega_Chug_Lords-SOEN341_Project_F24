@@ -21,6 +21,7 @@ async function setupDbContext() {
     contextGroup = await db.addGroupToCourse(contextCourse._id, students);
 }
 
+// Delete all the context objects from the DB to avoid clutter
 async function deleteDbContext() {
     await db.deleteUserById(contextTeacher._id);
     await db.deleteUserById(contextStudent1._id);
@@ -30,13 +31,15 @@ async function deleteDbContext() {
 }
 
 describe("Student reviews tests", () => {
-    // We only want to open the DB connection once
+    // We only want to open the DB connection and create the context objects once
     beforeAll( async () => {
         // 'true' opens connection to test db instead of main db; see connection.js
         db = new Db(true);  
         await setupDbContext(db);
         return db;
     });
+
+    // After tests are done we close the connection and tear down the context
     afterAll( async () => {
         try {
             await deleteDbContext(db);
@@ -46,12 +49,13 @@ describe("Student reviews tests", () => {
         }
     });
 
+    // Want to make sure the request to display student team members on the team page works correctly
     test('db returns a non-null group object', async () => {
         const group = await db.getGroupWithCourseAndMember(contextCourse._id, contextStudent1.user_id);
         expect(group).not.toBeNull();
     });
 
-    test('db returns correct group object', async () => {
+    test('db returns the correct group object', async () => {
         const group = await db.getGroupWithCourseAndMember(contextCourse._id, contextStudent1.user_id);
         expect(group).toHaveProperty("course_id", contextCourse._id.toString());
         expect(group).toHaveProperty("student_ids", students);
@@ -59,6 +63,7 @@ describe("Student reviews tests", () => {
 
 
     test('submitting a review inserts a new db object with the right information', async () => {
+        // Sample reviewData object that would be passed from the RatingModal
         let reviewData = {
             cooperation: 10,
             conceptual: 9,
@@ -69,11 +74,13 @@ describe("Student reviews tests", () => {
             practical_comment: "8",
             work_ethic_comment: "7",
         }
+        // The review must be created and deleted before running tests to ensure DB stays clean
         const newReview = await db.addReviewToGroup(contextCourse._id, contextGroup._id, contextStudent1.user_id, contextStudent2.user_id, reviewData);
         const newReviewId = newReview.review._id;
         const deletedReview = await db.deleteReviewById(newReviewId);
         
         expect(deletedReview).toBeDefined();
+        expect(deletedReview._id).toEqual(newReviewId);
         expect(deletedReview).toHaveProperty("course_id", contextCourse._id.toString());
         expect(deletedReview).toHaveProperty("cooperation", 10);
         expect(deletedReview).toHaveProperty("practical_comment", '8');
