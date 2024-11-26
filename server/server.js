@@ -6,7 +6,13 @@ import bodyParser from "body-parser";
 const PORT = process.env.BACKEND_PORT || 5050;
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://reviewmate.onrender.com", // Replace with your frontend domain
+  methods: "GET,POST,OPTIONS",
+  allowedHeaders: "Content-Type, Authorization",
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use("/api", api);
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,7 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use((_, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // Change * to your frontend domain
   res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
   next();
 });
 
