@@ -9,7 +9,7 @@ import HowToUse from "./pages/HowToUse";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import TeacherDashboard from "./pages/TeacherDashboard";
-import StudentDashboard from "./components/student/StudentDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
 
 const router = createBrowserRouter([
   {
