@@ -51,13 +51,22 @@ export default function StudentDashboard() {
       <>
         <div>No reviews</div>
         <div className="flex flex-col">
-          {leaderboard.map((student, idx) => {
-            return (
-              <span key={idx}>
-                {idx + 1}. {student.student.fname} {student.student.lname}
-              </span>
-            );
-          })}
+          <span className="text-4xl text-bold">Leaderboard: </span>
+          <div className="flex flex-col">
+            {leaderboard.length > 0 ? (
+              <>
+                {leaderboard.map((student, idx) => {
+                  return (
+                    <span key={idx}>
+                      {idx + 1}. {student.student.fname} {student.student.lname}
+                    </span>
+                  );
+                })}
+              </>
+            ) : (
+              <>No one is on the</>
+            )}
+          </div>
         </div>
       </>
     );
@@ -91,13 +100,19 @@ export default function StudentDashboard() {
         <div>
           <span className="text-4xl text-bold">Leaderboard: </span>
           <div className="flex flex-col">
-            {leaderboard.map((student, idx) => {
-              return (
-                <span key={idx}>
-                  {idx + 1}. {student.student.fname} {student.student.lname}
-                </span>
-              );
-            })}
+            {leaderboard.length > 0 ? (
+              <>
+                {leaderboard.map((student, idx) => {
+                  return (
+                    <span key={idx}>
+                      {idx + 1}. {student.student.fname} {student.student.lname}
+                    </span>
+                  );
+                })}
+              </>
+            ) : (
+              <>No one is on the</>
+            )}
           </div>
         </div>
       </div>
