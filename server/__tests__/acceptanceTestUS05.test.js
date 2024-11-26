@@ -8,6 +8,7 @@ let contextStudent1;
 let contextStudent2;
 let contextCourse;
 let contextGroup;
+let students
 
 // Sets up a separate DB context for testing
 async function setupDbContext() {
@@ -15,7 +16,7 @@ async function setupDbContext() {
     contextStudent1 = await db.addUser("CT", "Student1", "student", "0001", "cspass");
     contextStudent2 = await db.addUser("CT", "Student2", "student", "0002", "cspass");
     
-    let students = [contextStudent1.user_id, contextStudent2.user_id];
+    students = [contextStudent1.user_id, contextStudent2.user_id];
     contextCourse = await db.addCourse("999", "COMP", contextTeacher._id, students);
     contextGroup = await db.addGroupToCourse(contextCourse._id, students);
 }
@@ -45,15 +46,17 @@ describe("Student reviews tests", () => {
         }
     });
 
-    // test('db returns a non-null group object', async () => {
-    //     const group = await db.getGroupWithCourseAndMember(contextCourse._id, contextStudent1._id);
-    //     expect(group).toBeTruthy();
-    // });
+    test('db returns a non-null group object', async () => {
+        const group = await db.getGroupWithCourseAndMember(contextCourse._id, contextStudent1.user_id);
+        expect(group).not.toBeNull();
+    });
 
-    // test('db returns the correct group object', async () => {
-    //     const group = await db.getGroupWithCourseAndMember();
-    //     expect(group._id).toEqual(groupId);
-    // });
+    test('db returns correct group object', async () => {
+        const group = await db.getGroupWithCourseAndMember(contextCourse._id, contextStudent1.user_id);
+        expect(group).toHaveProperty("course_id", contextCourse._id.toString());
+        expect(group).toHaveProperty("student_ids", students);
+    });
+
 
     test('submitting a review inserts a new db object with the right information', async () => {
         let reviewData = {
