@@ -8,7 +8,6 @@ export default function Login() {
   const [isTeacherLogin, setIsTeacherLogin] = useState(false);
   const [isStudentLogin, setIsStudentLogin] = useState(false);
   const auth = useAuth();
-  const user = auth.storedUser;
   const isLoggedIn = auth.isLoggedIn;
   const navigate = useNavigate();
 

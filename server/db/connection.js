@@ -3,7 +3,6 @@ import User from "../db/schemas/user.js";
 import Course from "../db/schemas/course.js";
 import Group from "../db/schemas/group.js";
 import Review from "../db/schemas/review.js";
-import Assignment from "../db/schemas/assignment.js";
 
 const uri = process.env.ATLAS_URI || "";
 const dbName = process.env.DB_NAME || "reviewmate";
@@ -72,60 +71,90 @@ export class Db {
     if (students == null) {
       students = [];
     }
-    const course = await this.getCourse(courseId);
+    const course = await this.getCourseById(courseId);
+
     const group = await Group.create({
+      name: `Group #${course.group_ids.length + 1}`, // groups are just numbered incrementally
       course_id: courseId,
       student_ids: students,
       review_ids: [],
-      assignment_ids: [],
     });
     course.group_ids.push(group._id);
     await course.save();
     return group;
   }
 
-  async addReviewToGroup(groupId, reviewerId, assignmentId, rating) {
+  async addReviewToGroup(
+    courseId,
+    groupId,
+    reviewerId,
+    revieweeId,
+    reviewData
+  ) {
     const review = await Review.create({
       reviewer_id: reviewerId,
-      assignment_id: assignmentId,
-      rating: rating,
+      reviewee_id: revieweeId,
+      course_id: courseId,
+      cooperation: reviewData.cooperation,
+      conceptual: reviewData.conceptual,
+      practical: reviewData.practical,
+      work_ethic: reviewData.work_ethic,
+      cooperation_comment: reviewData.cooperation_comment,
+      conceptual_comment: reviewData.conceptual_comment,
+      practical_comment: reviewData.practical_comment,
+      work_ethic_comment: reviewData.work_ethic_comment,
     });
     const group = await this.getGroup(groupId);
     group.review_ids.push(review._id);
-    group.save();
-  }
-
-  async addAssignmentToGroup(groupId, content, studentId) {
-    const assignment = await Assignment.create({
-      content: content,
-      student_id: studentId,
-    });
-    const group = await this.getGroup(groupId);
-    group.assignment_ids.push(assignment._id);
-    group.save();
-    return assignment;
+    const savedGroup = await group.save();
+    return {
+      group: savedGroup,
+      review: review
+    }
   }
 
   async addUserToCourse(userId, courseId) {
     const course = await Course.findOne({
       _id: courseId,
     });
+
     if (!course.student_ids.includes(userId)) {
-      course.student_ids.push(userId)
-      return await course.save()
+      course.student_ids.push(userId);
+      return await course.save();
     }
-    return null
+    return null;
   }
 
-  async addUserToCourseGroup(userId, groupId) {
+  async getTop5BestReviewScores() {
+    const reviewedStudents = [...new Set((await Review.find().select("reviewee_id -_id")).map(_ => _.reviewee_id))]
+    const reviewScores = reviewedStudents.map(async (reviewedStudent) => {
+      const reviews = await Review.find({ reviewee_id: reviewedStudent })
+      const totalScore = reviews.reduce((total, current) =>
+        current.cooperation + current.conceptual + current.practical + current.work_ethic + total
+        , 0)
+      const student = await this.getStudent(reviewedStudent)
+      return {
+        student: student,
+        score: totalScore
+      }
+    })
+    const allScores = await Promise.all(reviewScores)
+    return allScores.sort((a, b) => b.score - a.score).slice(0, 5)
+  }
+
+  async addUserToCourseGroup(groupId, userId) {
     const group = await this.getGroup(groupId);
-    group.student_ids.push(userId);
-    await group.save();
+    if (!group.student_ids.includes(userId)) {
+      group.student_ids.push(userId);
+      await group.save();
+    }
+    const student = await this.getStudent(userId)
+    return { group: group, student: student }
   }
 
   // Returns all courses that a teacher is teaching
   async getTeacherCourses(userId) {
-    const isTeacher = await User.findOne({ user_id: userId, role: "teacher" });
+    const isTeacher = await this.getTeacher(userId);
     if (isTeacher == null) {
       throw new Error("User is not a teacher");
     }
@@ -138,84 +167,146 @@ export class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ student_ids: { $in: userId } });
+    const courses = await Course.find({ student_ids: { $in: userId } });
+    const results = courses.map(async (course) => {
+      const group = await this.getGroupForStudent(userId, course._id)
+      const newCourse = JSON.parse(JSON.stringify(course))
+      newCourse.group = group
+      return newCourse
+    })
+    return await Promise.all(results)
+  }
+
+  async getGroupForStudent(student_id, course_id) {
+    const group = await Group.findOne({ student_ids: { $in: [student_id] }, course_id: course_id })
+
+    return group
+  }
+
+  async getIsInTeam(userId, courseId) {
+    const course = await this.getCourseById(courseId);
+    if (course.group_ids.length == 0) {
+      return false;
+    }
+    const res = course.group_ids.map(async (groupId) => {
+      const group = await this.getGroup(groupId);
+      return group.student_ids.includes(userId);
+    });
+    return (await Promise.all(res)).includes(true);
+  }
+
+  async getGroupsInfo(course_id) {
+    const groups = await Group.find({ course_id: course_id });
+    const groupDetails = await Promise.all(
+      groups.map(async (group) => {
+        const students = await User.find(
+          {
+            user_id: { $in: group.student_ids },
+            role: "student",
+          },
+          { pw: 0 } // Exclude the password field
+        );
+        return { group, students };
+      })
+    );
+    return groupDetails;
+  }
+
+  async getAllReviewsForStudent(userId) {
+    const reviews = await Review.find({ reviewee_id: userId });
+    return reviews;
   }
 
   async getBulkCourseDetailsTeacherOnlyByIds(courseIds) {
     const courses = courseIds.map(async (courseId) => {
-      return this.getCourseDetailsWithTeacherOnlyById(courseId)
-    })
-    return await Promise.all(courses)
+      return this.getCourseDetailsWithTeacherOnlyById(courseId);
+    });
+    return await Promise.all(courses);
   }
 
   async getCourseDetailsWithTeacherOnlyById(courseId) {
     const course = await Course.findOne({ _id: courseId });
     if (course == null) {
-      throw new Error("No course found")
+      throw new Error("No course found");
     }
-    const teacher = await User.findOne({
-      user_id: course.prof_id,
-      role: "teacher",
-    }, { pw: 0 });
+    const teacher = await User.findOne(
+      {
+        user_id: course.prof_id,
+        role: "teacher",
+      },
+      { pw: 0 }
+    );
     return {
       course: course,
-      teacher: teacher
-    }
+      teacher: teacher,
+    };
   }
 
   async getBulkCourseDetailsByIds(courseIds) {
     const courses = courseIds.map(async (courseId) => {
-      return this.getCourseDetailsById(courseId)
-    })
-    return await Promise.all(courses)
+      return this.getCourseDetailsById(courseId);
+    });
+    return await Promise.all(courses);
   }
 
   async getCoursesStudentNotEnrolledIn(user_id) {
-    const courses = await Course.find({ student_ids: { $nin: [user_id] } })
+    const courses = await Course.find({ student_ids: { $nin: [user_id] } });
     const coursesWithTeachers = courses.map(async (course) => {
-      const teacher = await this.getTeacher(course.prof_id)
+      const teacher = await this.getTeacher(course.prof_id);
       return {
         course: course,
-        teacher: teacher
-      }
-    })
-    return Promise.all(coursesWithTeachers)
+        teacher: teacher,
+      };
+    });
+    return Promise.all(coursesWithTeachers);
   }
 
   async getStudent(user_id) {
-    return await User.findOne({
-      user_id: user_id,
-      role: "student",
-    }, { pw: 0 });
+    return await User.findOne(
+      {
+        user_id: user_id,
+        role: "student",
+      },
+      { pw: 0 }
+    );
   }
 
   async getTeacher(user_id) {
-    return await User.findOne({
-      user_id: user_id,
-      role: "teacher",
-    }, { pw: 0 });
+    return await User.findOne(
+      {
+        user_id: user_id,
+        role: "teacher",
+      },
+      { pw: 0 }
+    );
   }
 
   async getCourseDetailsById(courseId) {
     const course = await Course.findOne({ _id: courseId });
     if (course == null) {
-      throw new Error("No course found")
+      throw new Error("No course found");
     }
     const groups = await Group.find({ course_id: courseId });
-    const students = await User.find({
-      user_id: { $in: course.student_ids },
-      role: "student",
-    }, { pw: 0 });
-    const teacher = await User.findOne({
-      user_id: course.prof_id,
-      role: "teacher",
-    }, { pw: 0 });
+    const students = await User.find(
+      {
+        user_id: { $in: course.student_ids },
+        role: "student",
+      },
+      { pw: 0 }
+    );
+    const teacher = await User.findOne(
+      {
+        user_id: course.prof_id,
+        role: "teacher",
+      },
+      { pw: 0 }
+    );
     return {
       course: course,
       groups: groups,
       students: students,
       teacher: teacher,
-    }
+    };
   }
 
   async loginUser(userId, pw, role) {
@@ -227,7 +318,18 @@ export class Db {
   }
 
   async getCourseByInfo(number, dept, prof_id) {
-    return await Course.findOne({ number: number, dept: dept, prof_id: prof_id })
+    return await Course.findOne({
+      number: number,
+      dept: dept,
+      prof_id: prof_id,
+    });
+  }
+
+  async getGroupWithCourseAndMember(courseId, memberId) {
+    return await Group.findOne({
+      course_id: courseId,
+      student_ids: { $in: memberId },
+    });
   }
 
   async getCourseById(id) {
@@ -242,16 +344,13 @@ export class Db {
     return await Review.findOne({ _id: id });
   }
 
-  async getAssignment(id) {
-    return await Assignment.findOne({ _id: id });
-  }
-  async removeUserFromCourse(userId, name, courseId) {
+  async removeUserFromCourse(userId, courseId) {
     const course = await Course.findOne({
-      name: name,
       course_id: courseId,
     });
     course.student_ids = course.student_ids.filter((id) => id !== userId);
     await course.save();
+    return true;
   }
 
   async removeUser(id) {
@@ -260,6 +359,34 @@ export class Db {
 
   async removeCourse(id) {
     await Course.deleteOne({ course_id: id });
+  }
+
+  async getAllReviewsForAllCourseOfTeacher(teacherId) {
+    const courses = await this.getTeacherCourses(teacherId);
+    const reviews = courses.map(async (course) => {
+      const studentReviews = await this.getAllReviewsForCourse(course._id);
+      return {
+        course: course,
+        studentReviews: studentReviews,
+      };
+    });
+    return await Promise.all(reviews);
+  }
+
+  async getAllReviewsForCourse(courseId) {
+    const course = await Course.findOne({ _id: courseId });
+    const allReviews = course.student_ids.map(async (student_id) => {
+      const reviews = await Review.find({
+        reviewee_id: student_id,
+        course_id: courseId,
+      });
+      const student = await this.getStudent(student_id);
+      return {
+        student: student,
+        reviews: reviews,
+      };
+    });
+    return await Promise.all(allReviews);
   }
 }
 

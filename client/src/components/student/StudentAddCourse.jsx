@@ -8,10 +8,7 @@ const StudentAddCourse = ({ handleClose, addNewCourse }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState();
   const {
-    register,
-    setError,
-    handleSubmit,
-    formState: { errors },
+    handleSubmit
   } = useForm();
 
   useEffect(() => {
@@ -35,7 +32,7 @@ const StudentAddCourse = ({ handleClose, addNewCourse }) => {
       }
     };
     getCourses();
-  }, []);
+  }, [user.user_id]);
 
   const onSubmit = async () => {
     await request("/student/enroll-course", "POST", {

@@ -3,10 +3,21 @@ import cors from "cors";
 import api from "./routes/api.js";
 import bodyParser from "body-parser";
 
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.BACKEND_PORT || 5050;
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://reviewmate.onrender.com", // Replace with your frontend domain
+  methods: "GET,POST,OPTIONS",
+  allowedHeaders: "Content-Type, Authorization",
+};
+
+if (process.env.BACKEND_PORT) {
+  app.use(cors(corsOptions));
+} else {
+  app.use(cors())
+}
+
 app.use(bodyParser.json());
 app.use("/api", api);
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,7 +25,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use((_, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // Change * to your frontend domain
   res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
   next();
 });
 
@@ -24,11 +38,6 @@ app.options("/*", (_, res) => {
 
 app.use(function (_, res) {
   res.status(404).send("404 NOT FOUND");
-});
-
-app.post("/submit", (req, res) => {
-  console.log(req.body);
-  res.json({ message: "Form submitted successfully!" });
 });
 
 // start the Express server

@@ -55,6 +55,7 @@ const AuthProvider = ({ children }) => {
 
 export default AuthProvider;
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };
