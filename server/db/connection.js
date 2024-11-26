@@ -59,6 +59,16 @@ export class Db {
     return user;
   }
 
+  async deleteUserById(id) {
+    await User.findOneAndDelete({ '_id': id });
+  }
+  async deleteCourseById(id) {
+    await Course.findOneAndDelete({ '_id': id });
+  }
+  async deleteGroupById(id) {
+    await Group.findOneAndDelete({ '_id': id });
+  }
+
   async addCourse(number, dept, profId, students = [], groups = []) {
     const course = await Course.create({
       number: number,
@@ -320,14 +330,6 @@ export class Db {
     course.student_ids = course.student_ids.filter((id) => id !== userId);
     await course.save();
     return true;
-  }
-
-  async removeUser(id) {
-    await User.deleteOne({ user_id: id });
-  }
-
-  async removeCourse(id) {
-    await Course.deleteOne({ course_id: id });
   }
 
   async getAllReviewsForAllCourseOfTeacher(teacherId) {

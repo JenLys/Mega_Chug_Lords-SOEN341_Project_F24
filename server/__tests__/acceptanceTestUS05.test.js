@@ -11,20 +11,21 @@ let contextGroup;
 
 // Sets up a separate DB context for testing
 async function setupDbContext() {
-    let students = [contextStudent1, contextStudent2];
     contextTeacher = await db.addUser("CT", "Teacher", "teacher", "0099", "ctpass");
     contextStudent1 = await db.addUser("CT", "Student1", "student", "0001", "cspass");
     contextStudent2 = await db.addUser("CT", "Student2", "student", "0002", "cspass");
+    
+    let students = [contextStudent1.user_id, contextStudent2.user_id];
     contextCourse = await db.addCourse("999", "COMP", contextTeacher._id, students);
     contextGroup = await db.addGroupToCourse(contextCourse._id, students);
-    console.log(contextTeacher);
 }
 
 async function deleteDbContext() {
-    // await User.findOneAndDelete({ _id: contextTeacher._id });
-    // await User.findOneAndDelete({ _id: contextStudent1._id });
-    // await User.findOneAndDelete({ _id: contextStudent2._id });
-    // await Course.findOneAndDelete({ _id: contextCourse._id });
+    await db.deleteUserById(contextTeacher._id);
+    await db.deleteUserById(contextStudent1._id);
+    await db.deleteUserById(contextStudent2._id);
+    await db.deleteCourseById(contextCourse._id);
+    await db.deleteGroupById(contextGroup._id);
 }
 
 describe("Student reviews tests", () => {
@@ -45,7 +46,7 @@ describe("Student reviews tests", () => {
     });
 
     // test('db returns a non-null group object', async () => {
-    //     const group = await db.getGroupWithCourseAndMember();
+    //     const group = await db.getGroupWithCourseAndMember(contextCourse._id, contextStudent1._id);
     //     expect(group).toBeTruthy();
     // });
 
