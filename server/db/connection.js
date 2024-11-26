@@ -141,10 +141,31 @@ export class Db {
     return null;
   }
 
+  async getTop5BestReviewScores() {
+    const reviewedStudents = [...new Set((await Review.find().select("reviewee_id -_id")).map(_ => _.reviewee_id))]
+    const reviewScores = reviewedStudents.map(async (reviewedStudent) => {
+      const reviews = await Review.find({ reviewee_id: reviewedStudent })
+      const totalScore = reviews.reduce((total, current) =>
+        current.cooperation + current.conceptual + current.practical + current.work_ethic + total
+        , 0)
+      const student = await this.getStudent(reviewedStudent)
+      return {
+        student: student,
+        score: totalScore
+      }
+    })
+    const allScores = await Promise.all(reviewScores)
+    return allScores.sort((a, b) => b.score - a.score).slice(0, 5)
+  }
+
   async addUserToCourseGroup(groupId, userId) {
     const group = await this.getGroup(groupId);
-    group.student_ids.push(userId);
-    await group.save();
+    if (!group.student_ids.includes(userId)) {
+      group.student_ids.push(userId);
+      await group.save();
+    }
+    const student = await this.getStudent(userId)
+    return { group: group, student: student }
   }
 
   // Returns all courses that a teacher is teaching
@@ -162,7 +183,20 @@ export class Db {
     if (isStudent == null) {
       throw new Error("User is not a student");
     }
-    return await Course.find({ student_ids: { $in: userId } });
+    const courses = await Course.find({ student_ids: { $in: userId } });
+    const results = courses.map(async (course) => {
+      const group = await this.getGroupForStudent(userId, course._id)
+      const newCourse = JSON.parse(JSON.stringify(course))
+      newCourse.group = group
+      return newCourse
+    })
+    return await Promise.all(results)
+  }
+
+  async getGroupForStudent(student_id, course_id) {
+    const group = await Group.findOne({ student_ids: { $in: [student_id] }, course_id: course_id })
+
+    return group
   }
 
   async getIsInTeam(userId, courseId) {
