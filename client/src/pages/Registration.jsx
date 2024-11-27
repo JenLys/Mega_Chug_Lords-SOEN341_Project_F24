@@ -46,7 +46,7 @@ export default function Registration() {
             e.preventDefault();
             setIsTeacherRegistering(true);
           }}
-          className="text-2xl border-solid border-black border-[3px] ease-in duration-50 p-4 rounded-3xl hover:invert hover:bg-white"
+          className="text-2xl border-white border-2 text-blue p-3 rounded-xl bg-transparent hover:bg-blue-500 hover:text-white transition duration-300"
         >
           Register as Teacher
         </button>
@@ -55,7 +55,7 @@ export default function Registration() {
             e.preventDefault();
             setIsStudentRegistering(true);
           }}
-          className="text-2xl border-solid border-black border-[3px] ease-in duration-50 p-4 rounded-3xl hover:invert hover:bg-white"
+          className="text-2xl border-white border-2 text-blue p-3 rounded-xl bg-transparent hover:bg-blue-500 hover:text-white transition duration-300"
         >
           Register as Student
         </button>
