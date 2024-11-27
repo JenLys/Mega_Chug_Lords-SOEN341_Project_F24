@@ -1,24 +1,21 @@
 import { Db } from "../db/connection.js";
 // import { setupDbContext, deleteDbContext } from "./dbTestSetup.js";
 
-let db, contextTeacher, contextStudent1, contextStudent2, contextCourse, contextGroup, studentsList;
+let db, contextTeacher, contextStudent1, contextCourse, contextGroup;
 
 // Sets up a separate DB context for testing
 async function setupDbContext() {
     contextTeacher = await db.addUser("CT", "Teacher", "teacher", "0099", "ctpass");
     contextStudent1 = await db.addUser("CT", "Student1", "student", "0001", "cspass");
     contextStudent2 = await db.addUser("CT", "Student2", "student", "0002", "cspass");
-    
-    studentsList = [contextStudent1.user_id, contextStudent2.user_id];
-    contextCourse = await db.addCourse("999", "COMP", contextTeacher._id, studentsList);
-    contextGroup = await db.addGroupToCourse(contextCourse._id, studentsList);
+    contextCourse = await db.addCourse("999", "COMP", contextTeacher._id);
+    contextGroup = await db.addGroupToCourse(contextCourse._id);
 }
 
 // Delete all the context objects from the DB to avoid clutter
 async function deleteDbContext() {
     await db.deleteUserById(contextTeacher._id);
     await db.deleteUserById(contextStudent1._id);
-    await db.deleteUserById(contextStudent2._id);
     await db.deleteCourseById(contextCourse._id);
     await db.deleteGroupById(contextGroup._id);
 }
