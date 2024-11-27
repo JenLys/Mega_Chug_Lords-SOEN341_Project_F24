@@ -264,14 +264,14 @@ function TeacherView() {
             className="text-xl border-solid border-2 w-fit p-2 rounded-md self-center"
             onClick={(e) => {
               e.preventDefault();
-              handleOpen();
+              handleOpen("course");
             }}
           >
-            Add course
+            Add Course
           </button>
-          <Modal open={isAddingCourse} onClose={handleClose}>
+          <Modal open={isAddingCourse} onClose={() => handleClose("course")}>
             <TeacherAddCourse
-              handleClose={handleClose}
+              handleClose={() => handleClose("course")}
               addNewCourse={handleCourseAddition}
             />
           </Modal>
