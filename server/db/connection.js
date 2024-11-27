@@ -15,22 +15,25 @@ if (uri.length === 0) {
 export class Db {
   constructor(isTest = false) {
     this.isTest = isTest;
-    this.connectDb();
+    (async () => {
+      await this.connectDb();
+    })()
   }
 
   /**
    * Connect to the MongoDB database
    * Reads ATLAS_URI and DB_NAME environment variable
    */
-  connectDb() {
+  async connectDb() {
     let dbOptions = {
       dbName: "" + (this.isTest ? `${dbName}-test` : dbName),
     };
-    mongoose.connect(uri, dbOptions);
-    console.log("Connected to MongoDB");
+    await mongoose.connect(uri, dbOptions)
+      .then(console.log("Connected to MongoDB"))
+      .catch(() => {throw new Error("Connection to DB failed")})
   }
 
-  disconnectDb() {
+  async disconnectDb() {
     mongoose.connection.close();
   }
 
@@ -54,6 +57,19 @@ export class Db {
       pw: pw,
     });
     return user;
+  }
+
+  async deleteUserById(id) {
+    return await User.findOneAndDelete({ '_id': id });
+  }
+  async deleteCourseById(id) {
+    return await Course.findOneAndDelete({ '_id': id });
+  }
+  async deleteGroupById(id) {
+    return await Group.findOneAndDelete({ '_id': id });
+  }
+  async deleteReviewById(id) {
+    return await Review.findOneAndDelete({ '_id': id });
   }
 
   async addCourse(number, dept, profId, students = [], groups = []) {
@@ -109,7 +125,7 @@ export class Db {
     const savedGroup = await group.save();
     return {
       group: savedGroup,
-      review: review
+      review: review,
     }
   }
 
@@ -351,14 +367,6 @@ export class Db {
     course.student_ids = course.student_ids.filter((id) => id !== userId);
     await course.save();
     return true;
-  }
-
-  async removeUser(id) {
-    await User.deleteOne({ user_id: id });
-  }
-
-  async removeCourse(id) {
-    await Course.deleteOne({ course_id: id });
   }
 
   async getAllReviewsForAllCourseOfTeacher(teacherId) {
