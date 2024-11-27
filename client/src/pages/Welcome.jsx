@@ -28,28 +28,13 @@ function Welcome() {
           }}
           >ReviewMate</h1>
           <a
-            className="w-fit text-xl border-solid border-black border-[3px] ease-in duration-50 p-3 rounded-xl hover:invert hover:bg-white"
+            className="w-fit text-xl border-white border-2 text-white p-3 rounded-xl bg-transparent hover:bg-blue-500 hover:text-white transition duration-300"
             href="/login"
-            stylel={{
-              width:"fit-content",
-              fontSize:"2rem",
-              border:"2px solid white",
-              color:"white",
-              padding: "10px 20px",
-              borderRadius: "10px",
-              textDecoration: "none",
-              backgroundColor:"transparent",
-              display: "inline-block",
-              transition: "background-color 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.backgroundColor = "blue")}
-            onMouseLeave={(e) => (e.target.style.backgroundColor = "transparent")}
-
           >
             Login
           </a>
           <a
-            className="w-fit text-xl border-solid border-black border-[3px] ease-in duration-50 p-3 rounded-xl hover:invert hover:bg-white"
+            className="w-fit text-xl border-white border-2 text-white p-3 rounded-xl bg-transparent hover:bg-blue-500 hover:text-white transition duration-300"
             href="/registration"
             
           >
