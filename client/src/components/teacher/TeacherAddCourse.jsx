@@ -23,7 +23,7 @@ export default function TeacherAddCourse({ handleClose, addNewCourse }) {
       })
       .then((course) => {
         addNewCourse(course);
-        handleClose();
+        handleClose('course');
       })
       .catch((err) => {
         setError("root.serverError", { message: err.message });
@@ -72,7 +72,7 @@ export default function TeacherAddCourse({ handleClose, addNewCourse }) {
           className="text-m text-center border-solid border-white border-[3px] ease-in duration-50 p-1 rounded-lg hover:scale-110"
           onClick={(e) => {
             e.preventDefault();
-            handleClose();
+            handleClose('course');
           }}
         >
           Cancel

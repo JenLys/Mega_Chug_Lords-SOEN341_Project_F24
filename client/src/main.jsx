@@ -8,6 +8,8 @@ import About from "./pages/About";
 import HowToUse from "./pages/HowToUse";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
+import TeacherDashboard from "./pages/TeacherDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
 
 const router = createBrowserRouter([
   {
@@ -33,9 +35,18 @@ const router = createBrowserRouter([
       {
         path: "/registration",
         element: <Registration />,
-      }
+      },
+      {
+        path: "/dashboard",
+        element: <TeacherDashboard />,
+      },
+      {
+        path: "/summary",
+        element: <StudentDashboard />,
+      },
     ],
   },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
