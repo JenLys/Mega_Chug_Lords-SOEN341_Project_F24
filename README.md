@@ -6,15 +6,22 @@ Our solution is to provide a lightweight web app which offers a simplistic UI, e
 ![image](https://github.com/user-attachments/assets/1fca9f6b-cd19-4d13-b7fa-0b75b038ea71)
 
 
-## Team members and roles
-- Marian Hristov (40284462) : Full stack developer + Team Leader
-- Sasha Klein-Charland (40281076) : Full Stack developer
-- Vinuyan Sivakolunthu (40280609) : Full Stack developer + Project Manager 
-- Jeslyn Sorotsky (40277100) : Full Stack developer
-- Kigham Kerry Kinyuy (40207088) : Full Stack developer
-- Srabanti Mazumdar (40263255) : Full Stack developer
+## Team Members and Roles
 
-*information about the knowledge and experience of each member can be found in the Wiki
+
+| Name                    | ID        | GitHub Username     | Role                         |
+|-------------------------|-----------|---------------------|------------------------------|
+| Marian Hristov          | 40284462  | [@Marian-Hristov](https://github.com/Marian-Hristov) | Full Stack Developer + Team Leader |
+| Sasha Klein-Charland    | 40281076  | [@sasha-klnd](https://github.com/sasha-klnd)       | Full Stack Developer         |
+| Vinuyan Sivakolunthu    | 40280609  | [@Vinuyans](https://github.com/Vinuyans)           | Full Stack Developer + Project Manager |
+| Jeslyn Sorotsky         | 40277100  | [@JenLys](https://github.com/JenLys)               | Full Stack Developer         |
+| Kigham Kerry Kinyuy     | 40207088  | [@Kerryki](https://github.com/Kerryki)             | Full Stack Developer         |
+| Srabanti Mazumdar       | 40263255  | [@srabm](https://github.com/srabm)                 | Full Stack Developer         |
+
+
+
+*Information about the knowledge and experience of each member can be found in the [Wiki](https://github.com/Vinuyans/Mega_Chug_Lords-SOEN341_Project_F24/wiki)
+
 
 ## Technologies
 - React
