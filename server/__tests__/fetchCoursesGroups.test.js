@@ -24,9 +24,9 @@ describe("Creating course and viewing participants as a teacher tests", () => {
 
     test('getTeacherCourses returns the correct courses', async () => {
         const courses = await db.getTeacherCourses(teacherId);
-        const teacherIsInAllCourses = true;
+        let teacherIsInAllCourses = true;
 
-        for (let i; i<courses.length; i++) {
+        for (let i = 0; i < courses.length; i++) {
             if (courses[i].prof_id != teacherId) {
                 teacherIsInAllCourses = false;
             } else {
