@@ -7,7 +7,6 @@ let db, contextTeacher, contextStudent1, contextCourse, contextGroup;
 async function setupDbContext() {
     contextTeacher = await db.addUser("CT", "Teacher", "teacher", "0099", "ctpass");
     contextStudent1 = await db.addUser("CT", "Student1", "student", "0001", "cspass");
-    contextStudent2 = await db.addUser("CT", "Student2", "student", "0002", "cspass");
     contextCourse = await db.addCourse("999", "COMP", contextTeacher._id);
     contextGroup = await db.addGroupToCourse(contextCourse._id);
 }
