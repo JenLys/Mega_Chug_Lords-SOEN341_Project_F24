@@ -16,9 +16,17 @@ function Welcome() {
     return <StudentView />;
   } else {
     return (
-      <div className="w-full h-full bg-[#598da478] flex align-middle justify-center">
+      <div className="w-full h-full bg-[#598da478] flex align-middle justify-center"
+       style={{
+        display: "flex", alignItems: "center", justifyContent: "center",width:"100%", height:"100%",
+       }}
+      >
         <div className="pt-10 flex flex-col *:self-center gap-8 text-center ">
-          <h1 className="text-8xl font-semibold text-white">ReviewMate</h1>
+          <h1 className="text-8xl font-semibold text-white"
+          style={{
+          fontSize:"5rem", fontFamily:"'Poppins', sans-serif", color:"transparent", WebkitTextStroke:"1px white", fontWeight:"600",
+          }}
+          >ReviewMate</h1>
           <a
             className="w-fit text-xl border-solid border-black border-[3px] ease-in duration-50 p-3 rounded-xl hover:invert hover:bg-white"
             href="/login"
