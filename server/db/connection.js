@@ -60,13 +60,13 @@ export class Db {
   }
 
   async deleteUserById(id) {
-    await User.findOneAndDelete({ '_id': id });
+    return await User.findOneAndDelete({ '_id': id });
   }
   async deleteCourseById(id) {
-    await Course.findOneAndDelete({ '_id': id });
+    return await Course.findOneAndDelete({ '_id': id });
   }
   async deleteGroupById(id) {
-    await Group.findOneAndDelete({ '_id': id });
+    return await Group.findOneAndDelete({ '_id': id });
   }
   async deleteReviewById(id) {
     return await Review.findOneAndDelete({ '_id': id });

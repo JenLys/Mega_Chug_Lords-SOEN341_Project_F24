@@ -1,13 +1,8 @@
 // Student reviewing teammates tests
 import { Db } from "../db/connection.js";
+// import { setupDbContext, deleteDbContext } from "./dbTestSetup.js";
 
-let db;
-let contextTeacher;
-let contextStudent1;
-let contextStudent2;
-let contextCourse;
-let contextGroup;
-let students
+let db, contextTeacher, contextStudent1, contextStudent2, contextCourse, contextGroup, studentsList;
 
 // Sets up a separate DB context for testing
 async function setupDbContext() {
@@ -15,9 +10,9 @@ async function setupDbContext() {
     contextStudent1 = await db.addUser("CT", "Student1", "student", "0001", "cspass");
     contextStudent2 = await db.addUser("CT", "Student2", "student", "0002", "cspass");
     
-    students = [contextStudent1.user_id, contextStudent2.user_id];
-    contextCourse = await db.addCourse("999", "COMP", contextTeacher._id, students);
-    contextGroup = await db.addGroupToCourse(contextCourse._id, students);
+    studentsList = [contextStudent1.user_id, contextStudent2.user_id];
+    contextCourse = await db.addCourse("999", "COMP", contextTeacher.user_id, studentsList);
+    contextGroup = await db.addGroupToCourse(contextCourse._id, studentsList);
 }
 
 // Delete all the context objects from the DB to avoid clutter
@@ -57,7 +52,7 @@ describe("Student reviews tests", () => {
     test('db returns the correct group object', async () => {
         const group = await db.getGroupWithCourseAndMember(contextCourse._id, contextStudent1.user_id);
         expect(group).toHaveProperty("course_id", contextCourse._id.toString());
-        expect(group).toHaveProperty("student_ids", students);
+        expect(group).toHaveProperty("student_ids", studentsList);
     });
 
 
