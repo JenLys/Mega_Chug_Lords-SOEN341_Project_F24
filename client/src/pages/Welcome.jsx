@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAuth } from "../components/AuthProvider";
 import StudentView from "../components/student/StudentView";
 import TeacherView from "../components/teacher/TeacherView";
-import backgroundGif from "./background.gif";
+import backgroundGif from "../assets/background.gif";
 function Welcome() {
   const auth = useAuth();
   const user = auth.storedUser;
@@ -45,13 +45,6 @@ function Welcome() {
             
           >
             Register
-          </a>
-          <a
-            className="w-fit text-xl text-white p-3 rounded-xl bg-transparent hover:text-white transition duration-300"
-            href="/registration"
-            
-          >
-            Forgotten Password
           </a>
         </div>
       </div>
