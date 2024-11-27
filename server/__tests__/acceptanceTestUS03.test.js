@@ -1,6 +1,6 @@
 import { Db } from "../db/connection.js";
 
-let db, contextTeacher, contextStudent1, contextStudent2, contextCourse, contextGroup, studentsList;
+let db, contextTeacher, contextStudent1, contextCourse, contextGroup, studentsList;
 
 // Sets up a separate DB context for testing
 async function setupDbContext() {
